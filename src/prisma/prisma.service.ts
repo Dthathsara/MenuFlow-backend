@@ -1,11 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '../generated/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  private readonly logger = new Logger(PrismaService.name);
-
   constructor() {
     const databaseUrl = process.env.DATABASE_URL;
 
@@ -15,9 +13,6 @@ export class PrismaService extends PrismaClient {
 
     const adapter = new PrismaPg({
       connectionString: databaseUrl,
-      max: 1,
-      idleTimeoutMillis: 1000,
-      connectionTimeoutMillis: 10000,
     });
 
     super({
