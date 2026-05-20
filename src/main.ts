@@ -1,7 +1,18 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+
+function getAllowedOrigins() {
+  return [
+    'https://menu-flow-sl.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    ...(process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+      : []),
+  ].filter(Boolean);
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -11,12 +22,22 @@ async function bootstrap() {
   // Security headers
   app.use(helmet());
 
+  const allowedOrigins = getAllowedOrigins();
+
+  app.setGlobalPrefix('api/v1');
+
   // CORS — restrict to known origins in production
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || false,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
     credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   // Global validation — whitelist strips unknown fields
@@ -29,10 +50,7 @@ async function bootstrap() {
     }),
   );
 
-  // API versioning prefix
-  app.setGlobalPrefix('api/v1');
-
-  const port = process.env.APP_PORT || 3000;
+  const port = process.env.APP_PORT || process.env.PORT || 3001;
   await app.listen(port);
   console.log(`API running on port ${port}`);
 }

@@ -5,15 +5,25 @@ import helmet from 'helmet';
 import express from 'express';
 import { AppModule } from '../src/app.module';
 
-let cachedExpressApp: express.Express | null = null;
+const server = express();
+let isInitialized = false;
+
+function getAllowedOrigins() {
+  return [
+    'https://menu-flow-sl.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    ...(process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+      : []),
+  ].filter(Boolean);
+}
 
 async function bootstrap() {
-  if (!cachedExpressApp) {
-    const expressApp = express();
-
+  if (!isInitialized) {
     const app = await NestFactory.create(
       AppModule,
-      new ExpressAdapter(expressApp),
+      new ExpressAdapter(server),
       {
         logger: ['error', 'warn', 'log'],
       },
@@ -21,15 +31,21 @@ async function bootstrap() {
 
     app.use(helmet());
 
+    const allowedOrigins = getAllowedOrigins();
+
+    app.setGlobalPrefix('api/v1');
+
     app.enableCors({
-      origin: [
-        'https://menu-flow-sl.vercel.app',
-        'http://localhost:3000',
-        'http://localhost:3001',
-      ],
-      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`CORS blocked for origin: ${origin}`));
+        }
+      },
       credentials: true,
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     });
 
     app.useGlobalPipes(
@@ -41,17 +57,14 @@ async function bootstrap() {
       }),
     );
 
-    app.setGlobalPrefix('api/v1');
-
     await app.init();
-
-    cachedExpressApp = expressApp;
+    isInitialized = true;
   }
 
-  return cachedExpressApp;
+  return server;
 }
 
 export default async function handler(req: any, res: any) {
-  const expressApp = await bootstrap();
-  return expressApp(req, res);
+  const app = await bootstrap();
+  return app(req, res);
 }
