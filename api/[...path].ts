@@ -3,13 +3,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import express from 'express';
-import serverless from 'serverless-http';
 import { AppModule } from '../src/app.module';
 
-let cachedHandler: any;
+let cachedExpressApp: express.Express | null = null;
 
 async function bootstrap() {
-  if (!cachedHandler) {
+  if (!cachedExpressApp) {
     const expressApp = express();
 
     const app = await NestFactory.create(
@@ -26,6 +25,7 @@ async function bootstrap() {
       origin: [
         'https://menu-flow-sl.vercel.app',
         'http://localhost:3000',
+        'http://localhost:3001',
       ],
       methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
@@ -45,13 +45,13 @@ async function bootstrap() {
 
     await app.init();
 
-    cachedHandler = serverless(expressApp);
+    cachedExpressApp = expressApp;
   }
 
-  return cachedHandler;
+  return cachedExpressApp;
 }
 
 export default async function handler(req: any, res: any) {
-  const server = await bootstrap();
-  return server(req, res);
+  const expressApp = await bootstrap();
+  return expressApp(req, res);
 }
