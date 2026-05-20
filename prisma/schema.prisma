@@ -1,0 +1,255 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../src/generated"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                              String         @id @default(uuid())
+  passwordHash                    String         @map("password_hash")
+  hotelName                       String         @map("hotel_name")
+  businessEmail                   String         @unique @map("business_email")
+  contactPersonName               String         @map("contact_person_name")
+  contactPersonMobileNumber       String         @map("contact_person_mobile_number")
+  role                            Role           @default(STAFF)
+  isActive                        Boolean        @default(true) @map("is_active")
+  tenantId                        String?        @map("tenant_id")
+  createdAt                       DateTime       @default(now()) @map("created_at")
+  updatedAt                       DateTime       @updatedAt @map("updated_at")
+  deletedAt                       DateTime?      @map("deleted_at")
+  auditLogs                       AuditLog[]
+  priceChanges                    PriceHistory[]
+  qrCodeLinks                     QrCodeStaff[]
+  refreshTokens                   RefreshToken[]
+  tenant                          Tenant?        @relation(fields: [tenantId], references: [id])
+
+  @@index([businessEmail])
+  @@index([tenantId])
+  @@map("users")
+}
+
+model Tenant {
+  id            String        @id @default(uuid())
+  name          String
+  slug          String        @unique
+  isActive      Boolean       @default(true) @map("is_active")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  categories    Category[]
+  menuItems     MenuItem[]
+  menus         Menu[]
+  qrCodes       QrCode[]
+  subCategories SubCategory[]
+  tables        Table[]
+  users         User[]
+
+  @@map("tenants")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  isRevoked Boolean  @default(false) @map("is_revoked")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?  @map("user_id")
+  action     String
+  resource   String
+  resourceId String?  @map("resource_id")
+  meta       Json?
+  ipAddress  String?  @map("ip_address")
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([resource, resourceId])
+  @@map("audit_logs")
+}
+
+model Menu {
+  id          String     @id @default(uuid())
+  tenantId    String     @map("tenant_id")
+  name        String
+  description String?
+  isActive    Boolean    @default(true) @map("is_active")
+  sortOrder   Int        @default(0) @map("sort_order")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  deletedAt   DateTime?  @map("deleted_at")
+  menuItems   MenuItem[]
+  tenant      Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  qrCodes     QrCode[]
+
+  @@index([tenantId])
+  @@map("menus")
+}
+
+model Category {
+  id            String        @id @default(uuid())
+  tenantId      String        @map("tenant_id")
+  name          String
+  description   String?
+  imageUrl      String?       @map("image_url")
+  sortOrder     Int           @default(0) @map("sort_order")
+  isActive      Boolean       @default(true) @map("is_active")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItems     MenuItem[]
+  subCategories SubCategory[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("categories")
+}
+
+model SubCategory {
+  id          String     @id @default(uuid())
+  categoryId  String     @map("category_id")
+  tenantId    String     @map("tenant_id")
+  name        String
+  description String?
+  sortOrder   Int        @default(0) @map("sort_order")
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  menuItems   MenuItem[]
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  tenant      Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, name])
+  @@index([tenantId])
+  @@index([categoryId])
+  @@map("sub_categories")
+}
+
+model MenuItem {
+  id            String           @id @default(uuid())
+  menuId        String           @map("menu_id")
+  tenantId      String           @map("tenant_id")
+  categoryId    String?          @map("category_id")
+  subCategoryId String?          @map("sub_category_id")
+  name          String
+  description   String?
+  imageUrl      String?          @map("image_url")
+  prepTimeMin   Int?             @map("prep_time_min")
+  isAvailable   Boolean          @default(true) @map("is_available")
+  isActive      Boolean          @default(true) @map("is_active")
+  tags          String[]
+  sortOrder     Int              @default(0) @map("sort_order")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  deletedAt     DateTime?        @map("deleted_at")
+  options       MenuItemOption[]
+  category      Category?        @relation(fields: [categoryId], references: [id])
+  menu          Menu             @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  subCategory   SubCategory?     @relation(fields: [subCategoryId], references: [id])
+  tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([menuId])
+  @@index([tenantId])
+  @@index([categoryId])
+  @@map("menu_items")
+}
+
+model MenuItemOption {
+  id           String         @id @default(uuid())
+  menuItemId   String         @map("menu_item_id")
+  label        String
+  price        Decimal        @db.Decimal(10, 2)
+  isDefault    Boolean        @default(false) @map("is_default")
+  isAvailable  Boolean        @default(true) @map("is_available")
+  sortOrder    Int            @default(0) @map("sort_order")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  menuItem     MenuItem       @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  priceHistory PriceHistory[]
+
+  @@index([menuItemId])
+  @@map("menu_item_options")
+}
+
+model PriceHistory {
+  id          String         @id @default(uuid())
+  optionId    String         @map("option_id")
+  price       Decimal        @db.Decimal(10, 2)
+  changedById String?        @map("changed_by_id")
+  effectiveAt DateTime       @default(now()) @map("effective_at")
+  note        String?
+  changedBy   User?          @relation(fields: [changedById], references: [id])
+  option      MenuItemOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@index([optionId])
+  @@index([effectiveAt])
+  @@map("price_history")
+}
+
+model Table {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  number    String
+  label     String?
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  qrCode    QrCode?
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, number])
+  @@index([tenantId])
+  @@map("tables")
+}
+
+model QrCode {
+  id         String        @id @default(uuid())
+  tenantId   String        @map("tenant_id")
+  menuId     String        @map("menu_id")
+  label      String
+  slug       String        @unique
+  scanCount  Int           @default(0) @map("scan_count")
+  isActive   Boolean       @default(true) @map("is_active")
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+  tableId    String        @unique @map("table_id")
+  staffLinks QrCodeStaff[]
+  menu       Menu          @relation(fields: [menuId], references: [id])
+  table      Table         @relation(fields: [tableId], references: [id])
+  tenant     Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([slug])
+  @@map("qr_codes")
+}
+
+model QrCodeStaff {
+  id       String @id @default(uuid())
+  qrCodeId String @map("qr_code_id")
+  userId   String @map("user_id")
+  qrCode   QrCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([qrCodeId, userId])
+  @@index([qrCodeId])
+  @@index([userId])
+  @@map("qr_code_staff")
+}
+
+enum Role {
+  SUPER_ADMIN
+  CLIENT_ADMIN
+  MANAGER
+  STAFF
+}
