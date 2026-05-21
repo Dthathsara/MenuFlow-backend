@@ -13,6 +13,8 @@ import { QrCodeModule } from './qrcode/qrcode.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     MenuModule,
     QrCodeModule
   ],
+  controllers: [AppController],
   providers: [
+    AppService,
     { provide: APP_GUARD, useClass: ThrottlerGuard },    // Rate limiting globally
     { provide: APP_GUARD, useClass: JwtAuthGuard },      // JWT guard globally
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
