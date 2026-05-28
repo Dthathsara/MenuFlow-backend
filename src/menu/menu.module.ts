@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MenuService } from './menu.service';
+import { AddMenuItemsService } from './add-menu-items.service';
 import {
   PublicMenuController,
+  CustomerMenuController,
   MenuController,
   CategoryController,
   CategoryAliasController,
@@ -13,6 +15,7 @@ import {
 @Module({
   controllers: [
     PublicMenuController,
+    CustomerMenuController,
     MenuController,
     CategoryController,
     CategoryAliasController,
@@ -20,7 +23,7 @@ import {
     MenuItemController,
     MenuItemOptionController,
   ],
-  providers: [MenuService],
-  exports: [MenuService],
+  providers: [MenuService, AddMenuItemsService],
+  exports: [MenuService, AddMenuItemsService],
 })
 export class MenuModule {}

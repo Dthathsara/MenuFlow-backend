@@ -3,6 +3,7 @@ import {
   Body, UseGuards, ParseUUIDPipe, HttpCode, HttpStatus, Query,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
+import { AddMenuItemsService } from './add-menu-items.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -23,12 +24,26 @@ import { CreateQrCodeDto, UpdateQrCodeDto } from './dto/qr-code.dto';
 // ─── PUBLIC ROUTE (no auth — scanned from QR code) ────────────────────────
 @Controller('menu')
 export class PublicMenuController {
-  constructor(private menuService: MenuService) {}
+  constructor(private addMenuItemsService: AddMenuItemsService) {}
 
   @Public()
   @Get(':slug')
   getPublicMenu(@Param('slug') slug: string) {
-    return this.menuService.getPublicMenu(slug);
+    return this.addMenuItemsService.getCustomerMenu({ slug });
+  }
+}
+
+@Controller('customer-menu')
+export class CustomerMenuController {
+  constructor(private addMenuItemsService: AddMenuItemsService) {}
+
+  @Public()
+  @Get()
+  getCustomerMenu(
+    @Query('tenantId') tenantId?: string,
+    @Query('slug') slug?: string,
+  ) {
+    return this.addMenuItemsService.getCustomerMenu({ tenantId, slug });
   }
 }
 
@@ -161,7 +176,7 @@ export class CategoryAliasController {
 @Controller('menu-items')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MenuItemAliasController {
-  constructor(private menuService: MenuService) {}
+  constructor(private addMenuItemsService: AddMenuItemsService) {}
 
   @Post()
   @Roles(Role.STAFF)
@@ -169,7 +184,7 @@ export class MenuItemAliasController {
     @Body() dto: CreateAddMenuItemDto,
     @CurrentUser() currentUser: any,
   ) {
-    return this.menuService.createManagerMenuItem(dto, currentUser);
+    return this.addMenuItemsService.create(dto, currentUser);
   }
 
   @Get()
@@ -178,13 +193,13 @@ export class MenuItemAliasController {
     @Query() query: AddMenuItemsQueryDto,
     @CurrentUser() currentUser: any,
   ) {
-    return this.menuService.findManagerMenuItems(currentUser, query);
+    return this.addMenuItemsService.findAll(currentUser, query);
   }
 
   @Get('categories')
   @Roles(Role.STAFF)
   findManagerMenuItemCategories(@CurrentUser() currentUser: any) {
-    return this.menuService.findManagerCategories(currentUser);
+    return this.addMenuItemsService.findCategories(currentUser);
   }
 
   @Patch(':id')
@@ -194,7 +209,7 @@ export class MenuItemAliasController {
     @Body() dto: UpdateAddMenuItemDto,
     @CurrentUser() currentUser: any,
   ) {
-    return this.menuService.updateManagerMenuItem(id, dto, currentUser);
+    return this.addMenuItemsService.update(id, dto, currentUser);
   }
 
   @Delete(':id')
@@ -204,7 +219,7 @@ export class MenuItemAliasController {
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() currentUser: any,
   ) {
-    return this.menuService.deleteManagerMenuItem(id, currentUser);
+    return this.addMenuItemsService.softDelete(id, currentUser);
   }
 }
 

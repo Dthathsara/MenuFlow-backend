@@ -6,13 +6,16 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTableDto, UpdateTableDto } from './dto/table.dto';
 import { CreateQrCodeDto, UpdateQrCodeDto, AssignStaffDto } from './dto/qrcode.dto';
 import { nanoid } from 'nanoid';
-import { AddMenuItem } from '../generated/client';
+import { AddMenuItemsService } from '../menu/add-menu-items.service';
 
 @Injectable()
 export class QrCodeService {
   private readonly logger = new Logger(QrCodeService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private addMenuItemsService: AddMenuItemsService,
+  ) {}
 
   // ─── TABLES ───────────────────────────────────────────────────────────────
 
@@ -250,17 +253,7 @@ export class QrCodeService {
   async scanQrCode(slug: string) {
     const qrCode = await this.prisma.qrCode.findUnique({
       where: { slug },
-      include: {
-        table: true,
-        menu: true,
-        staffLinks: {
-          include: {
-            user: {
-              select: { id: true, contactPersonName: true },
-            },
-          },
-        },
-      },
+      select: { id: true, isActive: true },
     });
 
     if (!qrCode || !qrCode.isActive) {
@@ -272,27 +265,7 @@ export class QrCodeService {
       .update({ where: { id: qrCode.id }, data: { scanCount: { increment: 1 } } })
       .catch((e) => this.logger.error('Failed to increment scan count', e));
 
-    const menuItems = await this.prisma.addMenuItem.findMany({
-      where: {
-        tenantId: qrCode.tenantId,
-        deletedAt: null,
-        isActive: true,
-        isAvailable: true,
-      },
-      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
-    });
-
-    return {
-      table: {
-        id: qrCode.table.id,
-        number: qrCode.table.number,
-        label: qrCode.table.label,
-      },
-      menu: qrCode.menu
-        ? { ...qrCode.menu, menuItems: menuItems.map((item) => this.mapAddMenuItem(item)) }
-        : { menuItems: menuItems.map((item) => this.mapAddMenuItem(item)) },
-      assignedStaff: qrCode.staffLinks.map((l) => l.user),
-    };
+    return this.addMenuItemsService.getCustomerMenu({ slug });
   }
 
   // ─── HELPERS ──────────────────────────────────────────────────────────────
@@ -321,28 +294,6 @@ export class QrCodeService {
       ...qrCode,
       assignedStaff: qrCode.staffLinks?.map((l: any) => l.user) ?? [],
       publicUrl: `${process.env.PUBLIC_URL}/menu/${qrCode.slug}`,
-    };
-  }
-
-  private mapAddMenuItem(item: AddMenuItem) {
-    return {
-      id: item.id,
-      tenant_id: item.tenantId,
-      name: item.name,
-      category_name: item.categoryName,
-      sub_category_name: item.subCategoryName,
-      description: item.description,
-      small_price: Number(item.smallPrice ?? 0),
-      medium_price: Number(item.mediumPrice ?? 0),
-      large_price: Number(item.largePrice ?? 0),
-      prep_time_min: item.prepTimeMin,
-      is_available: item.isAvailable,
-      is_active: item.isActive,
-      sort_order: item.sortOrder,
-      created_at: item.createdAt,
-      updated_at: item.updatedAt,
-      deleted_at: item.deletedAt,
-      image_url: item.imageUrl,
     };
   }
 
