@@ -75,6 +75,11 @@ export type Category = Prisma.CategoryModel
  */
 export type SubCategory = Prisma.SubCategoryModel
 /**
+ * Model AddMenuItem
+ * 
+ */
+export type AddMenuItem = Prisma.AddMenuItemModel
+/**
  * Model MenuItem
  * 
  */

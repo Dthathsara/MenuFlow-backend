@@ -463,6 +463,11 @@ export type MenuSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
 }
 
+export type MenuNullableScalarRelationFilter = {
+  is?: Prisma.MenuWhereInput | null
+  isNot?: Prisma.MenuWhereInput | null
+}
+
 export type MenuScalarRelationFilter = {
   is?: Prisma.MenuWhereInput
   isNot?: Prisma.MenuWhereInput
@@ -524,10 +529,12 @@ export type MenuCreateNestedOneWithoutMenuItemsInput = {
   connect?: Prisma.MenuWhereUniqueInput
 }
 
-export type MenuUpdateOneRequiredWithoutMenuItemsNestedInput = {
+export type MenuUpdateOneWithoutMenuItemsNestedInput = {
   create?: Prisma.XOR<Prisma.MenuCreateWithoutMenuItemsInput, Prisma.MenuUncheckedCreateWithoutMenuItemsInput>
   connectOrCreate?: Prisma.MenuCreateOrConnectWithoutMenuItemsInput
   upsert?: Prisma.MenuUpsertWithoutMenuItemsInput
+  disconnect?: Prisma.MenuWhereInput | boolean
+  delete?: Prisma.MenuWhereInput | boolean
   connect?: Prisma.MenuWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MenuUpdateToOneWithWhereWithoutMenuItemsInput, Prisma.MenuUpdateWithoutMenuItemsInput>, Prisma.MenuUncheckedUpdateWithoutMenuItemsInput>
 }

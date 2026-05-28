@@ -15,7 +15,7 @@ model User {
   businessEmail                   String         @unique @map("business_email")
   contactPersonName               String         @map("contact_person_name")
   contactPersonMobileNumber       String         @map("contact_person_mobile_number")
-  role                            Role           @default(STAFF)
+  role                            Role           @default(MANAGER)
   isActive                        Boolean        @default(true) @map("is_active")
   tenantId                        String?        @map("tenant_id")
   createdAt                       DateTime       @default(now()) @map("created_at")
@@ -136,15 +136,46 @@ model SubCategory {
   @@map("sub_categories")
 }
 
+model AddMenuItem {
+  id              String    @id @default(uuid())
+  tenantId        String    @map("tenant_id")
+  name            String
+  categoryName    String    @map("category_name")
+  subCategoryName String?   @map("sub_category_name")
+  description     String?
+  smallPrice      Decimal   @default(0) @map("small_price") @db.Decimal(10, 2)
+  mediumPrice     Decimal   @default(0) @map("medium_price") @db.Decimal(10, 2)
+  largePrice      Decimal   @default(0) @map("large_price") @db.Decimal(10, 2)
+  prepTimeMin     Int       @default(12) @map("prep_time_min")
+  isAvailable     Boolean   @default(true) @map("is_available")
+  isActive        Boolean   @default(true) @map("is_active")
+  sortOrder       Int       @default(0) @map("sort_order")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  imageUrl        String?   @map("image_url")
+
+  @@index([tenantId])
+  @@index([categoryName])
+  @@index([isAvailable])
+  @@index([deletedAt])
+  @@map("add_menu_items")
+}
+
 model MenuItem {
   id            String           @id @default(uuid())
-  menuId        String           @map("menu_id")
+  menuId        String?          @map("menu_id")
   tenantId      String           @map("tenant_id")
   categoryId    String?          @map("category_id")
   subCategoryId String?          @map("sub_category_id")
   name          String
+  categoryName  String?          @map("category_name")
+  subCategoryName String?        @map("sub_category_name")
   description   String?
   imageUrl      String?          @map("image_url")
+  smallPrice    Decimal?         @map("small_price") @db.Decimal(10, 2)
+  mediumPrice   Decimal?         @map("medium_price") @db.Decimal(10, 2)
+  largePrice    Decimal?         @map("large_price") @db.Decimal(10, 2)
   prepTimeMin   Int?             @map("prep_time_min")
   isAvailable   Boolean          @default(true) @map("is_available")
   isActive      Boolean          @default(true) @map("is_active")
@@ -155,7 +186,7 @@ model MenuItem {
   deletedAt     DateTime?        @map("deleted_at")
   options       MenuItemOption[]
   category      Category?        @relation(fields: [categoryId], references: [id])
-  menu          Menu             @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menu          Menu?            @relation(fields: [menuId], references: [id], onDelete: Cascade)
   subCategory   SubCategory?     @relation(fields: [subCategoryId], references: [id])
   tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 

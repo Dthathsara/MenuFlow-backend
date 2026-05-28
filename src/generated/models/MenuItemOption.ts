@@ -509,14 +509,6 @@ export type MenuItemOptionUncheckedUpdateManyWithoutMenuItemNestedInput = {
   deleteMany?: Prisma.MenuItemOptionScalarWhereInput | Prisma.MenuItemOptionScalarWhereInput[]
 }
 
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type MenuItemOptionCreateNestedOneWithoutPriceHistoryInput = {
   create?: Prisma.XOR<Prisma.MenuItemOptionCreateWithoutPriceHistoryInput, Prisma.MenuItemOptionUncheckedCreateWithoutPriceHistoryInput>
   connectOrCreate?: Prisma.MenuItemOptionCreateOrConnectWithoutPriceHistoryInput

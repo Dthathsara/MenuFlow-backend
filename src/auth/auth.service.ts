@@ -9,8 +9,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './dto/auth.dto';
+import { Role } from './enums/role.enum';
 
 const BCRYPT_ROUNDS = 12;
 
@@ -24,6 +26,7 @@ export class AuthService {
     contactPersonName: true,
     contactPersonMobileNumber: true,
     role: true,
+    tenantId: true,
   };
 
   constructor(
@@ -59,16 +62,26 @@ export class AuthService {
     contactPersonMobileNumber: string;
   }) {
     try {
-      return await this.prisma.user.create({
-        data,
+      return await this.prisma.$transaction(async (tx) => {
+        const tenant = await this.createTenantForHotelName(tx, data.hotelName);
+
+        return tx.user.create({
+          data: {
+            ...data,
+            tenantId: tenant.id,
+            role: Role.MANAGER,
+          },
         select: {
           id: true,
           hotelName: true,
           businessEmail: true,
           contactPersonName: true,
           contactPersonMobileNumber: true,
+            role: true,
+            tenantId: true,
           createdAt: true,
         },
+        });
       });
     } catch (error: any) {
       if (error.code === 'P2002') {
@@ -93,20 +106,27 @@ export class AuthService {
       if (!user || !isValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
+      const activeUser = await this.ensureUserHasTenant(user);
 
-      const tokens = await this.generateTokens(user.id, user.businessEmail, user.role);
-      this.logger.log(`User logged in: ${user.id}`);
+      const tokens = await this.generateTokens(
+        activeUser.id,
+        activeUser.businessEmail,
+        activeUser.role,
+        activeUser.tenantId,
+      );
+      this.logger.log(`User logged in: ${activeUser.id}`);
 
       return {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
         user: {
-          id: user.id,
-          hotelName: user.hotelName,
-          businessEmail: user.businessEmail,
-          contactPersonName: user.contactPersonName,
-          contactPersonMobileNumber: user.contactPersonMobileNumber,
-          role: user.role,
+          id: activeUser.id,
+          hotelName: activeUser.hotelName,
+          businessEmail: activeUser.businessEmail,
+          contactPersonName: activeUser.contactPersonName,
+          contactPersonMobileNumber: activeUser.contactPersonMobileNumber,
+          role: activeUser.role,
+          tenantId: activeUser.tenantId,
         },
       };
     } catch (error) {
@@ -128,6 +148,7 @@ export class AuthService {
         id: true,
         businessEmail: true,
         role: true,
+        tenantId: true,
         isActive: true,
       },
     });
@@ -138,7 +159,7 @@ export class AuthService {
       data: { isRevoked: true },
     });
 
-    return this.generateTokens(user.id, user.businessEmail, user.role);
+    return this.generateTokens(user.id, user.businessEmail, user.role, user.tenantId);
   }
 
   async logout(userId: string) {
@@ -207,15 +228,92 @@ export class AuthService {
     return { message: 'Password updated successfully' };
   }
 
+  private async ensureUserHasTenant(user: any) {
+    if (user.tenantId && user.role !== Role.STAFF) {
+      return user;
+    }
+
+    if (user.tenantId && user.role === Role.STAFF) {
+      return this.prisma.user.update({
+        where: { id: user.id },
+        data: { role: Role.MANAGER },
+      });
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      const tenant = await this.createTenantForHotelName(tx, user.hotelName);
+      const nextRole = user.role === Role.STAFF ? Role.MANAGER : user.role;
+
+      return tx.user.update({
+        where: { id: user.id },
+        data: {
+          tenantId: tenant.id,
+          role: nextRole,
+        },
+      });
+    });
+  }
+
+  private async createTenantForHotelName(tx: any, hotelName: string) {
+    const tenantName = hotelName.trim();
+    const baseSlug = this.slugify(tenantName) || `tenant-${nanoid(6).toLowerCase()}`;
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const slug = attempt === 0 ? baseSlug : `${baseSlug}-${nanoid(6).toLowerCase()}`;
+      const existing = await tx.tenant.findUnique({ where: { slug }, select: { id: true } });
+      if (existing) {
+        continue;
+      }
+
+      try {
+        return await tx.tenant.create({
+          data: {
+            name: tenantName,
+            slug,
+            isActive: true,
+          },
+          select: { id: true, name: true, slug: true },
+        });
+      } catch (error: any) {
+        if (error.code === 'P2002') {
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    return tx.tenant.create({
+      data: {
+        name: tenantName,
+        slug: `${baseSlug}-${nanoid(10).toLowerCase()}`,
+        isActive: true,
+      },
+      select: { id: true, name: true, slug: true },
+    });
+  }
+
+  private slugify(value: string) {
+    return value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
   private async generateTokens(
     userId: string,
     businessEmail: string,
     role: string,
+    tenantId?: string | null,
   ) {
     const payload = {
       sub: userId,
+      userId,
       businessEmail,
+      email: businessEmail,
       role,
+      tenantId,
     };
 
     const [accessToken, refreshToken] = await Promise.all([

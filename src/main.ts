@@ -1,18 +1,8 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { json, urlencoded } from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-
-function getAllowedOrigins() {
-  return [
-    'https://menu-flow-sl.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    ...(process.env.ALLOWED_ORIGINS
-      ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
-      : []),
-  ].filter(Boolean);
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,23 +11,15 @@ async function bootstrap() {
 
   // Security headers
   app.use(helmet());
-
-  const allowedOrigins = getAllowedOrigins();
-
-  app.setGlobalPrefix('api/v1');
+  app.use(json({ limit: '15mb' }));
+  app.use(urlencoded({ limit: '15mb', extended: true }));
 
   // CORS — restrict to known origins in production
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS blocked for origin: ${origin}`));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || false,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   });
 
   // Global validation — whitelist strips unknown fields
@@ -50,8 +32,21 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.APP_PORT || process.env.PORT || 3001;
-  await app.listen(port);
-  console.log(`API running on port ${port}`);
+  // API versioning prefix
+  app.setGlobalPrefix('api/v1');
+
+  const port = process.env.PORT || 3001;
+
+  try {
+    await app.listen(port);
+    console.log(`API running on port ${port}`);
+  } catch (error: any) {
+    if (error?.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use. Stop the old backend process or change PORT.`);
+      process.exit(1);
+    }
+
+    throw error;
+  }
 }
 bootstrap();

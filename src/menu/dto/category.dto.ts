@@ -3,6 +3,12 @@ import {
   IsInt, IsUUID, MinLength, Min,
 } from 'class-validator';
 
+export class CreateManagerCategoryDto {
+  @IsString()
+  @MinLength(2)
+  name!: string;
+}
+
 export class CreateCategoryDto {
   @IsUUID()
   tenantId!: string;

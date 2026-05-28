@@ -58,6 +58,7 @@ export const ModelName = {
   Menu: 'Menu',
   Category: 'Category',
   SubCategory: 'SubCategory',
+  AddMenuItem: 'AddMenuItem',
   MenuItem: 'MenuItem',
   MenuItemOption: 'MenuItemOption',
   PriceHistory: 'PriceHistory',
@@ -183,6 +184,29 @@ export const SubCategoryScalarFieldEnum = {
 export type SubCategoryScalarFieldEnum = (typeof SubCategoryScalarFieldEnum)[keyof typeof SubCategoryScalarFieldEnum]
 
 
+export const AddMenuItemScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  categoryName: 'categoryName',
+  subCategoryName: 'subCategoryName',
+  description: 'description',
+  smallPrice: 'smallPrice',
+  mediumPrice: 'mediumPrice',
+  largePrice: 'largePrice',
+  prepTimeMin: 'prepTimeMin',
+  isAvailable: 'isAvailable',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  imageUrl: 'imageUrl'
+} as const
+
+export type AddMenuItemScalarFieldEnum = (typeof AddMenuItemScalarFieldEnum)[keyof typeof AddMenuItemScalarFieldEnum]
+
+
 export const MenuItemScalarFieldEnum = {
   id: 'id',
   menuId: 'menuId',
@@ -190,8 +214,13 @@ export const MenuItemScalarFieldEnum = {
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
   name: 'name',
+  categoryName: 'categoryName',
+  subCategoryName: 'subCategoryName',
   description: 'description',
   imageUrl: 'imageUrl',
+  smallPrice: 'smallPrice',
+  mediumPrice: 'mediumPrice',
+  largePrice: 'largePrice',
   prepTimeMin: 'prepTimeMin',
   isAvailable: 'isAvailable',
   isActive: 'isActive',

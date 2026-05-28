@@ -4,6 +4,8 @@ import {
   PublicMenuController,
   MenuController,
   CategoryController,
+  CategoryAliasController,
+  MenuItemAliasController,
   MenuItemController,
   MenuItemOptionController,
 } from './menu.controller';
@@ -13,6 +15,8 @@ import {
     PublicMenuController,
     MenuController,
     CategoryController,
+    CategoryAliasController,
+    MenuItemAliasController,
     MenuItemController,
     MenuItemOptionController,
   ],
