@@ -22,6 +22,9 @@ export class AuthService {
   private readonly profileSelect = {
     id: true,
     hotelName: true,
+    businessType: true,
+    businessLocation: true,
+    kitchenCloseTime: true,
     businessEmail: true,
     contactPersonName: true,
     contactPersonMobileNumber: true,
@@ -74,6 +77,9 @@ export class AuthService {
         select: {
           id: true,
           hotelName: true,
+          businessType: true,
+          businessLocation: true,
+          kitchenCloseTime: true,
           businessEmail: true,
           contactPersonName: true,
           contactPersonMobileNumber: true,
@@ -122,6 +128,9 @@ export class AuthService {
         user: {
           id: activeUser.id,
           hotelName: activeUser.hotelName,
+          businessType: activeUser.businessType,
+          businessLocation: activeUser.businessLocation,
+          kitchenCloseTime: activeUser.kitchenCloseTime,
           businessEmail: activeUser.businessEmail,
           contactPersonName: activeUser.contactPersonName,
           contactPersonMobileNumber: activeUser.contactPersonMobileNumber,
@@ -135,20 +144,17 @@ export class AuthService {
     }
   }
 
-  async refreshTokens(userId: string, token: string) {
+  async refreshTokens(token: string) {
     const stored = await this.prisma.refreshToken.findUnique({ where: { token } });
 
-    if (!stored || stored.userId !== userId || stored.isRevoked || stored.expiresAt < new Date()) {
+    if (!stored || stored.isRevoked || stored.expiresAt < new Date()) {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
 
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: stored.userId },
       select: {
-        id: true,
-        businessEmail: true,
-        role: true,
-        tenantId: true,
+        ...this.profileSelect,
         isActive: true,
       },
     });
@@ -159,7 +165,13 @@ export class AuthService {
       data: { isRevoked: true },
     });
 
-    return this.generateTokens(user.id, user.businessEmail, user.role, user.tenantId);
+    const tokens = await this.generateTokens(user.id, user.businessEmail, user.role, user.tenantId);
+
+    return {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: this.toProfileResponse(user),
+    };
   }
 
   async logout(userId: string) {
@@ -184,17 +196,69 @@ export class AuthService {
 
   async updateMe(userId: string, dto: UpdateProfileDto) {
     try {
-      return await this.prisma.user.update({
-        where: { id: userId },
-        data: {
-          ...(dto.hotelName && { hotelName: dto.hotelName.trim() }),
-          ...(dto.businessEmail && { businessEmail: dto.businessEmail.toLowerCase().trim() }),
-          ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
-          ...(dto.contactPersonMobileNumber && {
-            contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
-          }),
-        },
-        select: this.profileSelect,
+      return await this.prisma.$transaction(async (tx) => {
+        const currentUser = await tx.user.findUnique({
+          where: { id: userId },
+          select: { id: true, tenantId: true, passwordHash: true },
+        });
+
+        if (!currentUser) {
+          throw new NotFoundException('User not found');
+        }
+
+        const hotelName = this.optionalTrim(dto.hotelName ?? dto.hotel_name);
+        const businessType = this.optionalTrim(dto.businessType ?? dto.business_type);
+        const businessLocation = this.optionalTrim(
+          dto.businessLocation ?? dto.business_location,
+        );
+        const kitchenCloseTime = this.normalizeKitchenCloseTime(
+          dto.kitchenCloseTime ?? dto.kitchen_close_time,
+        );
+        const oldPassword = this.optionalTrim(dto.oldPassword);
+        const newPassword = this.optionalTrim(dto.newPassword);
+        const confirmPassword = this.optionalTrim(dto.confirmPassword);
+        const passwordChangeRequested = Boolean(newPassword);
+
+        if (passwordChangeRequested) {
+          if (!oldPassword) {
+            throw new BadRequestException('Old password and new password are required to change password.');
+          }
+
+          if (confirmPassword && confirmPassword !== newPassword) {
+            throw new BadRequestException('Confirm password does not match new password.');
+          }
+
+          const isValid = await bcrypt.compare(oldPassword, currentUser.passwordHash);
+          if (!isValid) {
+            throw new BadRequestException('Old password is incorrect');
+          }
+        }
+
+        const updated = await tx.user.update({
+          where: { id: userId },
+          data: {
+            ...(hotelName && { hotelName }),
+            ...(businessType && { businessType }),
+            ...(businessLocation && { businessLocation }),
+            ...(kitchenCloseTime && { kitchenCloseTime }),
+            ...(dto.businessEmail && { businessEmail: dto.businessEmail.toLowerCase().trim() }),
+            ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
+            ...(dto.contactPersonMobileNumber && {
+              contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
+            }),
+            ...(newPassword && { passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS) }),
+          },
+          select: this.profileSelect,
+        });
+
+        if (hotelName && currentUser.tenantId) {
+          await tx.tenant.update({
+            where: { id: currentUser.tenantId },
+            data: { name: hotelName },
+          });
+        }
+
+        return updated;
       });
     } catch (error: any) {
       if (error.code === 'P2002') {
@@ -301,6 +365,54 @@ export class AuthService {
       .slice(0, 60);
   }
 
+  private optionalTrim(value?: string | null) {
+    const trimmed = value?.trim();
+    return trimmed || undefined;
+  }
+
+  private normalizeKitchenCloseTime(value?: string | null) {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+
+    const candidate = trimmed.replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
+    const amPmMatch = candidate.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+    if (amPmMatch) {
+      const hour = Number(amPmMatch[1]);
+      const minute = Number(amPmMatch[2] ?? '0');
+      if (hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59) {
+        return `${hour}:${minute.toString().padStart(2, '0')} ${amPmMatch[3].toUpperCase()}`;
+      }
+    }
+
+    const twentyFourHourMatch = candidate.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+    if (twentyFourHourMatch) {
+      const hour = Number(twentyFourHourMatch[1]);
+      const minute = Number(twentyFourHourMatch[2]);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      const twelveHour = hour % 12 || 12;
+      return `${twelveHour}:${minute.toString().padStart(2, '0')} ${period}`;
+    }
+
+    throw new BadRequestException('kitchenCloseTime must be a valid time such as 11:00 PM, 11.pm, 11 pm, or 23:00');
+  }
+
+  private toProfileResponse(user: any) {
+    return {
+      id: user.id,
+      businessEmail: user.businessEmail,
+      hotelName: user.hotelName,
+      businessType: user.businessType,
+      businessLocation: user.businessLocation,
+      kitchenCloseTime: user.kitchenCloseTime,
+      contactPersonName: user.contactPersonName,
+      contactPersonMobileNumber: user.contactPersonMobileNumber,
+      role: user.role,
+      tenantId: user.tenantId,
+    };
+  }
+
   private async generateTokens(
     userId: string,
     businessEmail: string,
@@ -319,11 +431,11 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwt.signAsync(payload, {
         secret: this.config.get('jwt.secret'),
-        expiresIn: this.config.get('jwt.expiresIn'),
+        expiresIn: '30m',
       }),
       this.jwt.signAsync(payload, {
         secret: this.config.get('jwt.refreshSecret'),
-        expiresIn: this.config.get('jwt.refreshExpiresIn'),
+        expiresIn: this.config.get('jwt.refreshExpiresIn') ?? '7d',
       }),
     ]);
 

@@ -28,6 +28,9 @@ export type UserMinAggregateOutputType = {
   id: string | null
   passwordHash: string | null
   hotelName: string | null
+  businessType: string | null
+  businessLocation: string | null
+  kitchenCloseTime: string | null
   businessEmail: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
@@ -43,6 +46,9 @@ export type UserMaxAggregateOutputType = {
   id: string | null
   passwordHash: string | null
   hotelName: string | null
+  businessType: string | null
+  businessLocation: string | null
+  kitchenCloseTime: string | null
   businessEmail: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
@@ -58,6 +64,9 @@ export type UserCountAggregateOutputType = {
   id: number
   passwordHash: number
   hotelName: number
+  businessType: number
+  businessLocation: number
+  kitchenCloseTime: number
   businessEmail: number
   contactPersonName: number
   contactPersonMobileNumber: number
@@ -75,6 +84,9 @@ export type UserMinAggregateInputType = {
   id?: true
   passwordHash?: true
   hotelName?: true
+  businessType?: true
+  businessLocation?: true
+  kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
@@ -90,6 +102,9 @@ export type UserMaxAggregateInputType = {
   id?: true
   passwordHash?: true
   hotelName?: true
+  businessType?: true
+  businessLocation?: true
+  kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
@@ -105,6 +120,9 @@ export type UserCountAggregateInputType = {
   id?: true
   passwordHash?: true
   hotelName?: true
+  businessType?: true
+  businessLocation?: true
+  kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
@@ -193,6 +211,9 @@ export type UserGroupByOutputType = {
   id: string
   passwordHash: string
   hotelName: string
+  businessType: string | null
+  businessLocation: string | null
+  kitchenCloseTime: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -229,6 +250,9 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   hotelName?: Prisma.StringFilter<"User"> | string
+  businessType?: Prisma.StringNullableFilter<"User"> | string | null
+  businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   businessEmail?: Prisma.StringFilter<"User"> | string
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
@@ -249,6 +273,9 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
@@ -273,6 +300,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   passwordHash?: Prisma.StringFilter<"User"> | string
   hotelName?: Prisma.StringFilter<"User"> | string
+  businessType?: Prisma.StringNullableFilter<"User"> | string | null
+  businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
@@ -292,6 +322,9 @@ export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
@@ -313,6 +346,9 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   hotelName?: Prisma.StringWithAggregatesFilter<"User"> | string
+  businessType?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  businessLocation?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  kitchenCloseTime?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   businessEmail?: Prisma.StringWithAggregatesFilter<"User"> | string
   contactPersonName?: Prisma.StringWithAggregatesFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringWithAggregatesFilter<"User"> | string
@@ -328,6 +364,9 @@ export type UserCreateInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -347,6 +386,9 @@ export type UserUncheckedCreateInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -366,6 +408,9 @@ export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -385,6 +430,9 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -404,6 +452,9 @@ export type UserCreateManyInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -419,6 +470,9 @@ export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -433,6 +487,9 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -448,6 +505,9 @@ export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessLocation?: Prisma.SortOrder
+  kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
@@ -463,6 +523,9 @@ export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessLocation?: Prisma.SortOrder
+  kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
@@ -478,6 +541,9 @@ export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessLocation?: Prisma.SortOrder
+  kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
@@ -513,6 +579,10 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
 }
@@ -527,10 +597,6 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
 }
 
 export type UserCreateNestedManyWithoutTenantInput = {
@@ -639,6 +705,9 @@ export type UserCreateWithoutTenantInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -657,6 +726,9 @@ export type UserUncheckedCreateWithoutTenantInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -704,6 +776,9 @@ export type UserScalarWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   hotelName?: Prisma.StringFilter<"User"> | string
+  businessType?: Prisma.StringNullableFilter<"User"> | string | null
+  businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   businessEmail?: Prisma.StringFilter<"User"> | string
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
@@ -719,6 +794,9 @@ export type UserCreateWithoutRefreshTokensInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -737,6 +815,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -771,6 +852,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -789,6 +873,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -807,6 +894,9 @@ export type UserCreateWithoutAuditLogsInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -825,6 +915,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -859,6 +952,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -877,6 +973,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -895,6 +994,9 @@ export type UserCreateWithoutPriceChangesInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -913,6 +1015,9 @@ export type UserUncheckedCreateWithoutPriceChangesInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -947,6 +1052,9 @@ export type UserUpdateWithoutPriceChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -965,6 +1073,9 @@ export type UserUncheckedUpdateWithoutPriceChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -983,6 +1094,9 @@ export type UserCreateWithoutQrCodeLinksInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -1001,6 +1115,9 @@ export type UserUncheckedCreateWithoutQrCodeLinksInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -1035,6 +1152,9 @@ export type UserUpdateWithoutQrCodeLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1053,6 +1173,9 @@ export type UserUncheckedUpdateWithoutQrCodeLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1071,6 +1194,9 @@ export type UserCreateManyTenantInput = {
   id?: string
   passwordHash: string
   hotelName: string
+  businessType?: string | null
+  businessLocation?: string | null
+  kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
@@ -1085,6 +1211,9 @@ export type UserUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1103,6 +1232,9 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1121,6 +1253,9 @@ export type UserUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1193,6 +1328,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   passwordHash?: boolean
   hotelName?: boolean
+  businessType?: boolean
+  businessLocation?: boolean
+  kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
@@ -1214,6 +1352,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   passwordHash?: boolean
   hotelName?: boolean
+  businessType?: boolean
+  businessLocation?: boolean
+  kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
@@ -1230,6 +1371,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   passwordHash?: boolean
   hotelName?: boolean
+  businessType?: boolean
+  businessLocation?: boolean
+  kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
@@ -1246,6 +1390,9 @@ export type UserSelectScalar = {
   id?: boolean
   passwordHash?: boolean
   hotelName?: boolean
+  businessType?: boolean
+  businessLocation?: boolean
+  kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
@@ -1257,7 +1404,7 @@ export type UserSelectScalar = {
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessEmail" | "contactPersonName" | "contactPersonMobileNumber" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessType" | "businessLocation" | "kitchenCloseTime" | "businessEmail" | "contactPersonName" | "contactPersonMobileNumber" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   priceChanges?: boolean | Prisma.User$priceChangesArgs<ExtArgs>
@@ -1286,6 +1433,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     passwordHash: string
     hotelName: string
+    businessType: string | null
+    businessLocation: string | null
+    kitchenCloseTime: string | null
     businessEmail: string
     contactPersonName: string
     contactPersonMobileNumber: string
@@ -1726,6 +1876,9 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly hotelName: Prisma.FieldRef<"User", 'String'>
+  readonly businessType: Prisma.FieldRef<"User", 'String'>
+  readonly businessLocation: Prisma.FieldRef<"User", 'String'>
+  readonly kitchenCloseTime: Prisma.FieldRef<"User", 'String'>
   readonly businessEmail: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonName: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonMobileNumber: Prisma.FieldRef<"User", 'String'>

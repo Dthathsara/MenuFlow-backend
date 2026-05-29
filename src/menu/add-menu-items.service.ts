@@ -1,11 +1,11 @@
 import {
   BadRequestException,
   ForbiddenException,
-  InternalServerErrorException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AddMenuItem, Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
@@ -16,32 +16,57 @@ import {
 
 @Injectable()
 export class AddMenuItemsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {}
 
-  async getCustomerMenu(query: { tenantId?: string; slug?: string }) {
+  async getCustomerMenu(query: { tenantId?: string; slug?: string; authorization?: string }) {
     console.log('CUSTOMER MENU USING add_menu_items');
 
     try {
-      const tenantId = await this.resolveCustomerTenantId(query);
-      if (!tenantId) {
+      const resolved = await this.resolveCustomerTenant(query);
+      console.log('CUSTOMER MENU RESOLVED TENANT', {
+        tenantId: resolved.tenantId,
+        source: resolved.source,
+      });
+
+      if (!resolved.tenantId) {
         return {
-          restaurant: null,
+          restaurant: this.defaultRestaurant(),
           categories: [],
         };
       }
 
       const tenant = await this.prisma.tenant.findUnique({
-        where: { id: tenantId },
+        where: { id: resolved.tenantId },
         select: { id: true, name: true },
       });
 
       if (!tenant) {
-        throw new NotFoundException('Restaurant not found');
+        return {
+          restaurant: this.defaultRestaurant(),
+          categories: [],
+        };
       }
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          tenantId: resolved.tenantId,
+          deletedAt: null,
+        },
+        select: {
+          hotelName: true,
+          businessType: true,
+          businessLocation: true,
+          kitchenCloseTime: true,
+        },
+        orderBy: { createdAt: 'asc' },
+      });
 
       const items = await this.prisma.addMenuItem.findMany({
         where: {
-          tenantId,
+          tenantId: resolved.tenantId,
           deletedAt: null,
           isActive: true,
           isAvailable: true,
@@ -50,19 +75,15 @@ export class AddMenuItemsService {
       });
 
       return {
-        restaurant: {
-          id: tenant.id,
-          name: tenant.name,
-        },
+        restaurant: this.buildRestaurant(tenant, user),
         categories: this.groupCustomerMenuItems(items),
       };
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
       console.error('Failed to load customer menu from add_menu_items:', error);
-      throw new InternalServerErrorException('Unable to load customer menu. Please try again later.');
+      return {
+        restaurant: this.defaultRestaurant(),
+        categories: [],
+      };
     }
   }
 
@@ -108,6 +129,11 @@ export class AddMenuItemsService {
     });
 
     const tenantId = await this.getTenantIdForUser(currentUser);
+    console.log('MANAGER CREATE TENANT', {
+      userId: currentUser?.id ?? currentUser?.sub,
+      tenantId,
+    });
+
     const name = dto.name.trim();
     const categoryName = dto.category_name.trim();
 
@@ -232,7 +258,11 @@ export class AddMenuItemsService {
     return item;
   }
 
-  private async resolveCustomerTenantId(query: { tenantId?: string; slug?: string }) {
+  private async resolveCustomerTenant(query: {
+    tenantId?: string;
+    slug?: string;
+    authorization?: string;
+  }): Promise<{ tenantId: string | null; source: 'query' | 'auth' | 'slug' | 'none' }> {
     const tenantId = query.tenantId?.trim();
     if (tenantId) {
       const tenant = await this.prisma.tenant.findUnique({
@@ -241,10 +271,15 @@ export class AddMenuItemsService {
       });
 
       if (!tenant) {
-        throw new NotFoundException('Restaurant not found');
+        return { tenantId: null, source: 'query' };
       }
 
-      return tenant.id;
+      return { tenantId: tenant.id, source: 'query' };
+    }
+
+    const authTenantId = await this.resolveTenantIdFromAuthorization(query.authorization);
+    if (authTenantId) {
+      return { tenantId: authTenantId, source: 'auth' };
     }
 
     const slug = query.slug?.trim();
@@ -255,23 +290,100 @@ export class AddMenuItemsService {
       });
 
       if (!qrCode?.isActive) {
-        throw new NotFoundException('Menu not found or this QR code is inactive');
+        return { tenantId: null, source: 'slug' };
       }
 
-      return qrCode.tenantId;
+      return { tenantId: qrCode.tenantId, source: 'slug' };
     }
 
-    const item = await this.prisma.addMenuItem.findFirst({
-      where: {
-        deletedAt: null,
-        isActive: true,
-        isAvailable: true,
-      },
-      select: { tenantId: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    return { tenantId: null, source: 'none' };
+  }
 
-    return item?.tenantId ?? null;
+  private async resolveTenantIdFromAuthorization(authorization?: string) {
+    const [scheme, token] = authorization?.split(' ') ?? [];
+    if (scheme?.toLowerCase() !== 'bearer' || !token) {
+      return null;
+    }
+
+    try {
+      const payload = await this.jwt.verifyAsync<{ sub?: string; tenantId?: string }>(token);
+      if (payload.tenantId) {
+        return payload.tenantId;
+      }
+
+      if (!payload.sub) {
+        return null;
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.sub },
+        select: { tenantId: true, isActive: true },
+      });
+
+      return user?.isActive ? user.tenantId : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private defaultRestaurant() {
+    return {
+      id: null,
+      name: 'MenuFlow',
+      businessType: 'Menu',
+      location: '',
+      kitchenCloseTime: '',
+      status: 'Kitchen open',
+    };
+  }
+
+  private buildRestaurant(
+    tenant: { id: string; name: string | null },
+    user?: {
+      hotelName: string | null;
+      businessType: string | null;
+      businessLocation: string | null;
+      kitchenCloseTime: string | null;
+    } | null,
+  ) {
+    const kitchenCloseTime = this.formatKitchenCloseTime(user?.kitchenCloseTime);
+
+    return {
+      id: tenant.id,
+      name: user?.hotelName?.trim() || tenant.name?.trim() || 'MenuFlow',
+      businessType: user?.businessType?.trim() || 'Menu',
+      location: user?.businessLocation?.trim() || '',
+      kitchenCloseTime,
+      status: kitchenCloseTime ? `Kitchen open until ${kitchenCloseTime}` : 'Kitchen open',
+    };
+  }
+
+  private formatKitchenCloseTime(value?: string | null) {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      return '';
+    }
+
+    const candidate = trimmed.replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
+    const amPmMatch = candidate.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+    if (amPmMatch) {
+      const hour = Number(amPmMatch[1]);
+      const minute = Number(amPmMatch[2] ?? '0');
+      if (hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59) {
+        return `${hour}:${minute.toString().padStart(2, '0')} ${amPmMatch[3].toUpperCase()}`;
+      }
+    }
+
+    const twentyFourHourMatch = candidate.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+    if (twentyFourHourMatch) {
+      const hour = Number(twentyFourHourMatch[1]);
+      const minute = Number(twentyFourHourMatch[2]);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      const twelveHour = hour % 12 || 12;
+      return `${twelveHour}:${minute.toString().padStart(2, '0')} ${period}`;
+    }
+
+    return trimmed;
   }
 
   private getUserId(currentUser: any) {

@@ -1,6 +1,6 @@
 import {
   Controller, Get, Post, Patch, Delete, Param,
-  Body, UseGuards, ParseUUIDPipe, HttpCode, HttpStatus, Query,
+  Body, UseGuards, ParseUUIDPipe, HttpCode, HttpStatus, Query, Req,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { AddMenuItemsService } from './add-menu-items.service';
@@ -42,8 +42,13 @@ export class CustomerMenuController {
   getCustomerMenu(
     @Query('tenantId') tenantId?: string,
     @Query('slug') slug?: string,
+    @Req() request?: any,
   ) {
-    return this.addMenuItemsService.getCustomerMenu({ tenantId, slug });
+    return this.addMenuItemsService.getCustomerMenu({
+      tenantId,
+      slug,
+      authorization: request?.headers?.authorization,
+    });
   }
 }
 

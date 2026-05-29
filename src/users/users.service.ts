@@ -1,5 +1,5 @@
 import {
-  Injectable, NotFoundException, ForbiddenException, Logger,
+  BadRequestException, Injectable, NotFoundException, ForbiddenException, Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,6 +23,9 @@ export class UsersService {
   private readonly safeSelect = {
     id: true,
     hotelName: true,
+    businessType: true,
+    businessLocation: true,
+    kitchenCloseTime: true,
     businessEmail: true,
     contactPersonName: true,
     contactPersonMobileNumber: true,
@@ -97,17 +100,40 @@ export class UsersService {
   }
 
   async updateProfile(id: string, dto: UpdateUserDto) {
-    await this.findOne(id); // Ensure exists
+    const existing = await this.findOne(id);
+    const hotelName = this.optionalTrim(dto.hotelName ?? dto.hotel_name);
+    const businessType = this.optionalTrim(dto.businessType ?? dto.business_type);
+    const businessLocation = this.optionalTrim(
+      dto.businessLocation ?? dto.business_location,
+    );
+    const kitchenCloseTime = this.normalizeKitchenCloseTime(
+      dto.kitchenCloseTime ?? dto.kitchen_close_time,
+    );
 
-    return this.prisma.user.update({
-      where: { id },
-      data: {
-        ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
-        ...(dto.contactPersonMobileNumber && {
-          contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
-        }),
-      },
-      select: this.safeSelect,
+    return this.prisma.$transaction(async (tx) => {
+      const updated = await tx.user.update({
+        where: { id },
+        data: {
+          ...(hotelName && { hotelName }),
+          ...(businessType && { businessType }),
+          ...(businessLocation && { businessLocation }),
+          ...(kitchenCloseTime && { kitchenCloseTime }),
+          ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
+          ...(dto.contactPersonMobileNumber && {
+            contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
+          }),
+        },
+        select: this.safeSelect,
+      });
+
+      if (hotelName && existing.tenantId) {
+        await tx.tenant.update({
+          where: { id: existing.tenantId },
+          data: { name: hotelName },
+        });
+      }
+
+      return updated;
     });
   }
 
@@ -157,5 +183,38 @@ export class UsersService {
     const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
     if (!tenant) throw new NotFoundException(`Tenant ${tenantId} not found`);
     return tenant;
+  }
+
+  private optionalTrim(value?: string | null) {
+    const trimmed = value?.trim();
+    return trimmed || undefined;
+  }
+
+  private normalizeKitchenCloseTime(value?: string | null) {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+
+    const candidate = trimmed.replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
+    const amPmMatch = candidate.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+    if (amPmMatch) {
+      const hour = Number(amPmMatch[1]);
+      const minute = Number(amPmMatch[2] ?? '0');
+      if (hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59) {
+        return `${hour}:${minute.toString().padStart(2, '0')} ${amPmMatch[3].toUpperCase()}`;
+      }
+    }
+
+    const twentyFourHourMatch = candidate.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+    if (twentyFourHourMatch) {
+      const hour = Number(twentyFourHourMatch[1]);
+      const minute = Number(twentyFourHourMatch[2]);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      const twelveHour = hour % 12 || 12;
+      return `${twelveHour}:${minute.toString().padStart(2, '0')} ${period}`;
+    }
+
+    throw new BadRequestException('kitchenCloseTime must be a valid time such as 11:00 PM, 11.pm, 11 pm, or 23:00');
   }
 }

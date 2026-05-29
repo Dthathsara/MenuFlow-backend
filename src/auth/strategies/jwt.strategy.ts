@@ -40,6 +40,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         id: true, businessEmail: true, role: true,
         tenantId: true,
         hotelName: true,
+        businessType: true,
+        businessLocation: true,
+        kitchenCloseTime: true,
         isActive: true,
       },
     });
@@ -69,6 +72,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           role: true,
           tenantId: true,
           hotelName: true,
+          businessType: true,
+          businessLocation: true,
+          kitchenCloseTime: true,
           isActive: true,
         },
       });
@@ -88,6 +94,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           role: true,
           tenantId: true,
           hotelName: true,
+          businessType: true,
+          businessLocation: true,
+          kitchenCloseTime: true,
           isActive: true,
         },
       });
