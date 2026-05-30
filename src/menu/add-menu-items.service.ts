@@ -59,7 +59,14 @@ export class AddMenuItemsService {
           hotelName: true,
           businessType: true,
           businessLocation: true,
+          businessAddress: true,
+          businessEmail: true,
+          kitchenOpenTime: true,
           kitchenCloseTime: true,
+          contactPersonMobileNumber: true,
+          taxRate: true,
+          serviceChargeRate: true,
+          discountRate: true,
         },
         orderBy: { createdAt: 'asc' },
       });
@@ -332,7 +339,15 @@ export class AddMenuItemsService {
       name: 'MenuFlow',
       businessType: 'Menu',
       location: '',
+      address: '',
+      email: '',
+      phone: '',
+      kitchenOpenTime: '',
       kitchenCloseTime: '',
+      openingHours: '',
+      taxRate: 5,
+      serviceChargeRate: 3,
+      discountRate: 0,
       status: 'Kitchen open',
     };
   }
@@ -343,17 +358,38 @@ export class AddMenuItemsService {
       hotelName: string | null;
       businessType: string | null;
       businessLocation: string | null;
+      businessAddress: string | null;
+      businessEmail: string | null;
+      kitchenOpenTime: string | null;
       kitchenCloseTime: string | null;
+      contactPersonMobileNumber: string | null;
+      taxRate: any;
+      serviceChargeRate: any;
+      discountRate: any;
     } | null,
   ) {
+    const kitchenOpenTime = this.formatKitchenCloseTime(user?.kitchenOpenTime);
     const kitchenCloseTime = this.formatKitchenCloseTime(user?.kitchenCloseTime);
+    const openingHours = kitchenOpenTime && kitchenCloseTime
+      ? `Daily ${kitchenOpenTime} - ${kitchenCloseTime}`
+      : kitchenCloseTime
+        ? `Daily - ${kitchenCloseTime}`
+        : '';
 
     return {
       id: tenant.id,
       name: user?.hotelName?.trim() || tenant.name?.trim() || 'MenuFlow',
       businessType: user?.businessType?.trim() || 'Menu',
       location: user?.businessLocation?.trim() || '',
+      address: user?.businessAddress?.trim() || '',
+      email: user?.businessEmail?.trim() || '',
+      phone: user?.contactPersonMobileNumber?.trim() || '',
+      kitchenOpenTime,
       kitchenCloseTime,
+      openingHours,
+      taxRate: Number(user?.taxRate ?? 5),
+      serviceChargeRate: Number(user?.serviceChargeRate ?? 3),
+      discountRate: Number(user?.discountRate ?? 0),
       status: kitchenCloseTime ? `Kitchen open until ${kitchenCloseTime}` : 'Kitchen open',
     };
   }

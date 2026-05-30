@@ -20,8 +20,22 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  taxRate: runtime.Decimal | null
+  serviceChargeRate: runtime.Decimal | null
+  discountRate: runtime.Decimal | null
+}
+
+export type UserSumAggregateOutputType = {
+  taxRate: runtime.Decimal | null
+  serviceChargeRate: runtime.Decimal | null
+  discountRate: runtime.Decimal | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -30,10 +44,15 @@ export type UserMinAggregateOutputType = {
   hotelName: string | null
   businessType: string | null
   businessLocation: string | null
+  businessAddress: string | null
+  kitchenOpenTime: string | null
   kitchenCloseTime: string | null
   businessEmail: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
+  taxRate: runtime.Decimal | null
+  serviceChargeRate: runtime.Decimal | null
+  discountRate: runtime.Decimal | null
   role: $Enums.Role | null
   isActive: boolean | null
   tenantId: string | null
@@ -48,10 +67,15 @@ export type UserMaxAggregateOutputType = {
   hotelName: string | null
   businessType: string | null
   businessLocation: string | null
+  businessAddress: string | null
+  kitchenOpenTime: string | null
   kitchenCloseTime: string | null
   businessEmail: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
+  taxRate: runtime.Decimal | null
+  serviceChargeRate: runtime.Decimal | null
+  discountRate: runtime.Decimal | null
   role: $Enums.Role | null
   isActive: boolean | null
   tenantId: string | null
@@ -66,10 +90,15 @@ export type UserCountAggregateOutputType = {
   hotelName: number
   businessType: number
   businessLocation: number
+  businessAddress: number
+  kitchenOpenTime: number
   kitchenCloseTime: number
   businessEmail: number
   contactPersonName: number
   contactPersonMobileNumber: number
+  taxRate: number
+  serviceChargeRate: number
+  discountRate: number
   role: number
   isActive: number
   tenantId: number
@@ -80,16 +109,33 @@ export type UserCountAggregateOutputType = {
 }
 
 
+export type UserAvgAggregateInputType = {
+  taxRate?: true
+  serviceChargeRate?: true
+  discountRate?: true
+}
+
+export type UserSumAggregateInputType = {
+  taxRate?: true
+  serviceChargeRate?: true
+  discountRate?: true
+}
+
 export type UserMinAggregateInputType = {
   id?: true
   passwordHash?: true
   hotelName?: true
   businessType?: true
   businessLocation?: true
+  businessAddress?: true
+  kitchenOpenTime?: true
   kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
+  taxRate?: true
+  serviceChargeRate?: true
+  discountRate?: true
   role?: true
   isActive?: true
   tenantId?: true
@@ -104,10 +150,15 @@ export type UserMaxAggregateInputType = {
   hotelName?: true
   businessType?: true
   businessLocation?: true
+  businessAddress?: true
+  kitchenOpenTime?: true
   kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
+  taxRate?: true
+  serviceChargeRate?: true
+  discountRate?: true
   role?: true
   isActive?: true
   tenantId?: true
@@ -122,10 +173,15 @@ export type UserCountAggregateInputType = {
   hotelName?: true
   businessType?: true
   businessLocation?: true
+  businessAddress?: true
+  kitchenOpenTime?: true
   kitchenCloseTime?: true
   businessEmail?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
+  taxRate?: true
+  serviceChargeRate?: true
+  discountRate?: true
   role?: true
   isActive?: true
   tenantId?: true
@@ -173,6 +229,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -203,6 +271,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -213,10 +283,15 @@ export type UserGroupByOutputType = {
   hotelName: string
   businessType: string | null
   businessLocation: string | null
+  businessAddress: string | null
+  kitchenOpenTime: string | null
   kitchenCloseTime: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate: runtime.Decimal | null
+  serviceChargeRate: runtime.Decimal | null
+  discountRate: runtime.Decimal | null
   role: $Enums.Role
   isActive: boolean
   tenantId: string | null
@@ -224,6 +299,8 @@ export type UserGroupByOutputType = {
   updatedAt: Date
   deletedAt: Date | null
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -252,10 +329,15 @@ export type UserWhereInput = {
   hotelName?: Prisma.StringFilter<"User"> | string
   businessType?: Prisma.StringNullableFilter<"User"> | string | null
   businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   businessEmail?: Prisma.StringFilter<"User"> | string
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
+  taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isActive?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.StringNullableFilter<"User"> | string | null
@@ -275,10 +357,15 @@ export type UserOrderByWithRelationInput = {
   hotelName?: Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   businessLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  kitchenOpenTime?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
+  taxRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountRate?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -302,9 +389,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   hotelName?: Prisma.StringFilter<"User"> | string
   businessType?: Prisma.StringNullableFilter<"User"> | string | null
   businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
+  taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isActive?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.StringNullableFilter<"User"> | string | null
@@ -324,10 +416,15 @@ export type UserOrderByWithAggregationInput = {
   hotelName?: Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   businessLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  kitchenOpenTime?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
+  taxRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountRate?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -335,8 +432,10 @@ export type UserOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -348,10 +447,15 @@ export type UserScalarWhereWithAggregatesInput = {
   hotelName?: Prisma.StringWithAggregatesFilter<"User"> | string
   businessType?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   businessLocation?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  businessAddress?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  kitchenOpenTime?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   businessEmail?: Prisma.StringWithAggregatesFilter<"User"> | string
   contactPersonName?: Prisma.StringWithAggregatesFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringWithAggregatesFilter<"User"> | string
+  taxRate?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   tenantId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -366,10 +470,15 @@ export type UserCreateInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -388,10 +497,15 @@ export type UserUncheckedCreateInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -410,10 +524,15 @@ export type UserUpdateInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,10 +551,15 @@ export type UserUncheckedUpdateInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -454,10 +578,15 @@ export type UserCreateManyInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -472,10 +601,15 @@ export type UserUpdateManyMutationInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,10 +623,15 @@ export type UserUncheckedUpdateManyInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -507,10 +646,15 @@ export type UserCountOrderByAggregateInput = {
   hotelName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   businessLocation?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
+  taxRate?: Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrder
+  discountRate?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
@@ -519,16 +663,27 @@ export type UserCountOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
 }
 
+export type UserAvgOrderByAggregateInput = {
+  taxRate?: Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrder
+  discountRate?: Prisma.SortOrder
+}
+
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   hotelName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   businessLocation?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
+  taxRate?: Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrder
+  discountRate?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
@@ -543,16 +698,27 @@ export type UserMinOrderByAggregateInput = {
   hotelName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   businessLocation?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
+  taxRate?: Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrder
+  discountRate?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  taxRate?: Prisma.SortOrder
+  serviceChargeRate?: Prisma.SortOrder
+  discountRate?: Prisma.SortOrder
 }
 
 export type UserListRelationFilter = {
@@ -581,6 +747,14 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
@@ -707,10 +881,15 @@ export type UserCreateWithoutTenantInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -728,10 +907,15 @@ export type UserUncheckedCreateWithoutTenantInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -778,10 +962,15 @@ export type UserScalarWhereInput = {
   hotelName?: Prisma.StringFilter<"User"> | string
   businessType?: Prisma.StringNullableFilter<"User"> | string | null
   businessLocation?: Prisma.StringNullableFilter<"User"> | string | null
+  businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
+  kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
   businessEmail?: Prisma.StringFilter<"User"> | string
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
+  taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isActive?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.StringNullableFilter<"User"> | string | null
@@ -796,10 +985,15 @@ export type UserCreateWithoutRefreshTokensInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -817,10 +1011,15 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -854,10 +1053,15 @@ export type UserUpdateWithoutRefreshTokensInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -875,10 +1079,15 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -896,10 +1105,15 @@ export type UserCreateWithoutAuditLogsInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -917,10 +1131,15 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -954,10 +1173,15 @@ export type UserUpdateWithoutAuditLogsInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -975,10 +1199,15 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -996,10 +1225,15 @@ export type UserCreateWithoutPriceChangesInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -1017,10 +1251,15 @@ export type UserUncheckedCreateWithoutPriceChangesInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -1054,10 +1293,15 @@ export type UserUpdateWithoutPriceChangesInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1075,10 +1319,15 @@ export type UserUncheckedUpdateWithoutPriceChangesInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1096,10 +1345,15 @@ export type UserCreateWithoutQrCodeLinksInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -1117,10 +1371,15 @@ export type UserUncheckedCreateWithoutQrCodeLinksInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   tenantId?: string | null
@@ -1154,10 +1413,15 @@ export type UserUpdateWithoutQrCodeLinksInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1175,10 +1439,15 @@ export type UserUncheckedUpdateWithoutQrCodeLinksInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1196,10 +1465,15 @@ export type UserCreateManyTenantInput = {
   hotelName: string
   businessType?: string | null
   businessLocation?: string | null
+  businessAddress?: string | null
+  kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
   businessEmail: string
   contactPersonName: string
   contactPersonMobileNumber: string
+  taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: $Enums.Role
   isActive?: boolean
   createdAt?: Date | string
@@ -1213,10 +1487,15 @@ export type UserUpdateWithoutTenantInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1234,10 +1513,15 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1255,10 +1539,15 @@ export type UserUncheckedUpdateManyWithoutTenantInput = {
   hotelName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  serviceChargeRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1330,10 +1619,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   hotelName?: boolean
   businessType?: boolean
   businessLocation?: boolean
+  businessAddress?: boolean
+  kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
+  taxRate?: boolean
+  serviceChargeRate?: boolean
+  discountRate?: boolean
   role?: boolean
   isActive?: boolean
   tenantId?: boolean
@@ -1354,10 +1648,15 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   hotelName?: boolean
   businessType?: boolean
   businessLocation?: boolean
+  businessAddress?: boolean
+  kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
+  taxRate?: boolean
+  serviceChargeRate?: boolean
+  discountRate?: boolean
   role?: boolean
   isActive?: boolean
   tenantId?: boolean
@@ -1373,10 +1672,15 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   hotelName?: boolean
   businessType?: boolean
   businessLocation?: boolean
+  businessAddress?: boolean
+  kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
+  taxRate?: boolean
+  serviceChargeRate?: boolean
+  discountRate?: boolean
   role?: boolean
   isActive?: boolean
   tenantId?: boolean
@@ -1392,10 +1696,15 @@ export type UserSelectScalar = {
   hotelName?: boolean
   businessType?: boolean
   businessLocation?: boolean
+  businessAddress?: boolean
+  kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
   businessEmail?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
+  taxRate?: boolean
+  serviceChargeRate?: boolean
+  discountRate?: boolean
   role?: boolean
   isActive?: boolean
   tenantId?: boolean
@@ -1404,7 +1713,7 @@ export type UserSelectScalar = {
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessType" | "businessLocation" | "kitchenCloseTime" | "businessEmail" | "contactPersonName" | "contactPersonMobileNumber" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessType" | "businessLocation" | "businessAddress" | "kitchenOpenTime" | "kitchenCloseTime" | "businessEmail" | "contactPersonName" | "contactPersonMobileNumber" | "taxRate" | "serviceChargeRate" | "discountRate" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   priceChanges?: boolean | Prisma.User$priceChangesArgs<ExtArgs>
@@ -1435,10 +1744,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     hotelName: string
     businessType: string | null
     businessLocation: string | null
+    businessAddress: string | null
+    kitchenOpenTime: string | null
     kitchenCloseTime: string | null
     businessEmail: string
     contactPersonName: string
     contactPersonMobileNumber: string
+    taxRate: runtime.Decimal | null
+    serviceChargeRate: runtime.Decimal | null
+    discountRate: runtime.Decimal | null
     role: $Enums.Role
     isActive: boolean
     tenantId: string | null
@@ -1878,10 +2192,15 @@ export interface UserFieldRefs {
   readonly hotelName: Prisma.FieldRef<"User", 'String'>
   readonly businessType: Prisma.FieldRef<"User", 'String'>
   readonly businessLocation: Prisma.FieldRef<"User", 'String'>
+  readonly businessAddress: Prisma.FieldRef<"User", 'String'>
+  readonly kitchenOpenTime: Prisma.FieldRef<"User", 'String'>
   readonly kitchenCloseTime: Prisma.FieldRef<"User", 'String'>
   readonly businessEmail: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonName: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonMobileNumber: Prisma.FieldRef<"User", 'String'>
+  readonly taxRate: Prisma.FieldRef<"User", 'Decimal'>
+  readonly serviceChargeRate: Prisma.FieldRef<"User", 'Decimal'>
+  readonly discountRate: Prisma.FieldRef<"User", 'Decimal'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly tenantId: Prisma.FieldRef<"User", 'String'>

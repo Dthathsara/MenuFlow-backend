@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
+import { Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './dto/auth.dto';
 import { Role } from './enums/role.enum';
@@ -24,10 +25,15 @@ export class AuthService {
     hotelName: true,
     businessType: true,
     businessLocation: true,
+    businessAddress: true,
+    kitchenOpenTime: true,
     kitchenCloseTime: true,
     businessEmail: true,
     contactPersonName: true,
     contactPersonMobileNumber: true,
+    taxRate: true,
+    serviceChargeRate: true,
+    discountRate: true,
     role: true,
     tenantId: true,
   };
@@ -54,7 +60,7 @@ export class AuthService {
     });
 
     this.logger.log(`New user registered: ${user.id}`);
-    return user;
+    return this.toProfileResponse(user);
   }
 
   private async createUser(data: {
@@ -79,10 +85,15 @@ export class AuthService {
           hotelName: true,
           businessType: true,
           businessLocation: true,
+          businessAddress: true,
+          kitchenOpenTime: true,
           kitchenCloseTime: true,
           businessEmail: true,
           contactPersonName: true,
           contactPersonMobileNumber: true,
+          taxRate: true,
+          serviceChargeRate: true,
+          discountRate: true,
             role: true,
             tenantId: true,
           createdAt: true,
@@ -130,10 +141,15 @@ export class AuthService {
           hotelName: activeUser.hotelName,
           businessType: activeUser.businessType,
           businessLocation: activeUser.businessLocation,
+          businessAddress: activeUser.businessAddress,
+          kitchenOpenTime: activeUser.kitchenOpenTime,
           kitchenCloseTime: activeUser.kitchenCloseTime,
           businessEmail: activeUser.businessEmail,
           contactPersonName: activeUser.contactPersonName,
           contactPersonMobileNumber: activeUser.contactPersonMobileNumber,
+          taxRate: Number(activeUser.taxRate ?? 5),
+          serviceChargeRate: Number(activeUser.serviceChargeRate ?? 3),
+          discountRate: Number(activeUser.discountRate ?? 0),
           role: activeUser.role,
           tenantId: activeUser.tenantId,
         },
@@ -211,9 +227,16 @@ export class AuthService {
         const businessLocation = this.optionalTrim(
           dto.businessLocation ?? dto.business_location,
         );
+        const businessAddress = this.optionalTrim(dto.businessAddress ?? dto.business_address);
+        const kitchenOpenTime = this.optionalTrim(dto.kitchenOpenTime ?? dto.kitchen_open_time);
         const kitchenCloseTime = this.normalizeKitchenCloseTime(
           dto.kitchenCloseTime ?? dto.kitchen_close_time,
         );
+        const taxRate = this.optionalDecimal(dto.taxRate ?? dto.tax_rate);
+        const serviceChargeRate = this.optionalDecimal(
+          dto.serviceChargeRate ?? dto.service_charge_rate,
+        );
+        const discountRate = this.optionalDecimal(dto.discountRate ?? dto.discount_rate);
         const oldPassword = this.optionalTrim(dto.oldPassword);
         const newPassword = this.optionalTrim(dto.newPassword);
         const confirmPassword = this.optionalTrim(dto.confirmPassword);
@@ -240,12 +263,23 @@ export class AuthService {
             ...(hotelName && { hotelName }),
             ...(businessType && { businessType }),
             ...(businessLocation && { businessLocation }),
+            ...(businessAddress && { businessAddress }),
+            ...(kitchenOpenTime && { kitchenOpenTime }),
             ...(kitchenCloseTime && { kitchenCloseTime }),
-            ...(dto.businessEmail && { businessEmail: dto.businessEmail.toLowerCase().trim() }),
-            ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
-            ...(dto.contactPersonMobileNumber && {
-              contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
+            ...((dto.businessEmail ?? dto.business_email) && {
+              businessEmail: (dto.businessEmail ?? dto.business_email)!.toLowerCase().trim(),
             }),
+            ...((dto.contactPersonName ?? dto.contact_person_name) && {
+              contactPersonName: (dto.contactPersonName ?? dto.contact_person_name)!.trim(),
+            }),
+            ...((dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number) && {
+              contactPersonMobileNumber: (
+                dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number
+              )!.trim(),
+            }),
+            ...(taxRate !== undefined && { taxRate }),
+            ...(serviceChargeRate !== undefined && { serviceChargeRate }),
+            ...(discountRate !== undefined && { discountRate }),
             ...(newPassword && { passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS) }),
           },
           select: this.profileSelect,
@@ -370,6 +404,14 @@ export class AuthService {
     return trimmed || undefined;
   }
 
+  private optionalDecimal(value?: number | null) {
+    if (value === undefined || value === null) {
+      return undefined;
+    }
+
+    return new Prisma.Decimal(value);
+  }
+
   private normalizeKitchenCloseTime(value?: string | null) {
     const trimmed = value?.trim();
     if (!trimmed) {
@@ -405,9 +447,14 @@ export class AuthService {
       hotelName: user.hotelName,
       businessType: user.businessType,
       businessLocation: user.businessLocation,
+      businessAddress: user.businessAddress,
+      kitchenOpenTime: user.kitchenOpenTime,
       kitchenCloseTime: user.kitchenCloseTime,
       contactPersonName: user.contactPersonName,
       contactPersonMobileNumber: user.contactPersonMobileNumber,
+      taxRate: Number(user.taxRate ?? 5),
+      serviceChargeRate: Number(user.serviceChargeRate ?? 3),
+      discountRate: Number(user.discountRate ?? 0),
       role: user.role,
       tenantId: user.tenantId,
     };

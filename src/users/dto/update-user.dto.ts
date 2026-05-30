@@ -1,5 +1,5 @@
-import { IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { Role } from '../../auth/enums/role.enum';
 
 const emptyStringToUndefined = ({ value }: { value: unknown }) =>
@@ -41,6 +41,36 @@ export class UpdateUserDto {
   @IsOptional()
   @Transform(emptyStringToUndefined)
   @IsString()
+  businessAddress?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  business_address?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  businessEmail?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  business_email?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  kitchenOpenTime?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  kitchen_open_time?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
   kitchenCloseTime?: string;
 
   @IsOptional()
@@ -57,8 +87,62 @@ export class UpdateUserDto {
   @IsOptional()
   @Transform(emptyStringToUndefined)
   @IsString()
+  @MinLength(2)
+  contact_person_name?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
   @MinLength(7)
   contactPersonMobileNumber?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @IsString()
+  @MinLength(7)
+  contact_person_mobile_number?: string;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  taxRate?: number;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  tax_rate?: number;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  serviceChargeRate?: number;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  service_charge_rate?: number;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  discountRate?: number;
+
+  @IsOptional()
+  @Transform(emptyStringToUndefined)
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  discount_rate?: number;
 
   @IsOptional()
   @Transform(emptyStringToUndefined)

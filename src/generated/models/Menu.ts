@@ -515,14 +515,6 @@ export type MenuUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.MenuScalarWhereInput | Prisma.MenuScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type MenuCreateNestedOneWithoutMenuItemsInput = {
   create?: Prisma.XOR<Prisma.MenuCreateWithoutMenuItemsInput, Prisma.MenuUncheckedCreateWithoutMenuItemsInput>
   connectOrCreate?: Prisma.MenuCreateOrConnectWithoutMenuItemsInput

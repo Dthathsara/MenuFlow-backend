@@ -1,6 +1,7 @@
 import {
   BadRequestException, Injectable, NotFoundException, ForbiddenException, Logger,
 } from '@nestjs/common';
+import { Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from '../auth/enums/role.enum';
@@ -25,10 +26,15 @@ export class UsersService {
     hotelName: true,
     businessType: true,
     businessLocation: true,
-    kitchenCloseTime: true,
+    businessAddress: true,
     businessEmail: true,
+    kitchenOpenTime: true,
+    kitchenCloseTime: true,
     contactPersonName: true,
     contactPersonMobileNumber: true,
+    taxRate: true,
+    serviceChargeRate: true,
+    discountRate: true,
     role: true,
     isActive: true,
     tenantId: true,
@@ -106,9 +112,16 @@ export class UsersService {
     const businessLocation = this.optionalTrim(
       dto.businessLocation ?? dto.business_location,
     );
+    const businessAddress = this.optionalTrim(dto.businessAddress ?? dto.business_address);
+    const kitchenOpenTime = this.optionalTrim(dto.kitchenOpenTime ?? dto.kitchen_open_time);
     const kitchenCloseTime = this.normalizeKitchenCloseTime(
       dto.kitchenCloseTime ?? dto.kitchen_close_time,
     );
+    const taxRate = this.optionalDecimal(dto.taxRate ?? dto.tax_rate);
+    const serviceChargeRate = this.optionalDecimal(
+      dto.serviceChargeRate ?? dto.service_charge_rate,
+    );
+    const discountRate = this.optionalDecimal(dto.discountRate ?? dto.discount_rate);
 
     return this.prisma.$transaction(async (tx) => {
       const updated = await tx.user.update({
@@ -117,11 +130,23 @@ export class UsersService {
           ...(hotelName && { hotelName }),
           ...(businessType && { businessType }),
           ...(businessLocation && { businessLocation }),
-          ...(kitchenCloseTime && { kitchenCloseTime }),
-          ...(dto.contactPersonName && { contactPersonName: dto.contactPersonName.trim() }),
-          ...(dto.contactPersonMobileNumber && {
-            contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
+          ...(businessAddress && { businessAddress }),
+          ...((dto.businessEmail ?? dto.business_email) && {
+            businessEmail: (dto.businessEmail ?? dto.business_email)!.toLowerCase().trim(),
           }),
+          ...(kitchenOpenTime && { kitchenOpenTime }),
+          ...(kitchenCloseTime && { kitchenCloseTime }),
+          ...((dto.contactPersonName ?? dto.contact_person_name) && {
+            contactPersonName: (dto.contactPersonName ?? dto.contact_person_name)!.trim(),
+          }),
+          ...((dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number) && {
+            contactPersonMobileNumber: (
+              dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number
+            )!.trim(),
+          }),
+          ...(taxRate !== undefined && { taxRate }),
+          ...(serviceChargeRate !== undefined && { serviceChargeRate }),
+          ...(discountRate !== undefined && { discountRate }),
         },
         select: this.safeSelect,
       });
@@ -188,6 +213,14 @@ export class UsersService {
   private optionalTrim(value?: string | null) {
     const trimmed = value?.trim();
     return trimmed || undefined;
+  }
+
+  private optionalDecimal(value?: number | null) {
+    if (value === undefined || value === null) {
+      return undefined;
+    }
+
+    return new Prisma.Decimal(value);
   }
 
   private normalizeKitchenCloseTime(value?: string | null) {

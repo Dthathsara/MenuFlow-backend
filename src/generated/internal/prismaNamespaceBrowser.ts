@@ -52,6 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   Tenant: 'Tenant',
   RefreshToken: 'RefreshToken',
   AuditLog: 'AuditLog',
@@ -89,10 +91,15 @@ export const UserScalarFieldEnum = {
   hotelName: 'hotelName',
   businessType: 'businessType',
   businessLocation: 'businessLocation',
+  businessAddress: 'businessAddress',
+  kitchenOpenTime: 'kitchenOpenTime',
   kitchenCloseTime: 'kitchenCloseTime',
   businessEmail: 'businessEmail',
   contactPersonName: 'contactPersonName',
   contactPersonMobileNumber: 'contactPersonMobileNumber',
+  taxRate: 'taxRate',
+  serviceChargeRate: 'serviceChargeRate',
+  discountRate: 'discountRate',
   role: 'role',
   isActive: 'isActive',
   tenantId: 'tenantId',
@@ -102,6 +109,63 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  orderNumber: 'orderNumber',
+  customerSessionId: 'customerSessionId',
+  tableId: 'tableId',
+  qrCodeId: 'qrCodeId',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  orderType: 'orderType',
+  orderStatus: 'orderStatus',
+  paymentStatus: 'paymentStatus',
+  subtotal: 'subtotal',
+  taxRate: 'taxRate',
+  taxAmount: 'taxAmount',
+  serviceChargeRate: 'serviceChargeRate',
+  serviceChargeAmount: 'serviceChargeAmount',
+  discountRate: 'discountRate',
+  discountAmount: 'discountAmount',
+  totalAmount: 'totalAmount',
+  itemNote: 'itemNote',
+  placedAt: 'placedAt',
+  acceptedAt: 'acceptedAt',
+  preparingAt: 'preparingAt',
+  readyAt: 'readyAt',
+  deliveredAt: 'deliveredAt',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  menuItemId: 'menuItemId',
+  foodName: 'foodName',
+  categoryName: 'categoryName',
+  subCategoryName: 'subCategoryName',
+  servingSize: 'servingSize',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity',
+  lineTotal: 'lineTotal',
+  prepTimeMin: 'prepTimeMin',
+  imageUrl: 'imageUrl',
+  itemNote: 'itemNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
