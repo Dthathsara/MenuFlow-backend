@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,15 +10,40 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 const ORDER_STATUSES = ['accepted', 'preparing', 'ready', 'delivered', 'cancelled'] as const;
+const ACTIVE_ORDER_STATUSES = ['accepted', 'preparing', 'ready'];
+
+type ManagerOrdersQuery = {
+  search?: string;
+  paymentStatus?: string;
+  orderStatus?: string;
+};
 
 @Injectable()
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
 
   async createCustomerOrder(dto: CreateOrderDto) {
-    const tenantId = dto.tenant_id.trim();
+    console.log('CREATE CUSTOMER ORDER', {
+      tenantId: dto.tenant_id,
+      customerSessionId: dto.customer_session_id,
+      itemCount: dto.items?.length,
+    });
+
+    const tenantId = dto.tenant_id?.trim();
+    const customerSessionId = dto.customer_session_id.trim();
+    const customerName = dto.customer_name.trim();
+    const customerPhone = dto.customer_phone.trim();
     if (!tenantId) {
-      throw new BadRequestException('tenant_id is required.');
+      throw new BadRequestException('tenant_id is required');
+    }
+    if (!customerSessionId) {
+      throw new BadRequestException('customer_session_id is required.');
+    }
+    if (!customerName) {
+      throw new BadRequestException('customer_name is required.');
+    }
+    if (!customerPhone) {
+      throw new BadRequestException('customer_phone is required.');
     }
 
     const tenant = await this.prisma.tenant.findUnique({
@@ -27,7 +51,7 @@ export class OrdersService {
       select: { id: true },
     });
     if (!tenant) {
-      throw new NotFoundException('Restaurant not found.');
+      throw new BadRequestException('Invalid tenant_id');
     }
 
     const settings = await this.prisma.user.findFirst({
@@ -47,18 +71,18 @@ export class OrdersService {
     const serviceChargeAmount = subtotal.mul(serviceChargeRate).div(100);
     const discountAmount = discountRate.gt(0) ? subtotal.mul(discountRate).div(100) : new Prisma.Decimal(0);
     const totalAmount = subtotal.plus(taxAmount).plus(serviceChargeAmount).minus(discountAmount);
-    const paymentStatus = dto.payment?.status ?? 'unpaid';
+    const paymentStatus = dto.payment?.status === 'paid' ? 'paid' : 'unpaid';
     const now = new Date();
 
     const order = await this.prisma.order.create({
       data: {
         tenantId,
         orderNumber: this.generateOrderNumber(),
-        customerSessionId: dto.customer_session_id.trim(),
+        customerSessionId,
         tableId: dto.table_id?.trim() || null,
         qrCodeId: dto.qr_code_id?.trim() || null,
-        customerName: dto.customer_name.trim(),
-        customerPhone: dto.customer_phone.trim(),
+        customerName,
+        customerPhone,
         orderType: dto.order_type,
         orderStatus: 'accepted',
         paymentStatus,
@@ -97,9 +121,14 @@ export class OrdersService {
     return this.mapOrder(order);
   }
 
-  async findCustomerOrder(id: string) {
+  async findCustomerOrder(id: string, tenantId?: string) {
+    const trimmedTenantId = tenantId?.trim();
     const order = await this.prisma.order.findFirst({
-      where: { id, deletedAt: null },
+      where: {
+        id,
+        ...(trimmedTenantId ? { tenantId: trimmedTenantId } : {}),
+        deletedAt: null,
+      },
       include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
     });
     if (!order) {
@@ -108,28 +137,67 @@ export class OrdersService {
     return this.mapOrder(order);
   }
 
-  async findCustomerSessionOrders(customerSessionId: string) {
-    const orders = await this.prisma.order.findMany({
-      where: { customerSessionId, deletedAt: null },
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
-      orderBy: { createdAt: 'desc' },
+  async findCustomerSessionOrders(customerSessionId: string, tenantId?: string) {
+    console.log('LOAD CUSTOMER SESSION ORDERS', {
+      customerSessionId,
+      tenantId,
     });
-    return orders.map((order) => this.mapOrder(order));
+
+    const trimmedCustomerSessionId = customerSessionId.trim();
+    const trimmedTenantId = tenantId?.trim();
+    if (!trimmedCustomerSessionId) {
+      throw new BadRequestException('customerSessionId is required.');
+    }
+    if (!trimmedTenantId) {
+      return { orders: [] };
+    }
+
+    const orders = await this.prisma.order.findMany({
+      where: {
+        customerSessionId: trimmedCustomerSessionId,
+        tenantId: trimmedTenantId,
+        deletedAt: null,
+      },
+      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      orderBy: { placedAt: 'desc' },
+    });
+    return { orders: orders.map((order) => this.mapOrder(order)) };
   }
 
-  async findManagerOrders(currentUser: any) {
+  async findManagerOrders(currentUser: any, query: ManagerOrdersQuery = {}) {
     const tenantId = this.requireTenantId(currentUser);
+    const where = this.buildManagerOrdersWhere(tenantId, query);
+
     const orders = await this.prisma.order.findMany({
-      where: { tenantId, deletedAt: null },
+      where,
       include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { placedAt: 'desc' },
     });
-    return orders.map((order) => this.mapOrder(order));
+
+    return {
+      summary: await this.getManagerOrdersSummary(tenantId),
+      orders: orders.map((order) => this.mapOrder(order)),
+    };
+  }
+
+  async findManagerOrder(id: string, currentUser: any) {
+    const tenantId = this.requireTenantId(currentUser);
+    const order = await this.prisma.order.findFirst({
+      where: { id, tenantId, deletedAt: null },
+      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    return this.mapOrder(order);
   }
 
   async updateManagerOrderStatus(id: string, dto: UpdateOrderStatusDto, currentUser: any) {
     const tenantId = this.requireTenantId(currentUser);
-    if (!ORDER_STATUSES.includes(dto.order_status as any)) {
+    const orderStatus = dto.order_status ?? dto.orderStatus;
+    if (!ORDER_STATUSES.includes(orderStatus as any)) {
       throw new BadRequestException('Invalid order_status.');
     }
 
@@ -138,16 +206,20 @@ export class OrdersService {
       select: { id: true },
     });
     if (!existing) {
-      throw new NotFoundException('Order not found.');
+      throw new NotFoundException('Order not found');
     }
 
-    const timestampField = this.statusTimestampField(dto.order_status);
-    const order = await this.prisma.order.update({
-      where: { id },
+    const timestampField = this.statusTimestampField(orderStatus);
+    await this.prisma.order.updateMany({
+      where: { id, tenantId, deletedAt: null },
       data: {
-        orderStatus: dto.order_status,
+        orderStatus,
         ...(timestampField ? { [timestampField]: new Date() } : {}),
       },
+    });
+
+    const order = await this.prisma.order.findFirst({
+      where: { id, tenantId, deletedAt: null },
       include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
     });
 
@@ -157,9 +229,101 @@ export class OrdersService {
   private requireTenantId(currentUser: any) {
     const tenantId = currentUser?.tenantId;
     if (!tenantId) {
-      throw new ForbiddenException('Your account is not connected to a restaurant.');
+      throw new BadRequestException('Manager account is not connected to a restaurant.');
     }
     return tenantId;
+  }
+
+  private buildManagerOrdersWhere(tenantId: string, query: ManagerOrdersQuery) {
+    const where: Prisma.OrderWhereInput = {
+      tenantId,
+      deletedAt: null,
+    };
+
+    const search = query.search?.trim();
+    if (search) {
+      where.OR = [
+        { orderNumber: { contains: search, mode: 'insensitive' } },
+        { customerName: { contains: search, mode: 'insensitive' } },
+        { customerPhone: { contains: search, mode: 'insensitive' } },
+        { orderType: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const paymentStatus = query.paymentStatus?.trim();
+    if (paymentStatus) {
+      where.paymentStatus = paymentStatus;
+    }
+
+    const orderStatus = query.orderStatus?.trim();
+    if (orderStatus) {
+      where.orderStatus = orderStatus;
+    }
+
+    return where;
+  }
+
+  private async getManagerOrdersSummary(tenantId: string) {
+    const now = new Date();
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
+    const startOfTomorrow = new Date(startOfToday);
+    startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+
+    const baseWhere = { tenantId, deletedAt: null };
+    const pendingPaymentWhere: Prisma.OrderWhereInput = {
+      ...baseWhere,
+      paymentStatus: { not: 'paid' },
+    };
+
+    const [
+      totalOrders,
+      pendingPayments,
+      pendingPaymentAmount,
+      activeOrders,
+      deliveredToday,
+    ] = await Promise.all([
+      this.prisma.order.count({ where: baseWhere }),
+      this.prisma.order.count({ where: pendingPaymentWhere }),
+      this.prisma.order.aggregate({
+        where: pendingPaymentWhere,
+        _sum: { totalAmount: true },
+      }),
+      this.prisma.order.count({
+        where: {
+          ...baseWhere,
+          orderStatus: { in: ACTIVE_ORDER_STATUSES },
+        },
+      }),
+      this.prisma.order.count({
+        where: {
+          ...baseWhere,
+          OR: [
+            {
+              deliveredAt: {
+                gte: startOfToday,
+                lt: startOfTomorrow,
+              },
+            },
+            {
+              orderStatus: 'delivered',
+              updatedAt: {
+                gte: startOfToday,
+                lt: startOfTomorrow,
+              },
+            },
+          ],
+        },
+      }),
+    ]);
+
+    return {
+      totalOrders,
+      pendingPayments,
+      pendingPaymentAmount: Number(pendingPaymentAmount._sum.totalAmount ?? 0),
+      activeOrders,
+      deliveredToday,
+    };
   }
 
   private statusTimestampField(status: string) {

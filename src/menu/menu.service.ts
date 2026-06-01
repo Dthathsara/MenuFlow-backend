@@ -122,19 +122,28 @@ export class MenuService {
   async findManagerCategories(currentUser: any) {
     const tenantId = await this.getTenantIdForUser(currentUser);
 
-    const categories = await this.prisma.addMenuItem.findMany({
+    const items = await this.prisma.addMenuItem.findMany({
       where: {
         tenantId,
         deletedAt: null,
         isActive: true,
         categoryName: { not: '' },
       },
-      distinct: ['categoryName'],
       select: { categoryName: true },
-      orderBy: { categoryName: 'asc' },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
 
-    return categories.map((category) => ({ name: category.categoryName }));
+    const categoryMap = new Map<string, { name: string }>();
+
+    for (const item of items) {
+      const categoryName = item.categoryName.trim();
+      const categoryKey = categoryName.toLowerCase();
+      if (!categoryMap.has(categoryKey)) {
+        categoryMap.set(categoryKey, { name: categoryName });
+      }
+    }
+
+    return Array.from(categoryMap.values());
   }
 
   async updateCategory(id: string, dto: UpdateCategoryDto) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { Public } from '../auth/decorators/public.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -21,14 +21,20 @@ export class CustomerOrdersController {
 
   @Public()
   @Get('session/:customerSessionId')
-  findBySession(@Param('customerSessionId') customerSessionId: string) {
-    return this.ordersService.findCustomerSessionOrders(customerSessionId);
+  findBySession(
+    @Param('customerSessionId') customerSessionId: string,
+    @Query('tenantId') tenantId?: string,
+  ) {
+    return this.ordersService.findCustomerSessionOrders(customerSessionId, tenantId);
   }
 
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findCustomerOrder(id);
+  findOne(
+    @Param('id') id: string,
+    @Query('tenantId') tenantId?: string,
+  ) {
+    return this.ordersService.findCustomerOrder(id, tenantId);
   }
 }
 
@@ -39,8 +45,26 @@ export class AdminOrdersController {
 
   @Get()
   @Roles(Role.STAFF)
-  findAll(@CurrentUser() currentUser: any) {
-    return this.ordersService.findManagerOrders(currentUser);
+  findAll(
+    @CurrentUser() currentUser: any,
+    @Query('search') search?: string,
+    @Query('paymentStatus') paymentStatus?: string,
+    @Query('orderStatus') orderStatus?: string,
+  ) {
+    return this.ordersService.findManagerOrders(currentUser, {
+      search,
+      paymentStatus,
+      orderStatus,
+    });
+  }
+
+  @Get(':id')
+  @Roles(Role.STAFF)
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: any,
+  ) {
+    return this.ordersService.findManagerOrder(id, currentUser);
   }
 
   @Patch(':id/status')

@@ -22,14 +22,8 @@ export class AddMenuItemsService {
   ) {}
 
   async getCustomerMenu(query: { tenantId?: string; slug?: string; authorization?: string }) {
-    console.log('CUSTOMER MENU USING add_menu_items');
-
     try {
       const resolved = await this.resolveCustomerTenant(query);
-      console.log('CUSTOMER MENU RESOLVED TENANT', {
-        tenantId: resolved.tenantId,
-        source: resolved.source,
-      });
 
       if (!resolved.tenantId) {
         return {
@@ -78,7 +72,7 @@ export class AddMenuItemsService {
           isActive: true,
           isAvailable: true,
         },
-        orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+        orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
       });
 
       return {
@@ -152,6 +146,12 @@ export class AddMenuItemsService {
       throw new BadRequestException('Category is required.');
     }
 
+    const lastItem = await this.prisma.addMenuItem.findFirst({
+      where: { tenantId },
+      orderBy: { sortOrder: 'desc' },
+      select: { sortOrder: true },
+    });
+
     const item = await this.prisma.addMenuItem.create({
       data: {
         tenantId,
@@ -166,7 +166,7 @@ export class AddMenuItemsService {
         isAvailable: dto.is_available,
         imageUrl: this.normalizeImageUrl(dto.image_url),
         isActive: true,
-        sortOrder: 0,
+        sortOrder: (lastItem?.sortOrder ?? 0) + 1,
       },
     });
 
@@ -233,19 +233,28 @@ export class AddMenuItemsService {
   async findCategories(currentUser: any) {
     const tenantId = await this.getTenantIdForUser(currentUser);
 
-    const categories = await this.prisma.addMenuItem.findMany({
+    const items = await this.prisma.addMenuItem.findMany({
       where: {
         tenantId,
         deletedAt: null,
         isActive: true,
         categoryName: { not: '' },
       },
-      distinct: ['categoryName'],
       select: { categoryName: true },
-      orderBy: { categoryName: 'asc' },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
 
-    return categories.map((category) => ({ name: category.categoryName }));
+    const categoryMap = new Map<string, { name: string }>();
+
+    for (const item of items) {
+      const categoryName = item.categoryName.trim();
+      const categoryKey = categoryName.toLowerCase();
+      if (!categoryMap.has(categoryKey)) {
+        categoryMap.set(categoryKey, { name: categoryName });
+      }
+    }
+
+    return Array.from(categoryMap.values());
   }
 
   private async findByIdForTenant(id: string, tenantId: string) {

@@ -73,8 +73,10 @@ model Order {
   items               OrderItem[]
   tenant              Tenant      @relation(fields: [tenantId], references: [id])
 
-  @@index([tenantId])
-  @@index([customerSessionId])
+  @@index([tenantId], map: "orders_tenant_id_idx")
+  @@index([customerSessionId], map: "orders_customer_session_id_idx")
+  @@index([orderStatus], map: "orders_order_status_idx")
+  @@index([createdAt], map: "orders_created_at_idx")
   @@index([deletedAt])
   @@map("orders")
 }
@@ -98,7 +100,7 @@ model OrderItem {
   deletedAt       DateTime? @map("deleted_at")
   order           Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-  @@index([orderId])
+  @@index([orderId], map: "order_items_order_id_idx")
   @@index([menuItemId])
   @@index([deletedAt])
   @@map("order_items")

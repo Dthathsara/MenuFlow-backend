@@ -69,9 +69,9 @@ export class DemoPaymentDto {
 }
 
 export class CreateOrderDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  tenant_id!: string;
+  tenant_id?: string;
 
   @IsString()
   @IsNotEmpty()
