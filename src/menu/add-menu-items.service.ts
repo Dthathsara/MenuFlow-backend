@@ -55,6 +55,7 @@ export class AddMenuItemsService {
           businessLocation: true,
           businessAddress: true,
           businessEmail: true,
+          restaurantImageUrl: true,
           kitchenOpenTime: true,
           kitchenCloseTime: true,
           contactPersonMobileNumber: true,
@@ -349,6 +350,7 @@ export class AddMenuItemsService {
       businessType: 'Menu',
       location: '',
       address: '',
+      businessEmail: '',
       email: '',
       phone: '',
       kitchenOpenTime: '',
@@ -369,6 +371,7 @@ export class AddMenuItemsService {
       businessLocation: string | null;
       businessAddress: string | null;
       businessEmail: string | null;
+      restaurantImageUrl: string | null;
       kitchenOpenTime: string | null;
       kitchenCloseTime: string | null;
       contactPersonMobileNumber: string | null;
@@ -380,22 +383,25 @@ export class AddMenuItemsService {
     const kitchenOpenTime = this.formatKitchenCloseTime(user?.kitchenOpenTime);
     const kitchenCloseTime = this.formatKitchenCloseTime(user?.kitchenCloseTime);
     const openingHours = kitchenOpenTime && kitchenCloseTime
-      ? `Daily ${kitchenOpenTime} - ${kitchenCloseTime}`
+      ? `Daily - ${kitchenOpenTime} - ${kitchenCloseTime}`
       : kitchenCloseTime
         ? `Daily - ${kitchenCloseTime}`
         : '';
+    const businessEmail = user?.businessEmail?.trim() || '';
 
     return {
       id: tenant.id,
       name: user?.hotelName?.trim() || tenant.name?.trim() || 'MenuFlow',
+      businessEmail,
       businessType: user?.businessType?.trim() || 'Menu',
       location: user?.businessLocation?.trim() || '',
       address: user?.businessAddress?.trim() || '',
-      email: user?.businessEmail?.trim() || '',
+      email: businessEmail,
       phone: user?.contactPersonMobileNumber?.trim() || '',
       kitchenOpenTime,
       kitchenCloseTime,
       openingHours,
+      restaurantImageUrl: user?.restaurantImageUrl?.trim() || '',
       taxRate: Number(user?.taxRate ?? 5),
       serviceChargeRate: Number(user?.serviceChargeRate ?? 3),
       discountRate: Number(user?.discountRate ?? 0),

@@ -10,6 +10,7 @@
  */
 export type * from './models/User'
 export type * from './models/Order'
+export type * from './models/OrderStatusHistory'
 export type * from './models/OrderItem'
 export type * from './models/Tenant'
 export type * from './models/RefreshToken'

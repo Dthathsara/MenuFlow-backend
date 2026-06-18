@@ -43,6 +43,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
+    console.log('LOGIN HIT', dto.email);
     return this.authService.login(dto);
   }
 

@@ -280,7 +280,7 @@ export class QrCodeService {
             select: {
               id: true,
               contactPersonName: true,
-              businessEmail: true,
+              email: true,
               role: true,
             },
           },
@@ -290,9 +290,17 @@ export class QrCodeService {
   }
 
   private formatQrCodeResponse(qrCode: any) {
+    const assignedStaff =
+      qrCode.staffLinks?.map((link: any) => ({
+        id: link.user.id,
+        contactPersonName: link.user.contactPersonName,
+        email: link.user.email,
+        role: link.user.role,
+      })) ?? [];
+
     return {
       ...qrCode,
-      assignedStaff: qrCode.staffLinks?.map((l: any) => l.user) ?? [],
+      assignedStaff,
       publicUrl: `${process.env.PUBLIC_URL}/menu/${qrCode.slug}`,
     };
   }

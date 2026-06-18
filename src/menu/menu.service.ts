@@ -538,7 +538,7 @@ export class MenuService {
           select: {
             id: true,
             contactPersonName: true,
-            businessEmail: true,
+            email: true,
           },
         },
       },
@@ -552,7 +552,16 @@ export class MenuService {
         currentPrice: option.price,
         menuItemName: option.menuItem.name,
       },
-      history,
+      history: history.map((entry) => ({
+        ...entry,
+        changedBy: entry.changedBy
+          ? {
+              id: entry.changedBy.id,
+              contactPersonName: entry.changedBy.contactPersonName,
+              email: entry.changedBy.email,
+            }
+          : null,
+      })),
     };
   }
 

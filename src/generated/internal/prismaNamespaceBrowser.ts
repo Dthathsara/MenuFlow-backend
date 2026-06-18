@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Order: 'Order',
+  OrderStatusHistory: 'OrderStatusHistory',
   OrderItem: 'OrderItem',
   Tenant: 'Tenant',
   RefreshToken: 'RefreshToken',
@@ -94,7 +95,9 @@ export const UserScalarFieldEnum = {
   businessAddress: 'businessAddress',
   kitchenOpenTime: 'kitchenOpenTime',
   kitchenCloseTime: 'kitchenCloseTime',
+  email: 'email',
   businessEmail: 'businessEmail',
+  restaurantImageUrl: 'restaurantImageUrl',
   contactPersonName: 'contactPersonName',
   contactPersonMobileNumber: 'contactPersonMobileNumber',
   taxRate: 'taxRate',
@@ -144,6 +147,16 @@ export const OrderScalarFieldEnum = {
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  status: 'status',
+  changedAt: 'changedAt'
+} as const
+
+export type OrderStatusHistoryScalarFieldEnum = (typeof OrderStatusHistoryScalarFieldEnum)[keyof typeof OrderStatusHistoryScalarFieldEnum]
 
 
 export const OrderItemScalarFieldEnum = {

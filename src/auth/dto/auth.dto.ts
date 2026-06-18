@@ -1,7 +1,7 @@
 import {
-  IsEmail, IsNumber, IsOptional, IsString, Min, MinLength, MaxLength, Matches,
+  IsEmail, IsOptional, IsString, MinLength, MaxLength, Matches,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 
 const emptyStringToUndefined = ({ value }: { value: unknown }) =>
   typeof value === 'string' && value.trim() === '' ? undefined : value;
@@ -11,7 +11,7 @@ const trimString = ({ value }: { value: unknown }) =>
 
 export class LoginDto {
   @IsEmail()
-  businessEmail!: string;
+  email!: string;
 
   @IsString()
   @MinLength(8)
@@ -20,7 +20,7 @@ export class LoginDto {
 
 export class RegisterDto {
   @IsEmail()
-  businessEmail!: string;
+  email!: string;
 
   @IsString()
   @MinLength(8)
@@ -51,75 +51,8 @@ export class RefreshTokenDto {
 export class UpdateProfileDto {
   @IsOptional()
   @Transform(emptyStringToUndefined)
-  @IsString()
-  @MinLength(2)
-  hotelName?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  @MinLength(2)
-  hotel_name?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  businessType?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  business_type?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  businessLocation?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  business_location?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  businessAddress?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  business_address?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  kitchenOpenTime?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  kitchen_open_time?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  kitchenCloseTime?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  kitchen_close_time?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
   @IsEmail()
-  businessEmail?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsEmail()
-  business_email?: string;
+  email?: string;
 
   @IsOptional()
   @Transform(emptyStringToUndefined)
@@ -130,62 +63,8 @@ export class UpdateProfileDto {
   @IsOptional()
   @Transform(emptyStringToUndefined)
   @IsString()
-  @MinLength(2)
-  contact_person_name?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
   @MinLength(7)
   contactPersonMobileNumber?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @IsString()
-  @MinLength(7)
-  contact_person_mobile_number?: string;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  taxRate?: number;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  tax_rate?: number;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  serviceChargeRate?: number;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  service_charge_rate?: number;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  discountRate?: number;
-
-  @IsOptional()
-  @Transform(emptyStringToUndefined)
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  discount_rate?: number;
 
   @IsOptional()
   @Transform(emptyStringToUndefined)
@@ -201,7 +80,7 @@ export class UpdateProfileDto {
   @IsOptional()
   @Transform(emptyStringToUndefined)
   @IsString()
-  confirmPassword?: string;
+  confirmNewPassword?: string;
 }
 
 export class ChangePasswordDto {

@@ -47,7 +47,9 @@ export type UserMinAggregateOutputType = {
   businessAddress: string | null
   kitchenOpenTime: string | null
   kitchenCloseTime: string | null
+  email: string | null
   businessEmail: string | null
+  restaurantImageUrl: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
   taxRate: runtime.Decimal | null
@@ -70,7 +72,9 @@ export type UserMaxAggregateOutputType = {
   businessAddress: string | null
   kitchenOpenTime: string | null
   kitchenCloseTime: string | null
+  email: string | null
   businessEmail: string | null
+  restaurantImageUrl: string | null
   contactPersonName: string | null
   contactPersonMobileNumber: string | null
   taxRate: runtime.Decimal | null
@@ -93,7 +97,9 @@ export type UserCountAggregateOutputType = {
   businessAddress: number
   kitchenOpenTime: number
   kitchenCloseTime: number
+  email: number
   businessEmail: number
+  restaurantImageUrl: number
   contactPersonName: number
   contactPersonMobileNumber: number
   taxRate: number
@@ -130,7 +136,9 @@ export type UserMinAggregateInputType = {
   businessAddress?: true
   kitchenOpenTime?: true
   kitchenCloseTime?: true
+  email?: true
   businessEmail?: true
+  restaurantImageUrl?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
   taxRate?: true
@@ -153,7 +161,9 @@ export type UserMaxAggregateInputType = {
   businessAddress?: true
   kitchenOpenTime?: true
   kitchenCloseTime?: true
+  email?: true
   businessEmail?: true
+  restaurantImageUrl?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
   taxRate?: true
@@ -176,7 +186,9 @@ export type UserCountAggregateInputType = {
   businessAddress?: true
   kitchenOpenTime?: true
   kitchenCloseTime?: true
+  email?: true
   businessEmail?: true
+  restaurantImageUrl?: true
   contactPersonName?: true
   contactPersonMobileNumber?: true
   taxRate?: true
@@ -286,7 +298,9 @@ export type UserGroupByOutputType = {
   businessAddress: string | null
   kitchenOpenTime: string | null
   kitchenCloseTime: string | null
-  businessEmail: string
+  email: string
+  businessEmail: string | null
+  restaurantImageUrl: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate: runtime.Decimal | null
@@ -332,7 +346,9 @@ export type UserWhereInput = {
   businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
-  businessEmail?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  businessEmail?: Prisma.StringNullableFilter<"User"> | string | null
+  restaurantImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
   taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -360,7 +376,9 @@ export type UserOrderByWithRelationInput = {
   businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenOpenTime?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessEmail?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  businessEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  restaurantImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
   taxRate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -381,7 +399,7 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  businessEmail?: string
+  email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -392,6 +410,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
+  businessEmail?: Prisma.StringNullableFilter<"User"> | string | null
+  restaurantImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
   taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -408,7 +428,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   qrCodeLinks?: Prisma.QrCodeStaffListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
-}, "id" | "businessEmail">
+}, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -419,7 +439,9 @@ export type UserOrderByWithAggregationInput = {
   businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenOpenTime?: Prisma.SortOrderInput | Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessEmail?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  businessEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  restaurantImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
   taxRate?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -450,7 +472,9 @@ export type UserScalarWhereWithAggregatesInput = {
   businessAddress?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   kitchenOpenTime?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  businessEmail?: Prisma.StringWithAggregatesFilter<"User"> | string
+  email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  businessEmail?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  restaurantImageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   contactPersonName?: Prisma.StringWithAggregatesFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringWithAggregatesFilter<"User"> | string
   taxRate?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -473,7 +497,9 @@ export type UserCreateInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -500,7 +526,9 @@ export type UserUncheckedCreateInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -527,7 +555,9 @@ export type UserUpdateInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -554,7 +584,9 @@ export type UserUncheckedUpdateInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -581,7 +613,9 @@ export type UserCreateManyInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -604,7 +638,9 @@ export type UserUpdateManyMutationInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -626,7 +662,9 @@ export type UserUncheckedUpdateManyInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -649,7 +687,9 @@ export type UserCountOrderByAggregateInput = {
   businessAddress?: Prisma.SortOrder
   kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
+  restaurantImageUrl?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -678,7 +718,9 @@ export type UserMaxOrderByAggregateInput = {
   businessAddress?: Prisma.SortOrder
   kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
+  restaurantImageUrl?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -701,7 +743,9 @@ export type UserMinOrderByAggregateInput = {
   businessAddress?: Prisma.SortOrder
   kitchenOpenTime?: Prisma.SortOrder
   kitchenCloseTime?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   businessEmail?: Prisma.SortOrder
+  restaurantImageUrl?: Prisma.SortOrder
   contactPersonName?: Prisma.SortOrder
   contactPersonMobileNumber?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -884,7 +928,9 @@ export type UserCreateWithoutTenantInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -910,7 +956,9 @@ export type UserUncheckedCreateWithoutTenantInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -965,7 +1013,9 @@ export type UserScalarWhereInput = {
   businessAddress?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenOpenTime?: Prisma.StringNullableFilter<"User"> | string | null
   kitchenCloseTime?: Prisma.StringNullableFilter<"User"> | string | null
-  businessEmail?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  businessEmail?: Prisma.StringNullableFilter<"User"> | string | null
+  restaurantImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
   contactPersonName?: Prisma.StringFilter<"User"> | string
   contactPersonMobileNumber?: Prisma.StringFilter<"User"> | string
   taxRate?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -988,7 +1038,9 @@ export type UserCreateWithoutRefreshTokensInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1014,7 +1066,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1056,7 +1110,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1082,7 +1138,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1108,7 +1166,9 @@ export type UserCreateWithoutAuditLogsInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1134,7 +1194,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1176,7 +1238,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1202,7 +1266,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1228,7 +1294,9 @@ export type UserCreateWithoutPriceChangesInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1254,7 +1322,9 @@ export type UserUncheckedCreateWithoutPriceChangesInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1296,7 +1366,9 @@ export type UserUpdateWithoutPriceChangesInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1322,7 +1394,9 @@ export type UserUncheckedUpdateWithoutPriceChangesInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1348,7 +1422,9 @@ export type UserCreateWithoutQrCodeLinksInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1374,7 +1450,9 @@ export type UserUncheckedCreateWithoutQrCodeLinksInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1416,7 +1494,9 @@ export type UserUpdateWithoutQrCodeLinksInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1442,7 +1522,9 @@ export type UserUncheckedUpdateWithoutQrCodeLinksInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1468,7 +1550,9 @@ export type UserCreateManyTenantInput = {
   businessAddress?: string | null
   kitchenOpenTime?: string | null
   kitchenCloseTime?: string | null
-  businessEmail: string
+  email: string
+  businessEmail?: string | null
+  restaurantImageUrl?: string | null
   contactPersonName: string
   contactPersonMobileNumber: string
   taxRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1490,7 +1574,9 @@ export type UserUpdateWithoutTenantInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1516,7 +1602,9 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1542,7 +1630,9 @@ export type UserUncheckedUpdateManyWithoutTenantInput = {
   businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenOpenTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kitchenCloseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  businessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  restaurantImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonName?: Prisma.StringFieldUpdateOperationsInput | string
   contactPersonMobileNumber?: Prisma.StringFieldUpdateOperationsInput | string
   taxRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1622,7 +1712,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   businessAddress?: boolean
   kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
+  email?: boolean
   businessEmail?: boolean
+  restaurantImageUrl?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
   taxRate?: boolean
@@ -1651,7 +1743,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   businessAddress?: boolean
   kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
+  email?: boolean
   businessEmail?: boolean
+  restaurantImageUrl?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
   taxRate?: boolean
@@ -1675,7 +1769,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   businessAddress?: boolean
   kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
+  email?: boolean
   businessEmail?: boolean
+  restaurantImageUrl?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
   taxRate?: boolean
@@ -1699,7 +1795,9 @@ export type UserSelectScalar = {
   businessAddress?: boolean
   kitchenOpenTime?: boolean
   kitchenCloseTime?: boolean
+  email?: boolean
   businessEmail?: boolean
+  restaurantImageUrl?: boolean
   contactPersonName?: boolean
   contactPersonMobileNumber?: boolean
   taxRate?: boolean
@@ -1713,7 +1811,7 @@ export type UserSelectScalar = {
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessType" | "businessLocation" | "businessAddress" | "kitchenOpenTime" | "kitchenCloseTime" | "businessEmail" | "contactPersonName" | "contactPersonMobileNumber" | "taxRate" | "serviceChargeRate" | "discountRate" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "passwordHash" | "hotelName" | "businessType" | "businessLocation" | "businessAddress" | "kitchenOpenTime" | "kitchenCloseTime" | "email" | "businessEmail" | "restaurantImageUrl" | "contactPersonName" | "contactPersonMobileNumber" | "taxRate" | "serviceChargeRate" | "discountRate" | "role" | "isActive" | "tenantId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   priceChanges?: boolean | Prisma.User$priceChangesArgs<ExtArgs>
@@ -1747,7 +1845,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     businessAddress: string | null
     kitchenOpenTime: string | null
     kitchenCloseTime: string | null
-    businessEmail: string
+    email: string
+    businessEmail: string | null
+    restaurantImageUrl: string | null
     contactPersonName: string
     contactPersonMobileNumber: string
     taxRate: runtime.Decimal | null
@@ -2195,7 +2295,9 @@ export interface UserFieldRefs {
   readonly businessAddress: Prisma.FieldRef<"User", 'String'>
   readonly kitchenOpenTime: Prisma.FieldRef<"User", 'String'>
   readonly kitchenCloseTime: Prisma.FieldRef<"User", 'String'>
+  readonly email: Prisma.FieldRef<"User", 'String'>
   readonly businessEmail: Prisma.FieldRef<"User", 'String'>
+  readonly restaurantImageUrl: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonName: Prisma.FieldRef<"User", 'String'>
   readonly contactPersonMobileNumber: Prisma.FieldRef<"User", 'String'>
   readonly taxRate: Prisma.FieldRef<"User", 'Decimal'>

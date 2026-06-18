@@ -9,8 +9,7 @@ import { Role } from '../enums/role.enum';
 export interface JwtPayload {
   sub: string;
   userId?: string;
-  email?: string;
-  businessEmail: string;
+  email: string;
   role: string;
   tenantId?: string;
   iat?: number;
@@ -37,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
       select: {
-        id: true, businessEmail: true, role: true,
+        id: true, email: true, role: true,
         tenantId: true,
         hotelName: true,
         businessType: true,
@@ -55,10 +54,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ? user
       : await this.repairManageMenuUser(user);
 
-    return {
-      ...activeUser,
-      email: activeUser.businessEmail,
-    };
+    return activeUser;
   }
 
   private async repairManageMenuUser(user: any) {
@@ -68,7 +64,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         data: { role: Role.MANAGER },
         select: {
           id: true,
-          businessEmail: true,
+          email: true,
           role: true,
           tenantId: true,
           hotelName: true,
@@ -90,7 +86,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         },
         select: {
           id: true,
-          businessEmail: true,
+          email: true,
           role: true,
           tenantId: true,
           hotelName: true,

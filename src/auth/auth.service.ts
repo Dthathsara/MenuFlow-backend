@@ -10,7 +10,6 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
-import { Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './dto/auth.dto';
 import { Role } from './enums/role.enum';
@@ -22,18 +21,9 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   private readonly profileSelect = {
     id: true,
-    hotelName: true,
-    businessType: true,
-    businessLocation: true,
-    businessAddress: true,
-    kitchenOpenTime: true,
-    kitchenCloseTime: true,
-    businessEmail: true,
+    email: true,
     contactPersonName: true,
     contactPersonMobileNumber: true,
-    taxRate: true,
-    serviceChargeRate: true,
-    discountRate: true,
     role: true,
     tenantId: true,
   };
@@ -45,16 +35,16 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const businessEmail = dto.businessEmail.toLowerCase().trim();
-    const exists = await this.prisma.user.findUnique({ where: { businessEmail } });
-    if (exists) throw new ConflictException('Business email already registered');
+    const email = dto.email.trim().toLowerCase();
+    const exists = await this.prisma.user.findUnique({ where: { email } });
+    if (exists) throw new ConflictException('Email already registered');
 
     const passwordHash = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
 
     const user = await this.createUser({
       passwordHash,
       hotelName: dto.hotelName.trim(),
-      businessEmail,
+      email,
       contactPersonName: dto.contactPersonName.trim(),
       contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
     });
@@ -66,7 +56,7 @@ export class AuthService {
   private async createUser(data: {
     passwordHash: string;
     hotelName: string;
-    businessEmail: string;
+    email: string;
     contactPersonName: string;
     contactPersonMobileNumber: string;
   }) {
@@ -88,7 +78,7 @@ export class AuthService {
           businessAddress: true,
           kitchenOpenTime: true,
           kitchenCloseTime: true,
-          businessEmail: true,
+          email: true,
           contactPersonName: true,
           contactPersonMobileNumber: true,
           taxRate: true,
@@ -102,18 +92,25 @@ export class AuthService {
       });
     } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new ConflictException('Business email already registered');
+        throw new ConflictException('Email already registered');
       }
       throw error;
     }
   }
 
   async login(dto: LoginDto) {
-    const businessEmail = dto.businessEmail.toLowerCase().trim();
+    const email = dto.email.trim().toLowerCase();
 
     try {
-      const user = await this.prisma.user.findUnique({
-        where: { businessEmail },
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: {
+            equals: email,
+            mode: 'insensitive',
+          },
+          deletedAt: null,
+          isActive: true,
+        },
       });
 
       const isValid = user
@@ -121,16 +118,22 @@ export class AuthService {
         : await bcrypt.compare(dto.password, '$2b$12$invalidhashfortimingattackprevention');
 
       if (!user || !isValid) {
-        throw new UnauthorizedException('Invalid credentials');
+        throw new UnauthorizedException('Invalid email or password');
       }
       const activeUser = await this.ensureUserHasTenant(user);
 
-      const tokens = await this.generateTokens(
-        activeUser.id,
-        activeUser.businessEmail,
-        activeUser.role,
-        activeUser.tenantId,
-      );
+      let tokens: { accessToken: string; refreshToken: string };
+      try {
+        tokens = await this.generateTokens(
+          activeUser.id,
+          activeUser.email,
+          activeUser.role,
+          activeUser.tenantId,
+        );
+      } catch (error) {
+        console.error('LOGIN TOKEN ERROR:', error);
+        throw error;
+      }
       this.logger.log(`User logged in: ${activeUser.id}`);
 
       return {
@@ -138,13 +141,13 @@ export class AuthService {
         refreshToken: tokens.refreshToken,
         user: {
           id: activeUser.id,
+          email: activeUser.email,
           hotelName: activeUser.hotelName,
           businessType: activeUser.businessType,
           businessLocation: activeUser.businessLocation,
           businessAddress: activeUser.businessAddress,
           kitchenOpenTime: activeUser.kitchenOpenTime,
           kitchenCloseTime: activeUser.kitchenCloseTime,
-          businessEmail: activeUser.businessEmail,
           contactPersonName: activeUser.contactPersonName,
           contactPersonMobileNumber: activeUser.contactPersonMobileNumber,
           taxRate: Number(activeUser.taxRate ?? 5),
@@ -181,7 +184,7 @@ export class AuthService {
       data: { isRevoked: true },
     });
 
-    const tokens = await this.generateTokens(user.id, user.businessEmail, user.role, user.tenantId);
+    const tokens = await this.generateTokens(user.id, user.email, user.role, user.tenantId);
 
     return {
       accessToken: tokens.accessToken,
@@ -207,7 +210,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    return this.toProfileResponse(user);
   }
 
   async updateMe(userId: string, dto: UpdateProfileDto) {
@@ -222,24 +225,9 @@ export class AuthService {
           throw new NotFoundException('User not found');
         }
 
-        const hotelName = this.optionalTrim(dto.hotelName ?? dto.hotel_name);
-        const businessType = this.optionalTrim(dto.businessType ?? dto.business_type);
-        const businessLocation = this.optionalTrim(
-          dto.businessLocation ?? dto.business_location,
-        );
-        const businessAddress = this.optionalTrim(dto.businessAddress ?? dto.business_address);
-        const kitchenOpenTime = this.optionalTrim(dto.kitchenOpenTime ?? dto.kitchen_open_time);
-        const kitchenCloseTime = this.normalizeKitchenCloseTime(
-          dto.kitchenCloseTime ?? dto.kitchen_close_time,
-        );
-        const taxRate = this.optionalDecimal(dto.taxRate ?? dto.tax_rate);
-        const serviceChargeRate = this.optionalDecimal(
-          dto.serviceChargeRate ?? dto.service_charge_rate,
-        );
-        const discountRate = this.optionalDecimal(dto.discountRate ?? dto.discount_rate);
         const oldPassword = this.optionalTrim(dto.oldPassword);
         const newPassword = this.optionalTrim(dto.newPassword);
-        const confirmPassword = this.optionalTrim(dto.confirmPassword);
+        const confirmNewPassword = this.optionalTrim(dto.confirmNewPassword);
         const passwordChangeRequested = Boolean(newPassword);
 
         if (passwordChangeRequested) {
@@ -247,7 +235,7 @@ export class AuthService {
             throw new BadRequestException('Old password and new password are required to change password.');
           }
 
-          if (confirmPassword && confirmPassword !== newPassword) {
+          if (confirmNewPassword && confirmNewPassword !== newPassword) {
             throw new BadRequestException('Confirm password does not match new password.');
           }
 
@@ -260,43 +248,25 @@ export class AuthService {
         const updated = await tx.user.update({
           where: { id: userId },
           data: {
-            ...(hotelName && { hotelName }),
-            ...(businessType && { businessType }),
-            ...(businessLocation && { businessLocation }),
-            ...(businessAddress && { businessAddress }),
-            ...(kitchenOpenTime && { kitchenOpenTime }),
-            ...(kitchenCloseTime && { kitchenCloseTime }),
-            ...((dto.businessEmail ?? dto.business_email) && {
-              businessEmail: (dto.businessEmail ?? dto.business_email)!.toLowerCase().trim(),
+            ...(dto.email && {
+              email: dto.email.trim().toLowerCase(),
             }),
-            ...((dto.contactPersonName ?? dto.contact_person_name) && {
-              contactPersonName: (dto.contactPersonName ?? dto.contact_person_name)!.trim(),
+            ...(dto.contactPersonName && {
+              contactPersonName: dto.contactPersonName.trim(),
             }),
-            ...((dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number) && {
-              contactPersonMobileNumber: (
-                dto.contactPersonMobileNumber ?? dto.contact_person_mobile_number
-              )!.trim(),
+            ...(dto.contactPersonMobileNumber && {
+              contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
             }),
-            ...(taxRate !== undefined && { taxRate }),
-            ...(serviceChargeRate !== undefined && { serviceChargeRate }),
-            ...(discountRate !== undefined && { discountRate }),
             ...(newPassword && { passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS) }),
           },
           select: this.profileSelect,
         });
 
-        if (hotelName && currentUser.tenantId) {
-          await tx.tenant.update({
-            where: { id: currentUser.tenantId },
-            data: { name: hotelName },
-          });
-        }
-
-        return updated;
+        return this.toProfileResponse(updated);
       });
     } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new ConflictException('Business email already registered');
+        throw new ConflictException('Email already registered');
       }
       throw error;
     }
@@ -404,73 +374,27 @@ export class AuthService {
     return trimmed || undefined;
   }
 
-  private optionalDecimal(value?: number | null) {
-    if (value === undefined || value === null) {
-      return undefined;
-    }
-
-    return new Prisma.Decimal(value);
-  }
-
-  private normalizeKitchenCloseTime(value?: string | null) {
-    const trimmed = value?.trim();
-    if (!trimmed) {
-      return undefined;
-    }
-
-    const candidate = trimmed.replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
-    const amPmMatch = candidate.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
-    if (amPmMatch) {
-      const hour = Number(amPmMatch[1]);
-      const minute = Number(amPmMatch[2] ?? '0');
-      if (hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59) {
-        return `${hour}:${minute.toString().padStart(2, '0')} ${amPmMatch[3].toUpperCase()}`;
-      }
-    }
-
-    const twentyFourHourMatch = candidate.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
-    if (twentyFourHourMatch) {
-      const hour = Number(twentyFourHourMatch[1]);
-      const minute = Number(twentyFourHourMatch[2]);
-      const period = hour >= 12 ? 'PM' : 'AM';
-      const twelveHour = hour % 12 || 12;
-      return `${twelveHour}:${minute.toString().padStart(2, '0')} ${period}`;
-    }
-
-    throw new BadRequestException('kitchenCloseTime must be a valid time such as 11:00 PM, 11.pm, 11 pm, or 23:00');
-  }
-
   private toProfileResponse(user: any) {
     return {
       id: user.id,
-      businessEmail: user.businessEmail,
-      hotelName: user.hotelName,
-      businessType: user.businessType,
-      businessLocation: user.businessLocation,
-      businessAddress: user.businessAddress,
-      kitchenOpenTime: user.kitchenOpenTime,
-      kitchenCloseTime: user.kitchenCloseTime,
-      contactPersonName: user.contactPersonName,
-      contactPersonMobileNumber: user.contactPersonMobileNumber,
-      taxRate: Number(user.taxRate ?? 5),
-      serviceChargeRate: Number(user.serviceChargeRate ?? 3),
-      discountRate: Number(user.discountRate ?? 0),
+      email: user.email,
       role: user.role,
       tenantId: user.tenantId,
+      contactPersonName: user.contactPersonName,
+      contactPersonMobileNumber: user.contactPersonMobileNumber,
     };
   }
 
   private async generateTokens(
     userId: string,
-    businessEmail: string,
+    email: string,
     role: string,
     tenantId?: string | null,
   ) {
     const payload = {
       sub: userId,
       userId,
-      businessEmail,
-      email: businessEmail,
+      email,
       role,
       tenantId,
     };

@@ -9,8 +9,26 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
-const ORDER_STATUSES = ['accepted', 'preparing', 'ready', 'delivered', 'cancelled'] as const;
+const ORDER_STATUSES = [
+  'accepted',
+  'preparing',
+  'ready',
+  'delivered',
+  'cancelled',
+] as const;
+type OrderStatus = (typeof ORDER_STATUSES)[number];
+const ALLOWED_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  accepted: ['preparing', 'cancelled'],
+  preparing: ['ready', 'cancelled'],
+  ready: ['delivered', 'cancelled'],
+  delivered: [],
+  cancelled: [],
+};
 const ACTIVE_ORDER_STATUSES = ['accepted', 'preparing', 'ready'];
+const ORDER_DETAILS_INCLUDE = {
+  items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' as const } },
+  statusHistory: { orderBy: { changedAt: 'asc' as const } },
+};
 
 type ManagerOrdersQuery = {
   search?: string;
@@ -61,16 +79,23 @@ export class OrdersService {
     });
 
     const subtotal = dto.items.reduce(
-      (sum, item) => sum.plus(new Prisma.Decimal(item.unit_price).mul(item.quantity)),
+      (sum, item) =>
+        sum.plus(new Prisma.Decimal(item.unit_price).mul(item.quantity)),
       new Prisma.Decimal(0),
     );
     const taxRate = settings?.taxRate ?? new Prisma.Decimal(5);
-    const serviceChargeRate = settings?.serviceChargeRate ?? new Prisma.Decimal(3);
+    const serviceChargeRate =
+      settings?.serviceChargeRate ?? new Prisma.Decimal(3);
     const discountRate = settings?.discountRate ?? new Prisma.Decimal(0);
     const taxAmount = subtotal.mul(taxRate).div(100);
     const serviceChargeAmount = subtotal.mul(serviceChargeRate).div(100);
-    const discountAmount = discountRate.gt(0) ? subtotal.mul(discountRate).div(100) : new Prisma.Decimal(0);
-    const totalAmount = subtotal.plus(taxAmount).plus(serviceChargeAmount).minus(discountAmount);
+    const discountAmount = discountRate.gt(0)
+      ? subtotal.mul(discountRate).div(100)
+      : new Prisma.Decimal(0);
+    const totalAmount = subtotal
+      .plus(taxAmount)
+      .plus(serviceChargeAmount)
+      .minus(discountAmount);
     const paymentStatus = dto.payment?.status === 'paid' ? 'paid' : 'unpaid';
     const now = new Date();
 
@@ -114,8 +139,14 @@ export class OrdersService {
             };
           }),
         },
+        statusHistory: {
+          create: {
+            status: 'accepted',
+            changedAt: now,
+          },
+        },
       },
-      include: { items: true },
+      include: ORDER_DETAILS_INCLUDE,
     });
 
     return this.mapOrder(order);
@@ -129,7 +160,7 @@ export class OrdersService {
         ...(trimmedTenantId ? { tenantId: trimmedTenantId } : {}),
         deletedAt: null,
       },
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      include: ORDER_DETAILS_INCLUDE,
     });
     if (!order) {
       throw new NotFoundException('Order not found.');
@@ -137,7 +168,10 @@ export class OrdersService {
     return this.mapOrder(order);
   }
 
-  async findCustomerSessionOrders(customerSessionId: string, tenantId?: string) {
+  async findCustomerSessionOrders(
+    customerSessionId: string,
+    tenantId?: string,
+  ) {
     console.log('LOAD CUSTOMER SESSION ORDERS', {
       customerSessionId,
       tenantId,
@@ -158,7 +192,7 @@ export class OrdersService {
         tenantId: trimmedTenantId,
         deletedAt: null,
       },
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      include: ORDER_DETAILS_INCLUDE,
       orderBy: { placedAt: 'desc' },
     });
     return { orders: orders.map((order) => this.mapOrder(order)) };
@@ -170,7 +204,9 @@ export class OrdersService {
 
     const orders = await this.prisma.order.findMany({
       where,
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      include: {
+        items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } },
+      },
       orderBy: { placedAt: 'desc' },
     });
 
@@ -184,7 +220,7 @@ export class OrdersService {
     const tenantId = this.requireTenantId(currentUser);
     const order = await this.prisma.order.findFirst({
       where: { id, tenantId, deletedAt: null },
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      include: ORDER_DETAILS_INCLUDE,
     });
 
     if (!order) {
@@ -194,33 +230,80 @@ export class OrdersService {
     return this.mapOrder(order);
   }
 
-  async updateManagerOrderStatus(id: string, dto: UpdateOrderStatusDto, currentUser: any) {
+  async updateManagerOrderStatus(
+    id: string,
+    dto: UpdateOrderStatusDto,
+    currentUser: any,
+  ) {
     const tenantId = this.requireTenantId(currentUser);
     const orderStatus = dto.order_status ?? dto.orderStatus;
-    if (!ORDER_STATUSES.includes(orderStatus as any)) {
+    if (!ORDER_STATUSES.includes(orderStatus as OrderStatus)) {
       throw new BadRequestException('Invalid order_status.');
     }
+    const newStatus = orderStatus as OrderStatus;
 
-    const existing = await this.prisma.order.findFirst({
-      where: { id, tenantId, deletedAt: null },
-      select: { id: true },
+    const existing = await this.prisma.order.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        tenantId: true,
+        deletedAt: true,
+        orderStatus: true,
+        acceptedAt: true,
+        preparingAt: true,
+        readyAt: true,
+        deliveredAt: true,
+        cancelledAt: true,
+      },
     });
-    if (!existing) {
+    if (!existing || existing.tenantId !== tenantId || existing.deletedAt) {
       throw new NotFoundException('Order not found');
     }
 
-    const timestampField = this.statusTimestampField(orderStatus);
-    await this.prisma.order.updateMany({
-      where: { id, tenantId, deletedAt: null },
-      data: {
-        orderStatus,
-        ...(timestampField ? { [timestampField]: new Date() } : {}),
-      },
-    });
+    const currentStatus = existing.orderStatus as OrderStatus;
+    if (!ALLOWED_STATUS_TRANSITIONS[currentStatus]?.includes(newStatus)) {
+      throw new BadRequestException(
+        `Invalid status transition from ${existing.orderStatus} to ${newStatus}`,
+      );
+    }
+
+    const changedAt = new Date();
+    const timestampField = this.statusTimestampField(newStatus);
+    const data: Prisma.OrderUpdateInput = {
+      orderStatus: newStatus,
+    };
+
+    if (timestampField && !existing[timestampField]) {
+      data[timestampField] = changedAt;
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.order.update({
+        where: { id },
+        data,
+      }),
+      this.prisma.orderStatusHistory.create({
+        data: {
+          orderId: id,
+          status: newStatus,
+          changedAt,
+        },
+      }),
+    ]);
 
     const order = await this.prisma.order.findFirst({
       where: { id, tenantId, deletedAt: null },
-      include: { items: { where: { deletedAt: null }, orderBy: { createdAt: 'asc' } } },
+      include: ORDER_DETAILS_INCLUDE,
+    });
+
+    console.log('STATUS UPDATE RESULT', {
+      id: order?.id,
+      orderStatus: order?.orderStatus,
+      acceptedAt: order?.acceptedAt,
+      preparingAt: order?.preparingAt,
+      readyAt: order?.readyAt,
+      deliveredAt: order?.deliveredAt,
+      cancelledAt: order?.cancelledAt,
     });
 
     return this.mapOrder(order);
@@ -229,7 +312,9 @@ export class OrdersService {
   private requireTenantId(currentUser: any) {
     const tenantId = currentUser?.tenantId;
     if (!tenantId) {
-      throw new BadRequestException('Manager account is not connected to a restaurant.');
+      throw new BadRequestException(
+        'Manager account is not connected to a restaurant.',
+      );
     }
     return tenantId;
   }
@@ -326,8 +411,19 @@ export class OrdersService {
     };
   }
 
-  private statusTimestampField(status: string) {
-    const fields: Record<string, string> = {
+  private statusTimestampField(
+    status: string,
+  ):
+    | 'acceptedAt'
+    | 'preparingAt'
+    | 'readyAt'
+    | 'deliveredAt'
+    | 'cancelledAt'
+    | undefined {
+    const fields: Record<
+      string,
+      'acceptedAt' | 'preparingAt' | 'readyAt' | 'deliveredAt' | 'cancelledAt'
+    > = {
       accepted: 'acceptedAt',
       preparing: 'preparingAt',
       ready: 'readyAt',
@@ -357,6 +453,7 @@ export class OrdersService {
       customer_phone: order.customerPhone,
       order_type: order.orderType,
       order_status: order.orderStatus,
+      orderStatus: order.orderStatus,
       payment_status: order.paymentStatus,
       subtotal: Number(order.subtotal),
       tax_rate: Number(order.taxRate),
@@ -373,9 +470,26 @@ export class OrdersService {
       ready_at: order.readyAt,
       delivered_at: order.deliveredAt,
       cancelled_at: order.cancelledAt,
+      acceptedAt: order.acceptedAt,
+      preparingAt: order.preparingAt,
+      readyAt: order.readyAt,
+      deliveredAt: order.deliveredAt,
+      cancelledAt: order.cancelledAt,
       created_at: order.createdAt,
       updated_at: order.updatedAt,
       deleted_at: order.deletedAt,
+      statusHistory:
+        order.statusHistory?.length > 0
+          ? order.statusHistory.map((history: any) => ({
+              status: history.status,
+              changedAt: history.changedAt,
+            }))
+          : [
+              {
+                status: order.orderStatus,
+                changedAt: order.updatedAt,
+              },
+            ],
       items: (order.items ?? []).map((item: any) => ({
         id: item.id,
         order_id: item.orderId,
