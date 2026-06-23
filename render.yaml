@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: menuflow-backend
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build:prod
+    startCommand: npm run prisma:migrate:deploy && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_PUBLIC_URL
+        value: https://menu-flow-sl.vercel.app
+      - key: FRONTEND_ORIGINS
+        value: https://menu-flow-sl.vercel.app
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false

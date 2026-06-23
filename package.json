@@ -7,7 +7,10 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "build:prod": "npm run prisma:generate && npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "start": "nest start",
     "start:dev": "npm run start:dev:win",
     "start:dev:win": "set \"PATH=C:\\Windows\\System32;%PATH%\" && nest start --watch",
