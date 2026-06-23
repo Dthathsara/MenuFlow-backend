@@ -56,6 +56,8 @@ export const ModelName = {
   OrderStatusHistory: 'OrderStatusHistory',
   OrderItem: 'OrderItem',
   Tenant: 'Tenant',
+  GenerateQrCode: 'GenerateQrCode',
+  GenerateQrCodeScanLog: 'GenerateQrCodeScanLog',
   RefreshToken: 'RefreshToken',
   AuditLog: 'AuditLog',
   Menu: 'Menu',
@@ -121,6 +123,9 @@ export const OrderScalarFieldEnum = {
   customerSessionId: 'customerSessionId',
   tableId: 'tableId',
   qrCodeId: 'qrCodeId',
+  qrToken: 'qrToken',
+  tableNumber: 'tableNumber',
+  section: 'section',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   orderType: 'orderType',
@@ -191,6 +196,41 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const GenerateQrCodeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  tableNumber: 'tableNumber',
+  section: 'section',
+  qrToken: 'qrToken',
+  customerUrl: 'customerUrl',
+  qrImageUrl: 'qrImageUrl',
+  scanCount: 'scanCount',
+  lastScannedAt: 'lastScannedAt',
+  isActive: 'isActive',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type GenerateQrCodeScalarFieldEnum = (typeof GenerateQrCodeScalarFieldEnum)[keyof typeof GenerateQrCodeScalarFieldEnum]
+
+
+export const GenerateQrCodeScanLogScalarFieldEnum = {
+  id: 'id',
+  generateQrCodeId: 'generateQrCodeId',
+  tenantId: 'tenantId',
+  qrToken: 'qrToken',
+  tableNumber: 'tableNumber',
+  section: 'section',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  scannedAt: 'scannedAt'
+} as const
+
+export type GenerateQrCodeScanLogScalarFieldEnum = (typeof GenerateQrCodeScanLogScalarFieldEnum)[keyof typeof GenerateQrCodeScanLogScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {

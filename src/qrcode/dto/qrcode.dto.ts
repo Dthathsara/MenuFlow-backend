@@ -1,6 +1,10 @@
 import {
-  IsString, IsOptional, IsBoolean,
-  IsUUID, IsArray, MinLength,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsUUID,
+  IsArray,
+  MinLength,
 } from 'class-validator';
 
 export class CreateQrCodeDto {

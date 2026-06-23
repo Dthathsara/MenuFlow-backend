@@ -1,5 +1,10 @@
 import {
-  IsEmail, IsOptional, IsString, MinLength, MaxLength, Matches,
+  IsEmail,
+  IsOptional,
+  IsString,
+  MinLength,
+  MaxLength,
+  Matches,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -26,7 +31,8 @@ export class RegisterDto {
   @MinLength(8)
   @MaxLength(64)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, {
-    message: 'Password must include upper, lower, number, and special character',
+    message:
+      'Password must include upper, lower, number, and special character',
   })
   password!: string;
 
@@ -93,7 +99,8 @@ export class ChangePasswordDto {
   @MinLength(8)
   @MaxLength(64)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, {
-    message: 'Password must include upper, lower, number, and special character',
+    message:
+      'Password must include upper, lower, number, and special character',
   })
   newPassword!: string;
 }

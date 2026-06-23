@@ -1,6 +1,15 @@
 import {
-  Controller, Get, Post, Patch, Delete, Param,
-  Body, UseGuards, ParseUUIDPipe, HttpCode, HttpStatus,
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+  ParseUUIDPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { QrCodeService } from './qrcode.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -10,7 +19,12 @@ import { Public } from '../auth/decorators/public.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Role } from '../auth/enums/role.enum';
 import { CreateTableDto, UpdateTableDto } from './dto/table.dto';
-import { CreateQrCodeDto, UpdateQrCodeDto, AssignStaffDto } from './dto/qrcode.dto';
+import { CreateGenerateQrCodeDto } from './dto/generate-qrcode.dto';
+import {
+  CreateQrCodeDto,
+  UpdateQrCodeDto,
+  AssignStaffDto,
+} from './dto/qrcode.dto';
 
 // ─── PUBLIC SCAN (no auth) ────────────────────────────────────────────────
 @Controller('menu')
@@ -139,5 +153,42 @@ export class QrCodeController {
     @Param('userId', ParseUUIDPipe) userId: string,
   ) {
     return this.qrCodeService.removeStaff(id, userId);
+  }
+}
+
+@Controller('generate-qr-codes')
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class GenerateQrCodeController {
+  constructor(private qrCodeService: QrCodeService) {}
+
+  @Get()
+  @Roles(Role.STAFF)
+  findGeneratedQrCodes(@CurrentUser() currentUser: any) {
+    return this.qrCodeService.findGeneratedQrCodes(currentUser);
+  }
+
+  @Get('sections')
+  @Roles(Role.STAFF)
+  findGeneratedQrCodeSections(@CurrentUser() currentUser: any) {
+    return this.qrCodeService.findGeneratedQrCodeSections(currentUser);
+  }
+
+  @Post()
+  @Roles(Role.STAFF)
+  createGeneratedQrCode(
+    @Body() dto: CreateGenerateQrCodeDto,
+    @CurrentUser() currentUser: any,
+  ) {
+    return this.qrCodeService.createGeneratedQrCode(dto, currentUser);
+  }
+
+  @Delete(':id')
+  @Roles(Role.STAFF)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteGeneratedQrCode(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() currentUser: any,
+  ) {
+    return this.qrCodeService.deleteGeneratedQrCode(id, currentUser);
   }
 }

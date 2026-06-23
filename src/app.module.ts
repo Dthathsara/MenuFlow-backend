@@ -28,8 +28,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     OrdersModule,
   ],
   providers: [
-    { provide: APP_GUARD, useClass: ThrottlerGuard },    // Rate limiting globally
-    { provide: APP_GUARD, useClass: JwtAuthGuard },      // JWT guard globally
+    { provide: APP_GUARD, useClass: ThrottlerGuard }, // Rate limiting globally
+    { provide: APP_GUARD, useClass: JwtAuthGuard }, // JWT guard globally
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   ],

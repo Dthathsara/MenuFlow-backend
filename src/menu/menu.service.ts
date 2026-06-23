@@ -1,17 +1,30 @@
 import {
-  Injectable, NotFoundException, ForbiddenException,
-  ConflictException, Logger, BadRequestException, UnauthorizedException, HttpException,
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  ConflictException,
+  Logger,
+  BadRequestException,
+  UnauthorizedException,
+  HttpException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import {
-  CreateCategoryDto, UpdateCategoryDto, CreateManagerCategoryDto,
-  CreateSubCategoryDto, UpdateSubCategoryDto,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+  CreateManagerCategoryDto,
+  CreateSubCategoryDto,
+  UpdateSubCategoryDto,
 } from './dto/category.dto';
 import {
-  CreateMenuItemDto, UpdateMenuItemDto,
-  UpdateMenuItemOptionDto, UpdatePriceDto,
-  AddMenuItemsQueryDto, CreateAddMenuItemDto, UpdateAddMenuItemDto,
+  CreateMenuItemDto,
+  UpdateMenuItemDto,
+  UpdateMenuItemOptionDto,
+  UpdatePriceDto,
+  AddMenuItemsQueryDto,
+  CreateAddMenuItemDto,
+  UpdateAddMenuItemDto,
 } from './dto/menu-item.dto';
 import { CreateQrCodeDto, UpdateQrCodeDto } from './dto/qr-code.dto';
 import { nanoid } from 'nanoid';
@@ -91,7 +104,9 @@ export class MenuService {
       });
     } catch (e: any) {
       if (e.code === 'P2002') {
-        throw new ConflictException(`Category "${dto.name}" already exists for this tenant`);
+        throw new ConflictException(
+          `Category "${dto.name}" already exists for this tenant`,
+        );
       }
       throw e;
     }
@@ -183,7 +198,9 @@ export class MenuService {
       });
     } catch (e: any) {
       if (e.code === 'P2002') {
-        throw new ConflictException(`SubCategory "${dto.name}" already exists in this category`);
+        throw new ConflictException(
+          `SubCategory "${dto.name}" already exists in this category`,
+        );
       }
       throw e;
     }
@@ -312,8 +329,10 @@ export class MenuService {
       if (dto.sub_category_name !== undefined) {
         itemData.subCategoryName = dto.sub_category_name?.trim() || null;
       }
-      if (dto.description !== undefined) itemData.description = dto.description?.trim();
-      if (dto.image_url !== undefined) itemData.imageUrl = this.normalizeImageUrl(dto.image_url);
+      if (dto.description !== undefined)
+        itemData.description = dto.description?.trim();
+      if (dto.image_url !== undefined)
+        itemData.imageUrl = this.normalizeImageUrl(dto.image_url);
       if (dto.small_price !== undefined) {
         itemData.smallPrice = this.toDecimal(dto.small_price, 'small_price');
       }
@@ -323,8 +342,10 @@ export class MenuService {
       if (dto.large_price !== undefined) {
         itemData.largePrice = this.toDecimal(dto.large_price, 'large_price');
       }
-      if (dto.prep_time_min !== undefined) itemData.prepTimeMin = dto.prep_time_min;
-      if (dto.is_available !== undefined) itemData.isAvailable = dto.is_available;
+      if (dto.prep_time_min !== undefined)
+        itemData.prepTimeMin = dto.prep_time_min;
+      if (dto.is_available !== undefined)
+        itemData.isAvailable = dto.is_available;
 
       const updated = await this.prisma.addMenuItem.update({
         where: { id },
@@ -432,7 +453,9 @@ export class MenuService {
   }
 
   async toggleAvailability(id: string, currentUser?: any) {
-    const tenantId = currentUser ? await this.getTenantIdForUser(currentUser) : undefined;
+    const tenantId = currentUser
+      ? await this.getTenantIdForUser(currentUser)
+      : undefined;
     if (!tenantId) {
       const item = await this.findMenuItemById(id);
       return this.prisma.menuItem.update({
@@ -453,7 +476,9 @@ export class MenuService {
   // ─── OPTIONS & PRICING ────────────────────────────────────────────────────
 
   async updateOptionPrice(
-    optionId: string, dto: UpdatePriceDto, userId: string,
+    optionId: string,
+    dto: UpdatePriceDto,
+    userId: string,
   ) {
     const option = await this.prisma.menuItemOption.findUnique({
       where: { id: optionId },
@@ -471,7 +496,8 @@ export class MenuService {
           optionId,
           price: option.price,
           changedById: userId,
-          note: dto.note ?? `Price changed from ${option.price} to ${dto.price}`,
+          note:
+            dto.note ?? `Price changed from ${option.price} to ${dto.price}`,
         },
       });
 
@@ -482,7 +508,11 @@ export class MenuService {
     });
   }
 
-  async updateOption(optionId: string, dto: UpdateMenuItemOptionDto, userId: string) {
+  async updateOption(
+    optionId: string,
+    dto: UpdateMenuItemOptionDto,
+    userId: string,
+  ) {
     const option = await this.prisma.menuItemOption.findUnique({
       where: { id: optionId },
     });
@@ -490,27 +520,29 @@ export class MenuService {
 
     // If price is changing, record history
     if (dto.price !== undefined && Number(option.price) !== dto.price) {
-        await this.prisma.$transaction(async (tx) => {
-          await tx.priceHistory.create({
-            data: {
-              optionId,
-              price: option.price,
-              changedById: userId,
-              note: dto.priceChangeNote ?? `Price updated from ${option.price} to ${dto.price}`,
-            },
-          });
-          await tx.menuItemOption.update({
-            where: { id: optionId },
-            data: {
-              label: dto.label,
-              price: dto.price,
-              isDefault: dto.isDefault,
-              isAvailable: dto.isAvailable,
-              sortOrder: dto.sortOrder,
-            },
-          });
+      await this.prisma.$transaction(async (tx) => {
+        await tx.priceHistory.create({
+          data: {
+            optionId,
+            price: option.price,
+            changedById: userId,
+            note:
+              dto.priceChangeNote ??
+              `Price updated from ${option.price} to ${dto.price}`,
+          },
         });
-        return this.prisma.menuItemOption.findUnique({ where: { id: optionId } });
+        await tx.menuItemOption.update({
+          where: { id: optionId },
+          data: {
+            label: dto.label,
+            price: dto.price,
+            isDefault: dto.isDefault,
+            isAvailable: dto.isAvailable,
+            sortOrder: dto.sortOrder,
+          },
+        });
+      });
+      return this.prisma.menuItemOption.findUnique({ where: { id: optionId } });
     }
 
     return this.prisma.menuItemOption.update({
@@ -576,7 +608,10 @@ export class MenuService {
 
     // Increment scan count (non-blocking)
     this.prisma.qrCode
-      .update({ where: { id: qrCode.id }, data: { scanCount: { increment: 1 } } })
+      .update({
+        where: { id: qrCode.id },
+        data: { scanCount: { increment: 1 } },
+      })
       .catch((e) => this.logger.error('Failed to increment scan count', e));
 
     const menu = qrCode.menuId
@@ -627,7 +662,10 @@ export class MenuService {
   // ─── HELPERS ──────────────────────────────────────────────────────────────
 
   private getUserId(currentUser: any) {
-    const userId = typeof currentUser === 'string' ? currentUser : currentUser?.id ?? currentUser?.sub;
+    const userId =
+      typeof currentUser === 'string'
+        ? currentUser
+        : (currentUser?.id ?? currentUser?.sub);
     if (!userId) {
       throw new UnauthorizedException('Authentication is required.');
     }
@@ -646,7 +684,9 @@ export class MenuService {
     });
 
     if (!user?.tenantId) {
-      throw new ForbiddenException('Your account is not connected to a restaurant.');
+      throw new ForbiddenException(
+        'Your account is not connected to a restaurant.',
+      );
     }
 
     return user.tenantId;
@@ -669,11 +709,17 @@ export class MenuService {
     }
 
     if (trimmed.length > maxImageUrlLength) {
-      throw new BadRequestException('Image is too large. Please upload an image under 10MB.');
+      throw new BadRequestException(
+        'Image is too large. Please upload an image under 10MB.',
+      );
     }
 
     if (trimmed.startsWith('data:')) {
-      if (!/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(trimmed)) {
+      if (
+        !/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(
+          trimmed,
+        )
+      ) {
         throw new BadRequestException(
           'Invalid image format. Only PNG, JPG, JPEG, and WEBP images are supported.',
         );
@@ -698,7 +744,9 @@ export class MenuService {
   private toDecimal(value: number | undefined, fieldName: string) {
     const numericValue = value ?? 0;
     if (!Number.isFinite(numericValue) || numericValue < 0) {
-      throw new BadRequestException(`${fieldName} must be a number greater than or equal to 0.`);
+      throw new BadRequestException(
+        `${fieldName} must be a number greater than or equal to 0.`,
+      );
     }
 
     return new Prisma.Decimal(numericValue);
@@ -710,11 +758,15 @@ export class MenuService {
     }
 
     if (error?.code === 'P2002') {
-      throw new ConflictException('A record with these details already exists.');
+      throw new ConflictException(
+        'A record with these details already exists.',
+      );
     }
 
     if (error?.code === 'P2003') {
-      throw new BadRequestException('Invalid related record. Please refresh and try again.');
+      throw new BadRequestException(
+        'Invalid related record. Please refresh and try again.',
+      );
     }
 
     if (error?.code === 'P2025') {
@@ -736,7 +788,10 @@ export class MenuService {
     return item;
   }
 
-  private async ensureCategoryBelongsToTenant(categoryId: string, tenantId: string) {
+  private async ensureCategoryBelongsToTenant(
+    categoryId: string,
+    tenantId: string,
+  ) {
     const category = await this.prisma.category.findFirst({
       where: { id: categoryId, tenantId, isActive: true },
       select: { id: true, name: true },
@@ -816,11 +871,22 @@ export class MenuService {
     categoryId: string | null | undefined,
     dto: { sub_category_name?: string | null; sub_category_id?: string | null },
   ) {
-    const hasSubCategoryName = Object.prototype.hasOwnProperty.call(dto, 'sub_category_name');
-    const hasSubCategoryId = Object.prototype.hasOwnProperty.call(dto, 'sub_category_id');
+    const hasSubCategoryName = Object.prototype.hasOwnProperty.call(
+      dto,
+      'sub_category_name',
+    );
+    const hasSubCategoryId = Object.prototype.hasOwnProperty.call(
+      dto,
+      'sub_category_id',
+    );
 
     if (hasSubCategoryName) {
-      return this.findOrCreateSubCategory(client, tenantId, categoryId, dto.sub_category_name);
+      return this.findOrCreateSubCategory(
+        client,
+        tenantId,
+        categoryId,
+        dto.sub_category_name,
+      );
     }
 
     if (!hasSubCategoryId) {
@@ -846,7 +912,9 @@ export class MenuService {
     });
 
     if (!subCategory) {
-      throw new NotFoundException(`SubCategory ${dto.sub_category_id} not found`);
+      throw new NotFoundException(
+        `SubCategory ${dto.sub_category_id} not found`,
+      );
     }
 
     return subCategory.id;
@@ -1015,7 +1083,8 @@ export class MenuService {
   private toManagerMenuItemResponse(item: any) {
     const optionPrice = (label: string) => {
       const option = item.options?.find(
-        (candidate: any) => candidate.label?.toLowerCase() === label.toLowerCase(),
+        (candidate: any) =>
+          candidate.label?.toLowerCase() === label.toLowerCase(),
       );
       return Number(option?.price ?? 0);
     };
@@ -1026,7 +1095,9 @@ export class MenuService {
       description: item.description,
       image_url: item.imageUrl,
       category_id: item.categoryId,
-      category: item.category ? { id: item.category.id, name: item.category.name } : null,
+      category: item.category
+        ? { id: item.category.id, name: item.category.name }
+        : null,
       category_name: item.category?.name ?? '',
       sub_category_name: item.subCategory?.name ?? '',
       prep_time_min: item.prepTimeMin,
@@ -1110,7 +1181,9 @@ export class MenuService {
   }
 
   private async ensureTenantExists(tenantId: string) {
-    const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
     if (!tenant) throw new NotFoundException(`Tenant ${tenantId} not found`);
     return tenant;
   }

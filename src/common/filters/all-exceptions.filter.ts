@@ -1,6 +1,10 @@
 import {
-  ExceptionFilter, Catch, ArgumentsHost,
-  HttpException, HttpStatus, Logger,
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
@@ -21,23 +25,25 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const exceptionResponse =
       exception instanceof HttpException
         ? exception.getResponse()
-        : this.getNonHttpMessage(exception) ?? 'Internal server error';
+        : (this.getNonHttpMessage(exception) ?? 'Internal server error');
 
     const responseBody =
       typeof exceptionResponse === 'object' && exceptionResponse !== null
-        ? exceptionResponse as Record<string, any>
+        ? (exceptionResponse as Record<string, any>)
         : {};
 
     const message =
       typeof exceptionResponse === 'string'
         ? exceptionResponse
-        : responseBody.message ?? 'Internal server error';
+        : (responseBody.message ?? 'Internal server error');
 
     const error =
       typeof exceptionResponse === 'string'
         ? exceptionResponse
-        : responseBody.error ??
-          (exception instanceof HttpException ? exception.name.replace('Exception', '') : 'Internal Server Error');
+        : (responseBody.error ??
+          (exception instanceof HttpException
+            ? exception.name.replace('Exception', '')
+            : 'Internal Server Error'));
 
     const errorResponse = {
       statusCode: status,
@@ -77,7 +83,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     return undefined;
   }
 
-  private isMulterLikeError(exception: unknown): exception is { code?: string; message?: string } {
-    return typeof exception === 'object' && exception !== null && 'code' in exception;
+  private isMulterLikeError(
+    exception: unknown,
+  ): exception is { code?: string; message?: string } {
+    return (
+      typeof exception === 'object' && exception !== null && 'code' in exception
+    );
   }
 }

@@ -11,7 +11,12 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { PrismaService } from '../prisma/prisma.service';
-import { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from './dto/auth.dto';
+import {
+  ChangePasswordDto,
+  LoginDto,
+  RegisterDto,
+  UpdateProfileDto,
+} from './dto/auth.dto';
 import { Role } from './enums/role.enum';
 
 const BCRYPT_ROUNDS = 12;
@@ -70,24 +75,24 @@ export class AuthService {
             tenantId: tenant.id,
             role: Role.MANAGER,
           },
-        select: {
-          id: true,
-          hotelName: true,
-          businessType: true,
-          businessLocation: true,
-          businessAddress: true,
-          kitchenOpenTime: true,
-          kitchenCloseTime: true,
-          email: true,
-          contactPersonName: true,
-          contactPersonMobileNumber: true,
-          taxRate: true,
-          serviceChargeRate: true,
-          discountRate: true,
+          select: {
+            id: true,
+            hotelName: true,
+            businessType: true,
+            businessLocation: true,
+            businessAddress: true,
+            kitchenOpenTime: true,
+            kitchenCloseTime: true,
+            email: true,
+            contactPersonName: true,
+            contactPersonMobileNumber: true,
+            taxRate: true,
+            serviceChargeRate: true,
+            discountRate: true,
             role: true,
             tenantId: true,
-          createdAt: true,
-        },
+            createdAt: true,
+          },
         });
       });
     } catch (error: any) {
@@ -115,7 +120,10 @@ export class AuthService {
 
       const isValid = user
         ? await bcrypt.compare(dto.password, user.passwordHash)
-        : await bcrypt.compare(dto.password, '$2b$12$invalidhashfortimingattackprevention');
+        : await bcrypt.compare(
+            dto.password,
+            '$2b$12$invalidhashfortimingattackprevention',
+          );
 
       if (!user || !isValid) {
         throw new UnauthorizedException('Invalid email or password');
@@ -164,7 +172,9 @@ export class AuthService {
   }
 
   async refreshTokens(token: string) {
-    const stored = await this.prisma.refreshToken.findUnique({ where: { token } });
+    const stored = await this.prisma.refreshToken.findUnique({
+      where: { token },
+    });
 
     if (!stored || stored.isRevoked || stored.expiresAt < new Date()) {
       throw new UnauthorizedException('Invalid or expired refresh token');
@@ -177,14 +187,20 @@ export class AuthService {
         isActive: true,
       },
     });
-    if (!user || !user.isActive) throw new UnauthorizedException('User inactive');
+    if (!user || !user.isActive)
+      throw new UnauthorizedException('User inactive');
 
     await this.prisma.refreshToken.update({
       where: { id: stored.id },
       data: { isRevoked: true },
     });
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role, user.tenantId);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+      user.tenantId,
+    );
 
     return {
       accessToken: tokens.accessToken,
@@ -232,14 +248,21 @@ export class AuthService {
 
         if (passwordChangeRequested) {
           if (!oldPassword) {
-            throw new BadRequestException('Old password and new password are required to change password.');
+            throw new BadRequestException(
+              'Old password and new password are required to change password.',
+            );
           }
 
           if (confirmNewPassword && confirmNewPassword !== newPassword) {
-            throw new BadRequestException('Confirm password does not match new password.');
+            throw new BadRequestException(
+              'Confirm password does not match new password.',
+            );
           }
 
-          const isValid = await bcrypt.compare(oldPassword, currentUser.passwordHash);
+          const isValid = await bcrypt.compare(
+            oldPassword,
+            currentUser.passwordHash,
+          );
           if (!isValid) {
             throw new BadRequestException('Old password is incorrect');
           }
@@ -257,7 +280,9 @@ export class AuthService {
             ...(dto.contactPersonMobileNumber && {
               contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
             }),
-            ...(newPassword && { passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS) }),
+            ...(newPassword && {
+              passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS),
+            }),
           },
           select: this.profileSelect,
         });
@@ -280,7 +305,10 @@ export class AuthService {
 
     const isValid = user
       ? await bcrypt.compare(dto.oldPassword, user.passwordHash)
-      : await bcrypt.compare(dto.oldPassword, '$2b$12$invalidhashfortimingattackprevention');
+      : await bcrypt.compare(
+          dto.oldPassword,
+          '$2b$12$invalidhashfortimingattackprevention',
+        );
 
     if (!user || !isValid) {
       throw new BadRequestException('Old password is incorrect');
@@ -324,11 +352,16 @@ export class AuthService {
 
   private async createTenantForHotelName(tx: any, hotelName: string) {
     const tenantName = hotelName.trim();
-    const baseSlug = this.slugify(tenantName) || `tenant-${nanoid(6).toLowerCase()}`;
+    const baseSlug =
+      this.slugify(tenantName) || `tenant-${nanoid(6).toLowerCase()}`;
 
     for (let attempt = 0; attempt < 5; attempt += 1) {
-      const slug = attempt === 0 ? baseSlug : `${baseSlug}-${nanoid(6).toLowerCase()}`;
-      const existing = await tx.tenant.findUnique({ where: { slug }, select: { id: true } });
+      const slug =
+        attempt === 0 ? baseSlug : `${baseSlug}-${nanoid(6).toLowerCase()}`;
+      const existing = await tx.tenant.findUnique({
+        where: { slug },
+        select: { id: true },
+      });
       if (existing) {
         continue;
       }

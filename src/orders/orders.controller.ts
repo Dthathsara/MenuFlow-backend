@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Public } from '../auth/decorators/public.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -25,15 +34,15 @@ export class CustomerOrdersController {
     @Param('customerSessionId') customerSessionId: string,
     @Query('tenantId') tenantId?: string,
   ) {
-    return this.ordersService.findCustomerSessionOrders(customerSessionId, tenantId);
+    return this.ordersService.findCustomerSessionOrders(
+      customerSessionId,
+      tenantId,
+    );
   }
 
   @Public()
   @Get(':id')
-  findOne(
-    @Param('id') id: string,
-    @Query('tenantId') tenantId?: string,
-  ) {
+  findOne(@Param('id') id: string, @Query('tenantId') tenantId?: string) {
     return this.ordersService.findCustomerOrder(id, tenantId);
   }
 }
@@ -50,20 +59,25 @@ export class AdminOrdersController {
     @Query('search') search?: string,
     @Query('paymentStatus') paymentStatus?: string,
     @Query('orderStatus') orderStatus?: string,
+    @Query('qrCodeId') qrCodeId?: string,
+    @Query('qrToken') qrToken?: string,
+    @Query('tableNumber') tableNumber?: string,
+    @Query('section') section?: string,
   ) {
     return this.ordersService.findManagerOrders(currentUser, {
       search,
       paymentStatus,
       orderStatus,
+      qrCodeId,
+      qrToken,
+      tableNumber,
+      section,
     });
   }
 
   @Get(':id')
   @Roles(Role.STAFF)
-  findOne(
-    @Param('id') id: string,
-    @CurrentUser() currentUser: any,
-  ) {
+  findOne(@Param('id') id: string, @CurrentUser() currentUser: any) {
     return this.ordersService.findManagerOrder(id, currentUser);
   }
 

@@ -1,11 +1,18 @@
 import {
-  BadRequestException, Injectable, NotFoundException, ForbiddenException, Logger,
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { unlink } from 'fs/promises';
 import { Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateRestaurantProfileDto, UpdateUserDto } from './dto/update-user.dto';
+import {
+  UpdateRestaurantProfileDto,
+  UpdateUserDto,
+} from './dto/update-user.dto';
 import { Role } from '../auth/enums/role.enum';
 import {
   buildRestaurantImagePublicUrl,
@@ -129,7 +136,11 @@ export class UsersService {
     return this.toRestaurantProfileResponse(user);
   }
 
-  async updateRole(id: string, newRole: Role, currentUser: { id: string; role: string }) {
+  async updateRole(
+    id: string,
+    newRole: Role,
+    currentUser: { id: string; role: string },
+  ) {
     const target = await this.findOne(id);
 
     // Cannot change your own role
@@ -137,18 +148,24 @@ export class UsersService {
       throw new ForbiddenException('You cannot change your own role');
     }
 
-    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(currentUser.role as Role);
+    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(
+      currentUser.role as Role,
+    );
     const targetRoleIndex = ROLE_HIERARCHY.indexOf(target.role as Role);
     const newRoleIndex = ROLE_HIERARCHY.indexOf(newRole);
 
     // Can only manage users with a strictly lower role
     if (targetRoleIndex >= currentUserRoleIndex) {
-      throw new ForbiddenException('You cannot modify a user with equal or higher role');
+      throw new ForbiddenException(
+        'You cannot modify a user with equal or higher role',
+      );
     }
 
     // Can only assign roles strictly below your own
     if (newRoleIndex >= currentUserRoleIndex) {
-      throw new ForbiddenException('You cannot assign a role equal to or higher than your own');
+      throw new ForbiddenException(
+        'You cannot assign a role equal to or higher than your own',
+      );
     }
 
     const updated = await this.prisma.user.update({
@@ -177,11 +194,15 @@ export class UsersService {
 
     if (newPassword) {
       if (!oldPassword) {
-        throw new BadRequestException('Old password and new password are required to change password.');
+        throw new BadRequestException(
+          'Old password and new password are required to change password.',
+        );
       }
 
       if (confirmNewPassword && confirmNewPassword !== newPassword) {
-        throw new BadRequestException('Confirm password does not match new password.');
+        throw new BadRequestException(
+          'Confirm password does not match new password.',
+        );
       }
 
       const isValid = await bcrypt.compare(oldPassword, existing.passwordHash);
@@ -203,7 +224,9 @@ export class UsersService {
           ...(dto.contactPersonMobileNumber && {
             contactPersonMobileNumber: dto.contactPersonMobileNumber.trim(),
           }),
-          ...(newPassword && { passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS) }),
+          ...(newPassword && {
+            passwordHash: await bcrypt.hash(newPassword, BCRYPT_ROUNDS),
+          }),
         },
         select: this.accountSelect,
       });
@@ -230,7 +253,9 @@ export class UsersService {
     const businessLocation = this.optionalTrim(dto.businessLocation);
     const businessAddress = this.optionalTrim(dto.businessAddress);
     const kitchenOpenTime = this.optionalTrim(dto.kitchenOpenTime);
-    const kitchenCloseTime = this.normalizeKitchenCloseTime(dto.kitchenCloseTime);
+    const kitchenCloseTime = this.normalizeKitchenCloseTime(
+      dto.kitchenCloseTime,
+    );
     const taxRate = this.optionalDecimal(dto.taxRate);
     const serviceChargeRate = this.optionalDecimal(dto.serviceChargeRate);
     const discountRate = this.optionalDecimal(dto.discountRate);
@@ -284,8 +309,13 @@ export class UsersService {
         select: this.safeSelect,
       });
 
-      if (existing.restaurantImageUrl && existing.restaurantImageUrl !== imageUrl) {
-        await this.safeDeletePreviousRestaurantImage(existing.restaurantImageUrl);
+      if (
+        existing.restaurantImageUrl &&
+        existing.restaurantImageUrl !== imageUrl
+      ) {
+        await this.safeDeletePreviousRestaurantImage(
+          existing.restaurantImageUrl,
+        );
       }
 
       return this.toUserResponse(updated);
@@ -301,11 +331,15 @@ export class UsersService {
     }
 
     const target = await this.findOne(id);
-    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(currentUser.role as Role);
+    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(
+      currentUser.role as Role,
+    );
     const targetRoleIndex = ROLE_HIERARCHY.indexOf(target.role as Role);
 
     if (targetRoleIndex >= currentUserRoleIndex) {
-      throw new ForbiddenException('You cannot deactivate a user with equal or higher role');
+      throw new ForbiddenException(
+        'You cannot deactivate a user with equal or higher role',
+      );
     }
 
     const updated = await this.prisma.user.update({
@@ -324,11 +358,15 @@ export class UsersService {
     }
 
     const target = await this.findOne(id);
-    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(currentUser.role as Role);
+    const currentUserRoleIndex = ROLE_HIERARCHY.indexOf(
+      currentUser.role as Role,
+    );
     const targetRoleIndex = ROLE_HIERARCHY.indexOf(target.role as Role);
 
     if (targetRoleIndex >= currentUserRoleIndex) {
-      throw new ForbiddenException('You cannot delete a user with equal or higher role');
+      throw new ForbiddenException(
+        'You cannot delete a user with equal or higher role',
+      );
     }
 
     await this.prisma.user.update({
@@ -340,7 +378,9 @@ export class UsersService {
   }
 
   private async ensureTenantExists(tenantId: string) {
-    const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
     if (!tenant) throw new NotFoundException(`Tenant ${tenantId} not found`);
     return tenant;
   }
@@ -383,7 +423,9 @@ export class UsersService {
       return `${twelveHour}:${minute.toString().padStart(2, '0')} ${period}`;
     }
 
-    throw new BadRequestException('kitchenCloseTime must be a valid time such as 11:00 PM, 11.pm, 11 pm, or 23:00');
+    throw new BadRequestException(
+      'kitchenCloseTime must be a valid time such as 11:00 PM, 11.pm, 11 pm, or 23:00',
+    );
   }
 
   private toUserResponse(user: any) {

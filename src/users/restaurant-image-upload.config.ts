@@ -57,28 +57,50 @@ export function resolveRestaurantImageFilePath(publicUrl: string) {
 
 export const restaurantImageMulterOptions = {
   storage: diskStorage({
-    destination: (_request: Express.Request, _file: Express.Multer.File, callback) => {
+    destination: (
+      _request: Express.Request,
+      _file: Express.Multer.File,
+      callback,
+    ) => {
       callback(null, RESTAURANT_IMAGE_UPLOAD_DIR);
     },
-    filename: (_request: Express.Request, file: Express.Multer.File, callback) => {
+    filename: (
+      _request: Express.Request,
+      file: Express.Multer.File,
+      callback,
+    ) => {
       const extension = resolveImageExtension(file);
 
       if (!extension) {
-        callback(new BadRequestException('Only jpg, jpeg, png, and webp images are allowed'), '');
+        callback(
+          new BadRequestException(
+            'Only jpg, jpeg, png, and webp images are allowed',
+          ),
+          '',
+        );
         return;
       }
 
       callback(null, `restaurant-${Date.now()}-${nanoid(12)}${extension}`);
     },
   }),
-  fileFilter: (_request: Express.Request, file: Express.Multer.File, callback) => {
+  fileFilter: (
+    _request: Express.Request,
+    file: Express.Multer.File,
+    callback,
+  ) => {
     const extension = extname(file.originalname).toLowerCase();
     const isAllowed =
       ALLOWED_IMAGE_EXTENSIONS.has(extension) &&
       ALLOWED_IMAGE_MIME_TYPES.has(file.mimetype);
 
     if (!isAllowed) {
-      callback(new BadRequestException('Only jpg, jpeg, png, and webp images are allowed'), false);
+      callback(
+        new BadRequestException(
+          'Only jpg, jpeg, png, and webp images are allowed',
+        ),
+        false,
+      );
       return;
     }
 

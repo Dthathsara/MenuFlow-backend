@@ -62,10 +62,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  updateMe(
-    @CurrentUser() currentUser: any,
-    @Body() dto: UpdateProfileDto,
-  ) {
+  updateMe(@CurrentUser() currentUser: any, @Body() dto: UpdateProfileDto) {
     return this.authService.updateMe(this.getCurrentUserId(currentUser), dto);
   }
 
@@ -75,7 +72,10 @@ export class AuthController {
     @CurrentUser() currentUser: any,
     @Body() dto: ChangePasswordDto,
   ) {
-    return this.authService.changePassword(this.getCurrentUserId(currentUser), dto);
+    return this.authService.changePassword(
+      this.getCurrentUserId(currentUser),
+      dto,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

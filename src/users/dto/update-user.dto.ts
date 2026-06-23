@@ -1,4 +1,12 @@
-import { IsEmail, IsEnum, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Role } from '../../auth/enums/role.enum';
 
@@ -56,7 +64,6 @@ export class UpdateUserDto {
   @Transform(emptyStringToUndefined)
   @IsString()
   confirmNewPassword?: string;
-
 }
 
 export class UpdateUserRoleDto {

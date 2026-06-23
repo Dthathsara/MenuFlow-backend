@@ -1,5 +1,9 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { BadRequestException, ValidationError, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import * as express from 'express';
 import { mkdirSync } from 'fs';
 import { join } from 'path';
@@ -28,13 +32,31 @@ async function bootstrap() {
   mkdirSync(RESTAURANT_IMAGE_UPLOAD_ROOT, { recursive: true });
   app.use(
     '/uploads',
-    express.static(join(process.cwd(), 'uploads')),
+    express.static(join(process.cwd(), 'uploads'), {
+      etag: true,
+      lastModified: true,
+      setHeaders: (response) => {
+        response.setHeader(
+          'Cache-Control',
+          'public, max-age=2592000, immutable',
+        );
+      },
+    }),
   );
+  const frontendOrigins = (
+    process.env.FRONTEND_ORIGINS ||
+    'http://localhost:3000,http://127.0.0.1:3000,http://192.168.11.1:3000'
+  )
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Allowed CORS origins:', frontendOrigins);
+  }
+
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-    ],
+    origin: frontendOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -43,9 +65,9 @@ async function bootstrap() {
   // Global validation — whitelist strips unknown fields
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,           // Strip unknown properties
+      whitelist: true, // Strip unknown properties
       forbidNonWhitelisted: true, // Error on unknown properties
-      transform: true,            // Auto-transform to DTO types
+      transform: true, // Auto-transform to DTO types
       transformOptions: { enableImplicitConversion: true },
       exceptionFactory: (errors: ValidationError[]) =>
         new BadRequestException({
@@ -88,7 +110,9 @@ function flattenValidationErrors(errors: ValidationError[]) {
 
     if (error.constraints) {
       messages.push(
-        ...Object.values(error.constraints).map((message) => `${propertyPath}: ${message}`),
+        ...Object.values(error.constraints).map(
+          (message) => `${propertyPath}: ${message}`,
+        ),
       );
     }
 
@@ -98,4 +122,3 @@ function flattenValidationErrors(errors: ValidationError[]) {
   errors.forEach((error) => collect(error));
   return messages;
 }
-

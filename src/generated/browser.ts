@@ -43,6 +43,16 @@ export type OrderItem = Prisma.OrderItemModel
  */
 export type Tenant = Prisma.TenantModel
 /**
+ * Model GenerateQrCode
+ * 
+ */
+export type GenerateQrCode = Prisma.GenerateQrCodeModel
+/**
+ * Model GenerateQrCodeScanLog
+ * 
+ */
+export type GenerateQrCodeScanLog = Prisma.GenerateQrCodeScanLogModel
+/**
  * Model RefreshToken
  * 
  */

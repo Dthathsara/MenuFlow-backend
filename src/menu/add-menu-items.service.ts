@@ -21,7 +21,14 @@ export class AddMenuItemsService {
     private jwt: JwtService,
   ) {}
 
-  async getCustomerMenu(query: { tenantId?: string; slug?: string; authorization?: string }) {
+  async getCustomerMenu(query: {
+    tenantId?: string;
+    slug?: string;
+    qrToken?: string;
+    authorization?: string;
+    ipAddress?: string;
+    userAgent?: string;
+  }) {
     try {
       const resolved = await this.resolveCustomerTenant(query);
 
@@ -79,8 +86,13 @@ export class AddMenuItemsService {
       return {
         restaurant: this.buildRestaurant(tenant, user),
         categories: this.groupCustomerMenuItems(items),
+        ...(resolved.qrContext && { qrContext: resolved.qrContext }),
       };
     } catch (error) {
+      if (query.qrToken) {
+        throw error;
+      }
+
       console.error('Failed to load customer menu from add_menu_items:', error);
       return {
         restaurant: this.defaultRestaurant(),
@@ -171,7 +183,10 @@ export class AddMenuItemsService {
       },
     });
 
-    console.log('Saved add_menu_items image_url:', item.imageUrl?.slice?.(0, 30));
+    console.log(
+      'Saved add_menu_items image_url:',
+      item.imageUrl?.slice?.(0, 30),
+    );
 
     return this.mapAddMenuItem(item);
   }
@@ -202,13 +217,18 @@ export class AddMenuItemsService {
       data.subCategoryName = dto.sub_category_name?.trim() || null;
     }
 
-    if (dto.description !== undefined) data.description = dto.description?.trim();
-    if (dto.small_price !== undefined) data.smallPrice = this.toDecimal(dto.small_price, 'small_price');
-    if (dto.medium_price !== undefined) data.mediumPrice = this.toDecimal(dto.medium_price, 'medium_price');
-    if (dto.large_price !== undefined) data.largePrice = this.toDecimal(dto.large_price, 'large_price');
+    if (dto.description !== undefined)
+      data.description = dto.description?.trim();
+    if (dto.small_price !== undefined)
+      data.smallPrice = this.toDecimal(dto.small_price, 'small_price');
+    if (dto.medium_price !== undefined)
+      data.mediumPrice = this.toDecimal(dto.medium_price, 'medium_price');
+    if (dto.large_price !== undefined)
+      data.largePrice = this.toDecimal(dto.large_price, 'large_price');
     if (dto.prep_time_min !== undefined) data.prepTimeMin = dto.prep_time_min;
     if (dto.is_available !== undefined) data.isAvailable = dto.is_available;
-    if (dto.image_url !== undefined) data.imageUrl = this.normalizeImageUrl(dto.image_url);
+    if (dto.image_url !== undefined)
+      data.imageUrl = this.normalizeImageUrl(dto.image_url);
 
     const item = await this.prisma.addMenuItem.update({
       where: { id },
@@ -258,6 +278,49 @@ export class AddMenuItemsService {
     return Array.from(categoryMap.values());
   }
 
+  async findCategoryNames(currentUser: any) {
+    const categories = await this.findCategories(currentUser);
+    return { categories: categories.map((category) => category.name) };
+  }
+
+  async findSubCategories(currentUser: any, categoryName?: string) {
+    const tenantId = await this.getTenantIdForUser(currentUser);
+    const where: Prisma.AddMenuItemWhereInput = {
+      tenantId,
+      deletedAt: null,
+      isActive: true,
+      subCategoryName: { not: null },
+    };
+
+    const normalizedCategoryName = categoryName?.trim();
+    if (normalizedCategoryName) {
+      where.categoryName = {
+        equals: normalizedCategoryName,
+        mode: 'insensitive',
+      };
+    }
+
+    const items = await this.prisma.addMenuItem.findMany({
+      where,
+      select: { subCategoryName: true },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+    });
+
+    const subCategories = Array.from(
+      new Map(
+        items
+          .map((item) => item.subCategoryName?.trim() ?? '')
+          .filter(Boolean)
+          .map((subCategoryName) => [
+            subCategoryName.toLowerCase(),
+            subCategoryName,
+          ]),
+      ).values(),
+    );
+
+    return { subCategories };
+  }
+
   private async findByIdForTenant(id: string, tenantId: string) {
     const item = await this.prisma.addMenuItem.findFirst({
       where: {
@@ -278,8 +341,77 @@ export class AddMenuItemsService {
   private async resolveCustomerTenant(query: {
     tenantId?: string;
     slug?: string;
+    qrToken?: string;
     authorization?: string;
-  }): Promise<{ tenantId: string | null; source: 'query' | 'auth' | 'slug' | 'none' }> {
+    ipAddress?: string;
+    userAgent?: string;
+  }): Promise<{
+    tenantId: string | null;
+    source: 'query' | 'auth' | 'slug' | 'qrToken' | 'none';
+    qrContext?: {
+      generatedQrCodeId: string;
+      tenantId: string;
+      tableNumber: string;
+      section: string;
+      qrToken: string;
+    };
+  }> {
+    const qrToken = query.qrToken?.trim();
+    if (qrToken) {
+      const qrCode = await this.prisma.generateQrCode.findFirst({
+        where: {
+          qrToken,
+          isActive: true,
+          deletedAt: null,
+          ...(query.tenantId?.trim() && { tenantId: query.tenantId.trim() }),
+        },
+        select: {
+          id: true,
+          tenantId: true,
+          tableNumber: true,
+          section: true,
+          qrToken: true,
+        },
+      });
+
+      if (!qrCode) {
+        throw new NotFoundException('QR code not found or inactive.');
+      }
+
+      await this.prisma.$transaction([
+        this.prisma.generateQrCode.update({
+          where: { id: qrCode.id },
+          data: {
+            scanCount: { increment: 1 },
+            lastScannedAt: new Date(),
+          },
+        }),
+        this.prisma.generateQrCodeScanLog.create({
+          data: {
+            generateQrCodeId: qrCode.id,
+            tenantId: qrCode.tenantId,
+            qrToken: qrCode.qrToken,
+            tableNumber: qrCode.tableNumber,
+            section: qrCode.section,
+            ipAddress: query.ipAddress?.trim() || null,
+            userAgent: query.userAgent?.trim() || null,
+          },
+        }),
+      ]);
+
+      return {
+        tenantId: qrCode.tenantId,
+        source: 'qrToken',
+        qrContext: {
+          generatedQrCodeId: qrCode.id,
+          tenantId: qrCode.tenantId,
+          tableNumber: qrCode.tableNumber,
+          section: qrCode.section,
+          qrToken: qrCode.qrToken,
+        },
+      };
+    }
+
     const tenantId = query.tenantId?.trim();
     if (tenantId) {
       const tenant = await this.prisma.tenant.findUnique({
@@ -294,7 +426,9 @@ export class AddMenuItemsService {
       return { tenantId: tenant.id, source: 'query' };
     }
 
-    const authTenantId = await this.resolveTenantIdFromAuthorization(query.authorization);
+    const authTenantId = await this.resolveTenantIdFromAuthorization(
+      query.authorization,
+    );
     if (authTenantId) {
       return { tenantId: authTenantId, source: 'auth' };
     }
@@ -323,7 +457,10 @@ export class AddMenuItemsService {
     }
 
     try {
-      const payload = await this.jwt.verifyAsync<{ sub?: string; tenantId?: string }>(token);
+      const payload = await this.jwt.verifyAsync<{
+        sub?: string;
+        tenantId?: string;
+      }>(token);
       if (payload.tenantId) {
         return payload.tenantId;
       }
@@ -381,12 +518,15 @@ export class AddMenuItemsService {
     } | null,
   ) {
     const kitchenOpenTime = this.formatKitchenCloseTime(user?.kitchenOpenTime);
-    const kitchenCloseTime = this.formatKitchenCloseTime(user?.kitchenCloseTime);
-    const openingHours = kitchenOpenTime && kitchenCloseTime
-      ? `Daily - ${kitchenOpenTime} - ${kitchenCloseTime}`
-      : kitchenCloseTime
-        ? `Daily - ${kitchenCloseTime}`
-        : '';
+    const kitchenCloseTime = this.formatKitchenCloseTime(
+      user?.kitchenCloseTime,
+    );
+    const openingHours =
+      kitchenOpenTime && kitchenCloseTime
+        ? `Daily - ${kitchenOpenTime} - ${kitchenCloseTime}`
+        : kitchenCloseTime
+          ? `Daily - ${kitchenCloseTime}`
+          : '';
     const businessEmail = user?.businessEmail?.trim() || '';
 
     return {
@@ -405,7 +545,9 @@ export class AddMenuItemsService {
       taxRate: Number(user?.taxRate ?? 5),
       serviceChargeRate: Number(user?.serviceChargeRate ?? 3),
       discountRate: Number(user?.discountRate ?? 0),
-      status: kitchenCloseTime ? `Kitchen open until ${kitchenCloseTime}` : 'Kitchen open',
+      status: kitchenCloseTime
+        ? `Kitchen open until ${kitchenCloseTime}`
+        : 'Kitchen open',
     };
   }
 
@@ -438,7 +580,10 @@ export class AddMenuItemsService {
   }
 
   private getUserId(currentUser: any) {
-    const userId = typeof currentUser === 'string' ? currentUser : currentUser?.id ?? currentUser?.sub;
+    const userId =
+      typeof currentUser === 'string'
+        ? currentUser
+        : (currentUser?.id ?? currentUser?.sub);
     if (!userId) {
       throw new UnauthorizedException('Authentication is required.');
     }
@@ -457,7 +602,9 @@ export class AddMenuItemsService {
     });
 
     if (!user?.tenantId) {
-      throw new ForbiddenException('Your account is not connected to a restaurant.');
+      throw new ForbiddenException(
+        'Your account is not connected to a restaurant.',
+      );
     }
 
     return user.tenantId;
@@ -476,11 +623,17 @@ export class AddMenuItemsService {
     }
 
     if (trimmed.length > maxImageUrlLength) {
-      throw new BadRequestException('Image is too large. Please upload an image under 10MB.');
+      throw new BadRequestException(
+        'Image is too large. Please upload an image under 10MB.',
+      );
     }
 
     if (trimmed.startsWith('data:')) {
-      if (!/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(trimmed)) {
+      if (
+        !/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(
+          trimmed,
+        )
+      ) {
         throw new BadRequestException(
           'Invalid image format. Only PNG, JPG, JPEG, and WEBP images are supported.',
         );
@@ -504,7 +657,9 @@ export class AddMenuItemsService {
   private toDecimal(value: number | undefined, fieldName: string) {
     const numericValue = value ?? 0;
     if (!Number.isFinite(numericValue) || numericValue < 0) {
-      throw new BadRequestException(`${fieldName} must be a number greater than or equal to 0.`);
+      throw new BadRequestException(
+        `${fieldName} must be a number greater than or equal to 0.`,
+      );
     }
 
     return new Prisma.Decimal(numericValue);
@@ -568,7 +723,7 @@ export class AddMenuItemsService {
         });
       }
 
-      const category = categories.get(categoryId)!;
+      const category = categories.get(categoryId);
       if (!category.subcategories.has(subCategoryId)) {
         category.subcategories.set(subCategoryId, {
           id: subCategoryId,
@@ -582,7 +737,7 @@ export class AddMenuItemsService {
       const mediumPrice = Number(item.mediumPrice ?? 0);
       const largePrice = Number(item.largePrice ?? 0);
 
-      category.subcategories.get(subCategoryId)!.items.push({
+      category.subcategories.get(subCategoryId).items.push({
         id: item.id,
         name: item.name,
         category_name: categoryName,
@@ -616,10 +771,12 @@ export class AddMenuItemsService {
   }
 
   private slugify(value: string) {
-    return value
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'uncategorized';
+    return (
+      value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'uncategorized'
+    );
   }
 }

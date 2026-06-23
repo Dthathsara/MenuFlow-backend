@@ -5,6 +5,7 @@ import {
   PublicQrController,
   TableController,
   QrCodeController,
+  GenerateQrCodeController,
 } from './qrcode.controller';
 
 @Module({
@@ -13,6 +14,7 @@ import {
     PublicQrController,
     TableController,
     QrCodeController,
+    GenerateQrCodeController,
   ],
   providers: [QrCodeService],
   exports: [QrCodeService],

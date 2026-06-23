@@ -36,7 +36,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
       select: {
-        id: true, email: true, role: true,
+        id: true,
+        email: true,
+        role: true,
         tenantId: true,
         hotelName: true,
         businessType: true,
@@ -50,9 +52,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found or inactive');
     }
 
-    const activeUser = user.tenantId && user.role !== Role.STAFF
-      ? user
-      : await this.repairManageMenuUser(user);
+    const activeUser =
+      user.tenantId && user.role !== Role.STAFF
+        ? user
+        : await this.repairManageMenuUser(user);
 
     return activeUser;
   }
@@ -101,11 +104,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   private async createTenantForHotelName(tx: any, hotelName: string) {
     const tenantName = hotelName?.trim() || 'Restaurant';
-    const baseSlug = this.slugify(tenantName) || `tenant-${nanoid(6).toLowerCase()}`;
+    const baseSlug =
+      this.slugify(tenantName) || `tenant-${nanoid(6).toLowerCase()}`;
 
     for (let attempt = 0; attempt < 5; attempt += 1) {
-      const slug = attempt === 0 ? baseSlug : `${baseSlug}-${nanoid(6).toLowerCase()}`;
-      const existing = await tx.tenant.findUnique({ where: { slug }, select: { id: true } });
+      const slug =
+        attempt === 0 ? baseSlug : `${baseSlug}-${nanoid(6).toLowerCase()}`;
+      const existing = await tx.tenant.findUnique({
+        where: { slug },
+        select: { id: true },
+      });
       if (existing) continue;
 
       try {

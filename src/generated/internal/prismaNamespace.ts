@@ -389,6 +389,8 @@ export const ModelName = {
   OrderStatusHistory: 'OrderStatusHistory',
   OrderItem: 'OrderItem',
   Tenant: 'Tenant',
+  GenerateQrCode: 'GenerateQrCode',
+  GenerateQrCodeScanLog: 'GenerateQrCodeScanLog',
   RefreshToken: 'RefreshToken',
   AuditLog: 'AuditLog',
   Menu: 'Menu',
@@ -416,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "order" | "orderStatusHistory" | "orderItem" | "tenant" | "refreshToken" | "auditLog" | "menu" | "category" | "subCategory" | "addMenuItem" | "menuItem" | "menuItemOption" | "priceHistory" | "table" | "qrCode" | "qrCodeStaff"
+    modelProps: "user" | "order" | "orderStatusHistory" | "orderItem" | "tenant" | "generateQrCode" | "generateQrCodeScanLog" | "refreshToken" | "auditLog" | "menu" | "category" | "subCategory" | "addMenuItem" | "menuItem" | "menuItemOption" | "priceHistory" | "table" | "qrCode" | "qrCodeStaff"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -787,6 +789,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantCountAggregateOutputType> | number
+        }
+      }
+    }
+    GenerateQrCode: {
+      payload: Prisma.$GenerateQrCodePayload<ExtArgs>
+      fields: Prisma.GenerateQrCodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GenerateQrCodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GenerateQrCodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        findFirst: {
+          args: Prisma.GenerateQrCodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GenerateQrCodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        findMany: {
+          args: Prisma.GenerateQrCodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
+        }
+        create: {
+          args: Prisma.GenerateQrCodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        createMany: {
+          args: Prisma.GenerateQrCodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GenerateQrCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
+        }
+        delete: {
+          args: Prisma.GenerateQrCodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        update: {
+          args: Prisma.GenerateQrCodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        deleteMany: {
+          args: Prisma.GenerateQrCodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GenerateQrCodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GenerateQrCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
+        }
+        upsert: {
+          args: Prisma.GenerateQrCodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
+        }
+        aggregate: {
+          args: Prisma.GenerateQrCodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGenerateQrCode>
+        }
+        groupBy: {
+          args: Prisma.GenerateQrCodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GenerateQrCodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeCountAggregateOutputType> | number
+        }
+      }
+    }
+    GenerateQrCodeScanLog: {
+      payload: Prisma.$GenerateQrCodeScanLogPayload<ExtArgs>
+      fields: Prisma.GenerateQrCodeScanLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GenerateQrCodeScanLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GenerateQrCodeScanLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        findFirst: {
+          args: Prisma.GenerateQrCodeScanLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GenerateQrCodeScanLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        findMany: {
+          args: Prisma.GenerateQrCodeScanLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
+        }
+        create: {
+          args: Prisma.GenerateQrCodeScanLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        createMany: {
+          args: Prisma.GenerateQrCodeScanLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GenerateQrCodeScanLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
+        }
+        delete: {
+          args: Prisma.GenerateQrCodeScanLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        update: {
+          args: Prisma.GenerateQrCodeScanLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.GenerateQrCodeScanLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GenerateQrCodeScanLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GenerateQrCodeScanLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.GenerateQrCodeScanLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
+        }
+        aggregate: {
+          args: Prisma.GenerateQrCodeScanLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGenerateQrCodeScanLog>
+        }
+        groupBy: {
+          args: Prisma.GenerateQrCodeScanLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeScanLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GenerateQrCodeScanLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeScanLogCountAggregateOutputType> | number
         }
       }
     }
@@ -1752,6 +1902,9 @@ export const OrderScalarFieldEnum = {
   customerSessionId: 'customerSessionId',
   tableId: 'tableId',
   qrCodeId: 'qrCodeId',
+  qrToken: 'qrToken',
+  tableNumber: 'tableNumber',
+  section: 'section',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   orderType: 'orderType',
@@ -1822,6 +1975,41 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const GenerateQrCodeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  tableNumber: 'tableNumber',
+  section: 'section',
+  qrToken: 'qrToken',
+  customerUrl: 'customerUrl',
+  qrImageUrl: 'qrImageUrl',
+  scanCount: 'scanCount',
+  lastScannedAt: 'lastScannedAt',
+  isActive: 'isActive',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type GenerateQrCodeScalarFieldEnum = (typeof GenerateQrCodeScalarFieldEnum)[keyof typeof GenerateQrCodeScalarFieldEnum]
+
+
+export const GenerateQrCodeScanLogScalarFieldEnum = {
+  id: 'id',
+  generateQrCodeId: 'generateQrCodeId',
+  tenantId: 'tenantId',
+  qrToken: 'qrToken',
+  tableNumber: 'tableNumber',
+  section: 'section',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  scannedAt: 'scannedAt'
+} as const
+
+export type GenerateQrCodeScanLogScalarFieldEnum = (typeof GenerateQrCodeScanLogScalarFieldEnum)[keyof typeof GenerateQrCodeScanLogScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -2261,6 +2449,8 @@ export type GlobalOmitConfig = {
   orderStatusHistory?: Prisma.OrderStatusHistoryOmit
   orderItem?: Prisma.OrderItemOmit
   tenant?: Prisma.TenantOmit
+  generateQrCode?: Prisma.GenerateQrCodeOmit
+  generateQrCodeScanLog?: Prisma.GenerateQrCodeScanLogOmit
   refreshToken?: Prisma.RefreshTokenOmit
   auditLog?: Prisma.AuditLogOmit
   menu?: Prisma.MenuOmit

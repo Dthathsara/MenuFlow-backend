@@ -34,6 +34,10 @@ type ManagerOrdersQuery = {
   search?: string;
   paymentStatus?: string;
   orderStatus?: string;
+  qrCodeId?: string;
+  qrToken?: string;
+  tableNumber?: string;
+  section?: string;
 };
 
 @Injectable()
@@ -98,6 +102,7 @@ export class OrdersService {
       .minus(discountAmount);
     const paymentStatus = dto.payment?.status === 'paid' ? 'paid' : 'unpaid';
     const now = new Date();
+    const qrContext = await this.resolveOrderQrContext(tenantId, dto);
 
     const order = await this.prisma.order.create({
       data: {
@@ -105,7 +110,10 @@ export class OrdersService {
         orderNumber: this.generateOrderNumber(),
         customerSessionId,
         tableId: dto.table_id?.trim() || null,
-        qrCodeId: dto.qr_code_id?.trim() || null,
+        qrCodeId: qrContext.qrCodeId,
+        qrToken: qrContext.qrToken,
+        tableNumber: qrContext.tableNumber,
+        section: qrContext.section,
         customerName,
         customerPhone,
         orderType: dto.order_type,
@@ -345,7 +353,67 @@ export class OrdersService {
       where.orderStatus = orderStatus;
     }
 
+    const qrCodeId = query.qrCodeId?.trim();
+    if (qrCodeId) {
+      where.qrCodeId = qrCodeId;
+    }
+
+    const qrToken = query.qrToken?.trim();
+    if (qrToken) {
+      where.qrToken = qrToken;
+    }
+
+    const tableNumber = query.tableNumber?.trim();
+    if (tableNumber) {
+      where.tableNumber = { equals: tableNumber, mode: 'insensitive' };
+    }
+
+    const section = query.section?.trim();
+    if (section) {
+      where.section = { equals: section, mode: 'insensitive' };
+    }
+
     return where;
+  }
+
+  private async resolveOrderQrContext(tenantId: string, dto: CreateOrderDto) {
+    const qrToken = dto.qr_token?.trim();
+    const qrCodeId = dto.qr_code_id?.trim();
+
+    if (qrToken || qrCodeId) {
+      const qrCode = await this.prisma.generateQrCode.findFirst({
+        where: {
+          tenantId,
+          isActive: true,
+          deletedAt: null,
+          ...(qrToken ? { qrToken } : { id: qrCodeId }),
+        },
+        select: {
+          id: true,
+          qrToken: true,
+          tableNumber: true,
+          section: true,
+        },
+      });
+
+      if (!qrCode) {
+        throw new BadRequestException('QR code not found or inactive.');
+      }
+
+      return {
+        qrCodeId: qrCode.id,
+        qrToken: qrCode.qrToken,
+        tableNumber: qrCode.tableNumber,
+        section: qrCode.section,
+      };
+    }
+
+    return {
+      qrCodeId: null,
+      qrToken: null,
+      tableNumber: dto.table_number?.trim() || null,
+      section: dto.section?.trim() || null,
+    };
   }
 
   private async getManagerOrdersSummary(tenantId: string) {
@@ -449,6 +517,9 @@ export class OrdersService {
       customer_session_id: order.customerSessionId,
       table_id: order.tableId,
       qr_code_id: order.qrCodeId,
+      qr_token: order.qrToken,
+      table_number: order.tableNumber,
+      section: order.section,
       customer_name: order.customerName,
       customer_phone: order.customerPhone,
       order_type: order.orderType,

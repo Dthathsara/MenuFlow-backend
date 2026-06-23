@@ -1,7 +1,17 @@
 import {
-  IsString, IsOptional, IsBoolean, IsInt, IsUUID,
-  IsArray, IsNumber, MinLength, Min,
-  ValidateNested, ArrayMinSize, IsPositive, IsIn,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsInt,
+  IsUUID,
+  IsArray,
+  IsNumber,
+  MinLength,
+  Min,
+  ValidateNested,
+  ArrayMinSize,
+  IsPositive,
+  IsIn,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
@@ -12,7 +22,9 @@ const trimString = ({ value }: { value: unknown }) =>
   typeof value === 'string' ? value.trim() : value;
 
 const emptyStringToNull = ({ value }: { value: unknown }) =>
-  typeof value === 'string' && value.trim() === '' ? null : trimString({ value });
+  typeof value === 'string' && value.trim() === ''
+    ? null
+    : trimString({ value });
 
 const stringToBoolean = ({ value }: { value: unknown }) => {
   if (typeof value === 'boolean') return value;

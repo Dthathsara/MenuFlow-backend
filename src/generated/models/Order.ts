@@ -55,6 +55,9 @@ export type OrderMinAggregateOutputType = {
   customerSessionId: string | null
   tableId: string | null
   qrCodeId: string | null
+  qrToken: string | null
+  tableNumber: string | null
+  section: string | null
   customerName: string | null
   customerPhone: string | null
   orderType: string | null
@@ -87,6 +90,9 @@ export type OrderMaxAggregateOutputType = {
   customerSessionId: string | null
   tableId: string | null
   qrCodeId: string | null
+  qrToken: string | null
+  tableNumber: string | null
+  section: string | null
   customerName: string | null
   customerPhone: string | null
   orderType: string | null
@@ -119,6 +125,9 @@ export type OrderCountAggregateOutputType = {
   customerSessionId: number
   tableId: number
   qrCodeId: number
+  qrToken: number
+  tableNumber: number
+  section: number
   customerName: number
   customerPhone: number
   orderType: number
@@ -175,6 +184,9 @@ export type OrderMinAggregateInputType = {
   customerSessionId?: true
   tableId?: true
   qrCodeId?: true
+  qrToken?: true
+  tableNumber?: true
+  section?: true
   customerName?: true
   customerPhone?: true
   orderType?: true
@@ -207,6 +219,9 @@ export type OrderMaxAggregateInputType = {
   customerSessionId?: true
   tableId?: true
   qrCodeId?: true
+  qrToken?: true
+  tableNumber?: true
+  section?: true
   customerName?: true
   customerPhone?: true
   orderType?: true
@@ -239,6 +254,9 @@ export type OrderCountAggregateInputType = {
   customerSessionId?: true
   tableId?: true
   qrCodeId?: true
+  qrToken?: true
+  tableNumber?: true
+  section?: true
   customerName?: true
   customerPhone?: true
   orderType?: true
@@ -358,6 +376,9 @@ export type OrderGroupByOutputType = {
   customerSessionId: string
   tableId: string | null
   qrCodeId: string | null
+  qrToken: string | null
+  tableNumber: string | null
+  section: string | null
   customerName: string
   customerPhone: string
   orderType: string
@@ -413,6 +434,9 @@ export type OrderWhereInput = {
   customerSessionId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   qrCodeId?: Prisma.StringNullableFilter<"Order"> | string | null
+  qrToken?: Prisma.StringNullableFilter<"Order"> | string | null
+  tableNumber?: Prisma.StringNullableFilter<"Order"> | string | null
+  section?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringFilter<"Order"> | string
   customerPhone?: Prisma.StringFilter<"Order"> | string
   orderType?: Prisma.StringFilter<"Order"> | string
@@ -448,6 +472,9 @@ export type OrderOrderByWithRelationInput = {
   customerSessionId?: Prisma.SortOrder
   tableId?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCodeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  tableNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  section?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
   customerPhone?: Prisma.SortOrder
   orderType?: Prisma.SortOrder
@@ -486,6 +513,9 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   customerSessionId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   qrCodeId?: Prisma.StringNullableFilter<"Order"> | string | null
+  qrToken?: Prisma.StringNullableFilter<"Order"> | string | null
+  tableNumber?: Prisma.StringNullableFilter<"Order"> | string | null
+  section?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringFilter<"Order"> | string
   customerPhone?: Prisma.StringFilter<"Order"> | string
   orderType?: Prisma.StringFilter<"Order"> | string
@@ -521,6 +551,9 @@ export type OrderOrderByWithAggregationInput = {
   customerSessionId?: Prisma.SortOrder
   tableId?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCodeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  qrToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  tableNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  section?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
   customerPhone?: Prisma.SortOrder
   orderType?: Prisma.SortOrder
@@ -561,6 +594,9 @@ export type OrderScalarWhereWithAggregatesInput = {
   customerSessionId?: Prisma.StringWithAggregatesFilter<"Order"> | string
   tableId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   qrCodeId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  qrToken?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  tableNumber?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  section?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   customerName?: Prisma.StringWithAggregatesFilter<"Order"> | string
   customerPhone?: Prisma.StringWithAggregatesFilter<"Order"> | string
   orderType?: Prisma.StringWithAggregatesFilter<"Order"> | string
@@ -592,6 +628,9 @@ export type OrderCreateInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -627,6 +666,9 @@ export type OrderUncheckedCreateInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -660,6 +702,9 @@ export type OrderUpdateInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -695,6 +740,9 @@ export type OrderUncheckedUpdateInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -729,6 +777,9 @@ export type OrderCreateManyInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -760,6 +811,9 @@ export type OrderUpdateManyMutationInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -792,6 +846,9 @@ export type OrderUncheckedUpdateManyInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -824,6 +881,9 @@ export type OrderCountOrderByAggregateInput = {
   customerSessionId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   qrCodeId?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  tableNumber?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   customerPhone?: Prisma.SortOrder
   orderType?: Prisma.SortOrder
@@ -867,6 +927,9 @@ export type OrderMaxOrderByAggregateInput = {
   customerSessionId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   qrCodeId?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  tableNumber?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   customerPhone?: Prisma.SortOrder
   orderType?: Prisma.SortOrder
@@ -899,6 +962,9 @@ export type OrderMinOrderByAggregateInput = {
   customerSessionId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   qrCodeId?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
+  tableNumber?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   customerPhone?: Prisma.SortOrder
   orderType?: Prisma.SortOrder
@@ -1034,6 +1100,9 @@ export type OrderCreateWithoutStatusHistoryInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1068,6 +1137,9 @@ export type OrderUncheckedCreateWithoutStatusHistoryInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1116,6 +1188,9 @@ export type OrderUpdateWithoutStatusHistoryInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1150,6 +1225,9 @@ export type OrderUncheckedUpdateWithoutStatusHistoryInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1182,6 +1260,9 @@ export type OrderCreateWithoutItemsInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1216,6 +1297,9 @@ export type OrderUncheckedCreateWithoutItemsInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1264,6 +1348,9 @@ export type OrderUpdateWithoutItemsInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1298,6 +1385,9 @@ export type OrderUncheckedUpdateWithoutItemsInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1330,6 +1420,9 @@ export type OrderCreateWithoutTenantInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1363,6 +1456,9 @@ export type OrderUncheckedCreateWithoutTenantInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1426,6 +1522,9 @@ export type OrderScalarWhereInput = {
   customerSessionId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   qrCodeId?: Prisma.StringNullableFilter<"Order"> | string | null
+  qrToken?: Prisma.StringNullableFilter<"Order"> | string | null
+  tableNumber?: Prisma.StringNullableFilter<"Order"> | string | null
+  section?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringFilter<"Order"> | string
   customerPhone?: Prisma.StringFilter<"Order"> | string
   orderType?: Prisma.StringFilter<"Order"> | string
@@ -1457,6 +1556,9 @@ export type OrderCreateManyTenantInput = {
   customerSessionId: string
   tableId?: string | null
   qrCodeId?: string | null
+  qrToken?: string | null
+  tableNumber?: string | null
+  section?: string | null
   customerName: string
   customerPhone: string
   orderType?: string
@@ -1488,6 +1590,9 @@ export type OrderUpdateWithoutTenantInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1521,6 +1626,9 @@ export type OrderUncheckedUpdateWithoutTenantInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1554,6 +1662,9 @@ export type OrderUncheckedUpdateManyWithoutTenantInput = {
   customerSessionId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  qrToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tableNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
   customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
   orderType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1626,6 +1737,9 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   customerSessionId?: boolean
   tableId?: boolean
   qrCodeId?: boolean
+  qrToken?: boolean
+  tableNumber?: boolean
+  section?: boolean
   customerName?: boolean
   customerPhone?: boolean
   orderType?: boolean
@@ -1662,6 +1776,9 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerSessionId?: boolean
   tableId?: boolean
   qrCodeId?: boolean
+  qrToken?: boolean
+  tableNumber?: boolean
+  section?: boolean
   customerName?: boolean
   customerPhone?: boolean
   orderType?: boolean
@@ -1695,6 +1812,9 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerSessionId?: boolean
   tableId?: boolean
   qrCodeId?: boolean
+  qrToken?: boolean
+  tableNumber?: boolean
+  section?: boolean
   customerName?: boolean
   customerPhone?: boolean
   orderType?: boolean
@@ -1728,6 +1848,9 @@ export type OrderSelectScalar = {
   customerSessionId?: boolean
   tableId?: boolean
   qrCodeId?: boolean
+  qrToken?: boolean
+  tableNumber?: boolean
+  section?: boolean
   customerName?: boolean
   customerPhone?: boolean
   orderType?: boolean
@@ -1753,7 +1876,7 @@ export type OrderSelectScalar = {
   deletedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "orderNumber" | "customerSessionId" | "tableId" | "qrCodeId" | "customerName" | "customerPhone" | "orderType" | "orderStatus" | "paymentStatus" | "subtotal" | "taxRate" | "taxAmount" | "serviceChargeRate" | "serviceChargeAmount" | "discountRate" | "discountAmount" | "totalAmount" | "itemNote" | "placedAt" | "acceptedAt" | "preparingAt" | "readyAt" | "deliveredAt" | "cancelledAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "orderNumber" | "customerSessionId" | "tableId" | "qrCodeId" | "qrToken" | "tableNumber" | "section" | "customerName" | "customerPhone" | "orderType" | "orderStatus" | "paymentStatus" | "subtotal" | "taxRate" | "taxAmount" | "serviceChargeRate" | "serviceChargeAmount" | "discountRate" | "discountAmount" | "totalAmount" | "itemNote" | "placedAt" | "acceptedAt" | "preparingAt" | "readyAt" | "deliveredAt" | "cancelledAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   items?: boolean | Prisma.Order$itemsArgs<ExtArgs>
   statusHistory?: boolean | Prisma.Order$statusHistoryArgs<ExtArgs>
@@ -1781,6 +1904,9 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     customerSessionId: string
     tableId: string | null
     qrCodeId: string | null
+    qrToken: string | null
+    tableNumber: string | null
+    section: string | null
     customerName: string
     customerPhone: string
     orderType: string
@@ -2236,6 +2362,9 @@ export interface OrderFieldRefs {
   readonly customerSessionId: Prisma.FieldRef<"Order", 'String'>
   readonly tableId: Prisma.FieldRef<"Order", 'String'>
   readonly qrCodeId: Prisma.FieldRef<"Order", 'String'>
+  readonly qrToken: Prisma.FieldRef<"Order", 'String'>
+  readonly tableNumber: Prisma.FieldRef<"Order", 'String'>
+  readonly section: Prisma.FieldRef<"Order", 'String'>
   readonly customerName: Prisma.FieldRef<"Order", 'String'>
   readonly customerPhone: Prisma.FieldRef<"Order", 'String'>
   readonly orderType: Prisma.FieldRef<"Order", 'String'>
