@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
@@ -11,6 +10,8 @@ import { UsersModule } from './users/users.module';
 import { MenuModule } from './menu/menu.module';
 import { QrCodeModule } from './qrcode/qrcode.module';
 import { OrdersModule } from './orders/orders.module';
+import { StaffModule } from './staff/staff.module';
+import { ReportsModule } from './reports/reports.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -26,6 +27,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     MenuModule,
     QrCodeModule,
     OrdersModule,
+    StaffModule,
+    ReportsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard }, // Rate limiting globally

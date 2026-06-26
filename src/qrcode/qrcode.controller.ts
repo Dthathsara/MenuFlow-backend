@@ -19,8 +19,8 @@ import { Public } from '../auth/decorators/public.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Role } from '../auth/enums/role.enum';
 import { CreateTableDto, UpdateTableDto } from './dto/table.dto';
-import { CreateGenerateQrCodeDto } from './dto/generate-qrcode.dto';
 import {
+  CreateGenerateQrCodeDto,
   CreateQrCodeDto,
   UpdateQrCodeDto,
   AssignStaffDto,
@@ -171,6 +171,12 @@ export class GenerateQrCodeController {
   @Roles(Role.STAFF)
   findGeneratedQrCodeSections(@CurrentUser() currentUser: any) {
     return this.qrCodeService.findGeneratedQrCodeSections(currentUser);
+  }
+
+  @Get('table-numbers')
+  @Roles(Role.STAFF)
+  findGeneratedQrCodeTableNumbers(@CurrentUser() currentUser: any) {
+    return this.qrCodeService.findGeneratedQrCodeTableNumbers(currentUser);
   }
 
   @Post()

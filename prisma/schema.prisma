@@ -35,6 +35,8 @@ model User {
   priceChanges              PriceHistory[]
   qrCodeLinks               QrCodeStaff[]
   refreshTokens             RefreshToken[]
+  staffMember               StaffMember?   @relation("StaffMemberUser")
+  createdStaffMembers       StaffMember[]  @relation("StaffMemberCreatedBy")
   tenant                    Tenant?        @relation(fields: [tenantId], references: [id])
 
   @@index([email])
@@ -49,9 +51,6 @@ model Order {
   customerSessionId   String               @map("customer_session_id")
   tableId             String?              @map("table_id")
   qrCodeId            String?              @map("qr_code_id")
-  qrToken             String?              @map("qr_token")
-  tableNumber         String?              @map("table_number")
-  section             String?
   customerName        String               @map("customer_name")
   customerPhone       String               @map("customer_phone")
   orderType           String               @default("dine_in") @map("order_type")
@@ -82,10 +81,6 @@ model Order {
   @@index([tenantId], map: "orders_tenant_id_idx")
   @@index([customerSessionId], map: "orders_customer_session_id_idx")
   @@index([orderStatus], map: "orders_order_status_idx")
-  @@index([qrCodeId], map: "orders_qr_code_id_idx")
-  @@index([qrToken], map: "orders_qr_token_idx")
-  @@index([tableNumber], map: "orders_table_number_idx")
-  @@index([section], map: "orders_section_idx")
   @@index([createdAt], map: "orders_created_at_idx")
   @@index([deletedAt])
   @@map("orders")
@@ -139,55 +134,13 @@ model Tenant {
   menus         Menu[]
   orders        Order[]
   qrCodes       QrCode[]
+  staffMembers  StaffMember[]
   subCategories SubCategory[]
   tables        Table[]
+  userReports   UserReport[]
   users         User[]
 
   @@map("tenants")
-}
-
-model GenerateQrCode {
-  id            String                  @id @default(uuid())
-  tenantId      String                  @map("tenant_id")
-  tableNumber   String                  @map("table_number")
-  section       String
-  qrToken       String                  @unique @map("qr_token")
-  customerUrl   String                  @map("customer_url")
-  qrImageUrl    String?                 @map("qr_image_url")
-  scanCount     Int                     @default(0) @map("scan_count")
-  lastScannedAt DateTime?               @map("last_scanned_at")
-  isActive      Boolean                 @default(true) @map("is_active")
-  createdById   String?                 @map("created_by_id")
-  createdAt     DateTime                @default(now()) @map("created_at")
-  updatedAt     DateTime                @updatedAt @map("updated_at")
-  deletedAt     DateTime?               @map("deleted_at")
-  scanLogs      GenerateQrCodeScanLog[]
-
-  @@index([tenantId])
-  @@index([qrToken])
-  @@index([deletedAt])
-  @@map("generate_qr_codes")
-}
-
-model GenerateQrCodeScanLog {
-  id               String         @id @default(uuid())
-  generateQrCodeId String         @map("generate_qr_code_id")
-  tenantId         String         @map("tenant_id")
-  qrToken          String         @map("qr_token")
-  tableNumber      String         @map("table_number")
-  section          String
-  ipAddress        String?        @map("ip_address")
-  userAgent        String?        @map("user_agent")
-  scannedAt        DateTime       @default(now()) @map("scanned_at")
-  generateQrCode   GenerateQrCode @relation(fields: [generateQrCodeId], references: [id], onDelete: Cascade)
-
-  @@index([generateQrCodeId])
-  @@index([tenantId])
-  @@index([qrToken])
-  @@index([tableNumber])
-  @@index([section])
-  @@index([scannedAt])
-  @@map("generate_qr_code_scan_logs")
 }
 
 model RefreshToken {
@@ -300,6 +253,87 @@ model AddMenuItem {
   @@index([isAvailable])
   @@index([deletedAt])
   @@map("add_menu_items")
+}
+
+model GenerateQrCode {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tableNumber String    @map("table_number")
+  section     String
+  qrToken     String    @map("qr_token")
+  customerUrl String    @map("customer_url")
+  qrImageUrl  String?   @map("qr_image_url")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdById String?   @map("created_by_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@index([tenantId])
+  @@index([qrToken])
+  @@index([deletedAt])
+  @@map("generate_qr_codes")
+}
+
+model StaffMember {
+  id                String       @id @default(uuid())
+  tenantId          String       @map("tenant_id")
+  userId            String?      @unique @map("user_id")
+  fullName          String       @map("full_name")
+  role              String
+  email             String
+  phone             String
+  nicNumber         String       @map("nic_number")
+  address           String
+  status            String       @default("Active")
+  operationalAccess String?      @map("operational_access")
+  lastActive        DateTime?    @map("last_active")
+  createdById       String?      @map("created_by_id")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+  deletedAt         DateTime?    @map("deleted_at")
+  tenant            Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user              User?        @relation("StaffMemberUser", fields: [userId], references: [id])
+  createdBy         User?        @relation("StaffMemberCreatedBy", fields: [createdById], references: [id])
+  userReports       UserReport[]
+
+  @@unique([tenantId, email])
+  @@unique([tenantId, nicNumber])
+  @@index([tenantId])
+  @@index([role])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("staff_members")
+}
+
+model UserReport {
+  id             String       @id @default(uuid())
+  tenantId       String       @map("tenant_id")
+  staffMemberId  String?      @map("staff_member_id")
+  staffName      String       @map("staff_name")
+  role           String
+  periodKey      String       @map("period_key")
+  periodLabel    String       @map("period_label")
+  ordersServed   Int          @default(0) @map("orders_served")
+  revenueHandled Decimal      @default(0) @map("revenue_handled") @db.Decimal(10, 2)
+  tablesServed   Int          @default(0) @map("tables_served")
+  shiftsWorked   Int          @default(0) @map("shifts_worked")
+  reportDate     DateTime     @default(now()) @map("report_date")
+  createdById    String?      @map("created_by_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  deletedAt      DateTime?    @map("deleted_at")
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  staffMember    StaffMember? @relation(fields: [staffMemberId], references: [id], onDelete: SetNull)
+
+  @@unique([tenantId, staffMemberId, periodKey])
+  @@index([tenantId])
+  @@index([staffMemberId])
+  @@index([role])
+  @@index([periodKey])
+  @@index([reportDate])
+  @@index([deletedAt])
+  @@map("user_reports")
 }
 
 model MenuItem {

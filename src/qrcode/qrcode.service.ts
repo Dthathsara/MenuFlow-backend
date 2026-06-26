@@ -3,16 +3,18 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
+  ForbiddenException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTableDto, UpdateTableDto } from './dto/table.dto';
 import {
+  CreateGenerateQrCodeDto,
   CreateQrCodeDto,
   UpdateQrCodeDto,
   AssignStaffDto,
 } from './dto/qrcode.dto';
-import { CreateGenerateQrCodeDto } from './dto/generate-qrcode.dto';
 import { nanoid } from 'nanoid';
 import { AddMenuItemsService } from '../menu/add-menu-items.service';
 
@@ -24,125 +26,6 @@ export class QrCodeService {
     private prisma: PrismaService,
     private addMenuItemsService: AddMenuItemsService,
   ) {}
-
-  async findGeneratedQrCodes(currentUser: any) {
-    const tenantId = this.getTenantIdFromCurrentUser(currentUser);
-
-    const qrCodes = await this.prisma.generateQrCode.findMany({
-      where: { tenantId, deletedAt: null },
-      orderBy: [
-        { tableNumber: 'asc' },
-        { section: 'asc' },
-        { createdAt: 'desc' },
-      ],
-    });
-
-    return qrCodes.map((qrCode) => this.formatGeneratedQrCode(qrCode));
-  }
-
-  async createGeneratedQrCode(dto: CreateGenerateQrCodeDto, currentUser: any) {
-    const tenantId = this.getTenantIdFromCurrentUser(currentUser);
-    const createdById = this.getUserIdFromCurrentUser(currentUser);
-    const tableNumber = dto.tableNumber.trim();
-    const section = dto.section.trim();
-
-    if (!tableNumber) {
-      throw new BadRequestException('Table number is required.');
-    }
-
-    if (!section) {
-      throw new BadRequestException('Section is required.');
-    }
-
-    const existing = await this.prisma.generateQrCode.findFirst({
-      where: {
-        tenantId,
-        tableNumber: { equals: tableNumber, mode: 'insensitive' },
-        section: { equals: section, mode: 'insensitive' },
-        isActive: true,
-        deletedAt: null,
-      },
-      select: { id: true },
-    });
-
-    if (existing) {
-      throw new ConflictException(
-        `An active QR code already exists for table "${tableNumber}" in section "${section}".`,
-      );
-    }
-
-    const qrToken = nanoid(24);
-    const customerUrl = this.buildGeneratedQrCustomerUrl(tenantId, qrToken);
-
-    try {
-      const qrCode = await this.prisma.generateQrCode.create({
-        data: {
-          tenantId,
-          tableNumber,
-          section,
-          qrToken,
-          customerUrl,
-          createdById,
-          isActive: true,
-        },
-      });
-
-      return this.formatGeneratedQrCode(qrCode);
-    } catch (e: any) {
-      if (e.code === 'P2002') {
-        throw new ConflictException(
-          'A matching active QR code already exists.',
-        );
-      }
-      throw e;
-    }
-  }
-
-  async deleteGeneratedQrCode(id: string, currentUser: any) {
-    const tenantId = this.getTenantIdFromCurrentUser(currentUser);
-
-    const qrCode = await this.prisma.generateQrCode.findFirst({
-      where: { id, tenantId, deletedAt: null },
-      select: { id: true },
-    });
-
-    if (!qrCode) {
-      throw new NotFoundException(`QR code ${id} not found`);
-    }
-
-    await this.prisma.generateQrCode.update({
-      where: { id },
-      data: {
-        deletedAt: new Date(),
-        isActive: false,
-      },
-    });
-  }
-
-  async findGeneratedQrCodeSections(currentUser: any) {
-    const tenantId = this.getTenantIdFromCurrentUser(currentUser);
-    const qrCodes = await this.prisma.generateQrCode.findMany({
-      where: {
-        tenantId,
-        isActive: true,
-        deletedAt: null,
-        section: { not: '' },
-      },
-      select: { section: true },
-      orderBy: [{ section: 'asc' }, { createdAt: 'asc' }],
-    });
-
-    const sections = Array.from(
-      new Map(
-        qrCodes
-          .map((qrCode) => qrCode.section.trim())
-          .filter(Boolean)
-          .map((section) => [section.toLowerCase(), section]),
-      ).values(),
-    );
-
-    return { sections };
-  }
 
   // ─── TABLES ───────────────────────────────────────────────────────────────
 
@@ -316,6 +199,139 @@ export class QrCodeService {
     await this.prisma.qrCode.delete({ where: { id } });
   }
 
+  async findGeneratedQrCodes(currentUser: any) {
+    const tenantId = await this.getTenantIdForCurrentUser(currentUser);
+    const qrCodes = await this.prisma.generateQrCode.findMany({
+      where: {
+        tenantId,
+        deletedAt: null,
+      },
+      orderBy: [
+        { tableNumber: 'asc' },
+        { section: 'asc' },
+        { createdAt: 'desc' },
+      ],
+    });
+
+    return qrCodes.map((qrCode) => this.formatGeneratedQrCodeResponse(qrCode));
+  }
+
+  async findGeneratedQrCodeSections(currentUser: any) {
+    const tenantId = await this.getTenantIdForCurrentUser(currentUser);
+    const qrCodes = await this.prisma.generateQrCode.findMany({
+      where: {
+        tenantId,
+        isActive: true,
+        deletedAt: null,
+        section: { not: '' },
+      },
+      select: { section: true },
+      orderBy: [{ section: 'asc' }, { createdAt: 'asc' }],
+    });
+
+    const sections = Array.from(
+      new Map(
+        qrCodes
+          .map((qrCode) => qrCode.section.trim())
+          .filter(Boolean)
+          .map((section) => [section.toLowerCase(), section]),
+      ).values(),
+    );
+
+    return { sections };
+  }
+
+  async findGeneratedQrCodeTableNumbers(currentUser: any) {
+    const tenantId = await this.getTenantIdForCurrentUser(currentUser);
+    const qrCodes = await this.prisma.generateQrCode.findMany({
+      where: {
+        tenantId,
+        isActive: true,
+        deletedAt: null,
+        tableNumber: { not: '' },
+      },
+      select: { tableNumber: true },
+    });
+
+    const tableNumbers = Array.from(
+      new Map(
+        qrCodes
+          .map((qrCode) => this.normalizeTableNumber(qrCode.tableNumber))
+          .map((tableNumber) => [tableNumber.toLowerCase(), tableNumber]),
+      ).values(),
+    ).sort(
+      (a, b) => this.tableNumberSortValue(a) - this.tableNumberSortValue(b),
+    );
+
+    return { tableNumbers };
+  }
+
+  async createGeneratedQrCode(dto: CreateGenerateQrCodeDto, currentUser: any) {
+    const tenantId = await this.getTenantIdForCurrentUser(currentUser);
+    const createdById = this.getUserId(currentUser);
+    const tableNumber = this.normalizeTableNumber(dto.tableNumber);
+    const section = dto.section.trim();
+
+    if (!section) {
+      throw new BadRequestException('section is required.');
+    }
+
+    const duplicate = await this.prisma.generateQrCode.findFirst({
+      where: {
+        tenantId,
+        tableNumber: { equals: tableNumber, mode: 'insensitive' },
+        section: { equals: section, mode: 'insensitive' },
+        isActive: true,
+        deletedAt: null,
+      },
+      select: { id: true },
+    });
+
+    if (duplicate) {
+      throw new ConflictException(
+        `An active QR code already exists for table "${tableNumber}" in section "${section}".`,
+      );
+    }
+
+    const qrToken = await this.generateUniqueQrToken();
+    const customerUrl = this.buildCustomerUrl(tenantId, qrToken);
+
+    const qrCode = await this.prisma.generateQrCode.create({
+      data: {
+        tenantId,
+        tableNumber,
+        section,
+        qrToken,
+        customerUrl,
+        qrImageUrl: null,
+        isActive: true,
+        createdById,
+      },
+    });
+
+    return this.formatGeneratedQrCodeResponse(qrCode);
+  }
+
+  async deleteGeneratedQrCode(id: string, currentUser: any) {
+    const tenantId = await this.getTenantIdForCurrentUser(currentUser);
+    const qrCode = await this.prisma.generateQrCode.findFirst({
+      where: { id, tenantId, deletedAt: null },
+      select: { id: true },
+    });
+
+    if (!qrCode) {
+      throw new NotFoundException(`Generated QR code ${id} not found`);
+    }
+
+    await this.prisma.generateQrCode.update({
+      where: { id },
+      data: {
+        deletedAt: new Date(),
+        isActive: false,
+      },
+    });
+  }
+
   // ─── STAFF ASSIGNMENT ─────────────────────────────────────────────────────
 
   async assignStaff(qrCodeId: string, dto: AssignStaffDto, tenantId: string) {
@@ -445,20 +461,7 @@ export class QrCodeService {
     };
   }
 
-  private buildGeneratedQrCustomerUrl(tenantId: string, qrToken: string) {
-    const frontendBaseUrl = (
-      process.env.FRONTEND_PUBLIC_URL || 'http://localhost:3000'
-    ).replace(/\/+$/, '');
-    const params = new URLSearchParams({
-      tenantId,
-      qrToken,
-      tab: 'menu',
-    });
-
-    return `${frontendBaseUrl}/customer?${params.toString()}`;
-  }
-
-  private formatGeneratedQrCode(qrCode: any) {
+  private formatGeneratedQrCodeResponse(qrCode: any) {
     return {
       id: qrCode.id,
       tenantId: qrCode.tenantId,
@@ -467,32 +470,60 @@ export class QrCodeService {
       qrToken: qrCode.qrToken,
       customerUrl: qrCode.customerUrl,
       qrImageUrl: qrCode.qrImageUrl,
-      scanCount: qrCode.scanCount ?? 0,
-      lastScannedAt: qrCode.lastScannedAt,
       isActive: qrCode.isActive,
       createdAt: qrCode.createdAt,
       updatedAt: qrCode.updatedAt,
     };
   }
 
-  private getTenantIdFromCurrentUser(currentUser: any) {
-    const tenantId = currentUser?.tenantId;
-    if (!tenantId) {
-      throw new BadRequestException(
-        'Your account is not connected to a restaurant.',
-      );
+  private async generateUniqueQrToken() {
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const qrToken = nanoid(16);
+      const existing = await this.prisma.generateQrCode.findFirst({
+        where: { qrToken },
+        select: { id: true },
+      });
+
+      if (!existing) {
+        return qrToken;
+      }
     }
 
-    return tenantId;
+    throw new ConflictException(
+      'Could not generate a unique QR token. Please try again.',
+    );
   }
 
-  private getUserIdFromCurrentUser(currentUser: any) {
-    const userId = currentUser?.id ?? currentUser?.sub;
-    if (!userId) {
-      throw new BadRequestException('Authentication is required.');
+  private buildCustomerUrl(tenantId: string, qrToken: string) {
+    const frontendUrl = (
+      process.env.FRONTEND_PUBLIC_URL || 'http://localhost:3000'
+    ).replace(/\/+$/, '');
+    const params = new URLSearchParams({
+      tenantId,
+      qrToken,
+      tab: 'menu',
+    });
+
+    return `${frontendUrl}/customer?${params.toString()}`;
+  }
+
+  normalizeTableNumber(input: string) {
+    const trimmed = input?.trim();
+    if (!trimmed) {
+      throw new BadRequestException('tableNumber is required.');
     }
 
-    return userId;
+    const match = trimmed.toUpperCase().match(/\d+/);
+    if (!match) {
+      throw new BadRequestException('tableNumber must include a number.');
+    }
+
+    return `T - ${match[0].padStart(2, '0')}`;
+  }
+
+  private tableNumberSortValue(tableNumber: string) {
+    const match = tableNumber.match(/\d+/);
+    return match ? Number(match[0]) : Number.MAX_SAFE_INTEGER;
   }
 
   private async validateStaffUsers(staffIds: string[], tenantId: string) {
@@ -522,6 +553,37 @@ export class QrCodeService {
     });
     if (!tenant) throw new NotFoundException(`Tenant ${tenantId} not found`);
     return tenant;
+  }
+
+  private getUserId(currentUser: any) {
+    const userId =
+      typeof currentUser === 'string'
+        ? currentUser
+        : (currentUser?.id ?? currentUser?.sub);
+    if (!userId) {
+      throw new UnauthorizedException('Authentication is required.');
+    }
+    return userId;
+  }
+
+  private async getTenantIdForCurrentUser(currentUser: any) {
+    if (typeof currentUser === 'object' && currentUser?.tenantId) {
+      return currentUser.tenantId;
+    }
+
+    const userId = this.getUserId(currentUser);
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { tenantId: true, isActive: true, deletedAt: true },
+    });
+
+    if (!user?.isActive || user.deletedAt || !user.tenantId) {
+      throw new ForbiddenException(
+        'Your account is not connected to a restaurant.',
+      );
+    }
+
+    return user.tenantId;
   }
 
   private async ensureMenuBelongsToTenant(menuId: string, tenantId: string) {

@@ -29,6 +29,7 @@ import {
 import { CreateQrCodeDto, UpdateQrCodeDto } from './dto/qr-code.dto';
 import { nanoid } from 'nanoid';
 import { AddMenuItem, Prisma } from '../generated/client';
+import { saveMenuImageDataUrl } from './menu-image-upload.config';
 
 @Injectable()
 export class MenuService {
@@ -715,17 +716,7 @@ export class MenuService {
     }
 
     if (trimmed.startsWith('data:')) {
-      if (
-        !/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(
-          trimmed,
-        )
-      ) {
-        throw new BadRequestException(
-          'Invalid image format. Only PNG, JPG, JPEG, and WEBP images are supported.',
-        );
-      }
-
-      return trimmed;
+      return saveMenuImageDataUrl(trimmed);
     }
 
     if (
@@ -1094,6 +1085,7 @@ export class MenuService {
       name: item.name,
       description: item.description,
       image_url: item.imageUrl,
+      imageUrl: item.imageUrl,
       category_id: item.categoryId,
       category: item.category
         ? { id: item.category.id, name: item.category.name }
@@ -1129,6 +1121,7 @@ export class MenuService {
       updated_at: item.updatedAt,
       deleted_at: item.deletedAt,
       image_url: item.imageUrl,
+      imageUrl: item.imageUrl,
     };
   }
 

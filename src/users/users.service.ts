@@ -284,6 +284,27 @@ export class UsersService {
           data: { name: hotelName },
         });
       }
+      
+      if (existing.tenantId) {
+      await tx.user.updateMany({
+        where: {
+          tenantId: existing.tenantId,
+          deletedAt: null,
+        },
+        data: {
+          ...(hotelName && { hotelName }),
+          ...(businessEmail && { businessEmail }),
+          ...(businessType && { businessType }),
+          ...(businessLocation && { businessLocation }),
+          ...(businessAddress && { businessAddress }),
+          ...(kitchenOpenTime && { kitchenOpenTime }),
+          ...(kitchenCloseTime && { kitchenCloseTime }),
+          ...(taxRate !== undefined && { taxRate }),
+          ...(serviceChargeRate !== undefined && { serviceChargeRate }),
+          ...(discountRate !== undefined && { discountRate }),
+        },
+      });
+    }
 
       return this.toRestaurantProfileResponse(updated);
     });
@@ -292,7 +313,11 @@ export class UsersService {
   async updateRestaurantImage(id: string, file: Express.Multer.File) {
     const existing = await this.prisma.user.findFirst({
       where: { id, deletedAt: null },
-      select: { id: true, restaurantImageUrl: true },
+      select: {
+        id: true,
+        tenantId: true,
+        restaurantImageUrl: true,
+      },
     });
 
     if (!existing) {
@@ -308,6 +333,18 @@ export class UsersService {
         data: { restaurantImageUrl: imageUrl },
         select: this.safeSelect,
       });
+
+      if (existing.tenantId) {
+        await this.prisma.user.updateMany({
+          where: {
+            tenantId: existing.tenantId,
+            deletedAt: null,
+          },
+          data: {
+            restaurantImageUrl: imageUrl,
+          },
+        });
+      }
 
       if (
         existing.restaurantImageUrl &&

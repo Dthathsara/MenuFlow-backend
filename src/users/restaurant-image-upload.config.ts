@@ -19,6 +19,7 @@ const ALLOWED_IMAGE_MIME_TYPES = new Set([
   'image/webp',
 ]);
 
+mkdirSync(RESTAURANT_IMAGE_UPLOAD_ROOT, { recursive: true });
 mkdirSync(RESTAURANT_IMAGE_UPLOAD_DIR, { recursive: true });
 
 function resolveImageExtension(file: Express.Multer.File) {
@@ -62,6 +63,7 @@ export const restaurantImageMulterOptions = {
       _file: Express.Multer.File,
       callback,
     ) => {
+      mkdirSync(RESTAURANT_IMAGE_UPLOAD_DIR, { recursive: true });
       callback(null, RESTAURANT_IMAGE_UPLOAD_DIR);
     },
     filename: (

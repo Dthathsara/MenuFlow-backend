@@ -8,6 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { AddMenuItem, Prisma } from '../generated/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { saveMenuImageDataUrl } from './menu-image-upload.config';
 import {
   AddMenuItemsQueryDto,
   CreateAddMenuItemDto,
@@ -26,8 +27,6 @@ export class AddMenuItemsService {
     slug?: string;
     qrToken?: string;
     authorization?: string;
-    ipAddress?: string;
-    userAgent?: string;
   }) {
     try {
       const resolved = await this.resolveCustomerTenant(query);
@@ -52,26 +51,31 @@ export class AddMenuItemsService {
       }
 
       const user = await this.prisma.user.findFirst({
-        where: {
-          tenantId: resolved.tenantId,
-          deletedAt: null,
-        },
-        select: {
-          hotelName: true,
-          businessType: true,
-          businessLocation: true,
-          businessAddress: true,
-          businessEmail: true,
-          restaurantImageUrl: true,
-          kitchenOpenTime: true,
-          kitchenCloseTime: true,
-          contactPersonMobileNumber: true,
-          taxRate: true,
-          serviceChargeRate: true,
-          discountRate: true,
-        },
-        orderBy: { createdAt: 'asc' },
-      });
+      where: {
+        tenantId: resolved.tenantId,
+        deletedAt: null,
+        isActive: true,
+      },
+      select: {
+        hotelName: true,
+        businessType: true,
+        businessLocation: true,
+        businessAddress: true,
+        businessEmail: true,
+        restaurantImageUrl: true,
+        kitchenOpenTime: true,
+        kitchenCloseTime: true,
+        contactPersonMobileNumber: true,
+        taxRate: true,
+        serviceChargeRate: true,
+        discountRate: true,
+        updatedAt: true,
+      },
+      orderBy: [
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' },
+      ],
+    });
 
       const items = await this.prisma.addMenuItem.findMany({
         where: {
@@ -89,10 +93,6 @@ export class AddMenuItemsService {
         ...(resolved.qrContext && { qrContext: resolved.qrContext }),
       };
     } catch (error) {
-      if (query.qrToken) {
-        throw error;
-      }
-
       console.error('Failed to load customer menu from add_menu_items:', error);
       return {
         restaurant: this.defaultRestaurant(),
@@ -278,30 +278,20 @@ export class AddMenuItemsService {
     return Array.from(categoryMap.values());
   }
 
-  async findCategoryNames(currentUser: any) {
-    const categories = await this.findCategories(currentUser);
-    return { categories: categories.map((category) => category.name) };
-  }
-
   async findSubCategories(currentUser: any, categoryName?: string) {
     const tenantId = await this.getTenantIdForUser(currentUser);
-    const where: Prisma.AddMenuItemWhereInput = {
-      tenantId,
-      deletedAt: null,
-      isActive: true,
-      subCategoryName: { not: null },
-    };
-
-    const normalizedCategoryName = categoryName?.trim();
-    if (normalizedCategoryName) {
-      where.categoryName = {
-        equals: normalizedCategoryName,
-        mode: 'insensitive',
-      };
-    }
+    const trimmedCategoryName = categoryName?.trim();
 
     const items = await this.prisma.addMenuItem.findMany({
-      where,
+      where: {
+        tenantId,
+        deletedAt: null,
+        isActive: true,
+        subCategoryName: { not: null },
+        ...(trimmedCategoryName && {
+          categoryName: { equals: trimmedCategoryName, mode: 'insensitive' },
+        }),
+      },
       select: { subCategoryName: true },
       orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
@@ -341,16 +331,12 @@ export class AddMenuItemsService {
   private async resolveCustomerTenant(query: {
     tenantId?: string;
     slug?: string;
-    qrToken?: string;
     authorization?: string;
-    ipAddress?: string;
-    userAgent?: string;
+    qrToken?: string;
   }): Promise<{
     tenantId: string | null;
     source: 'query' | 'auth' | 'slug' | 'qrToken' | 'none';
     qrContext?: {
-      generatedQrCodeId: string;
-      tenantId: string;
       tableNumber: string;
       section: string;
       qrToken: string;
@@ -363,10 +349,8 @@ export class AddMenuItemsService {
           qrToken,
           isActive: true,
           deletedAt: null,
-          ...(query.tenantId?.trim() && { tenantId: query.tenantId.trim() }),
         },
         select: {
-          id: true,
           tenantId: true,
           tableNumber: true,
           section: true,
@@ -375,36 +359,18 @@ export class AddMenuItemsService {
       });
 
       if (!qrCode) {
-        throw new NotFoundException('QR code not found or inactive.');
+        return { tenantId: null, source: 'qrToken' };
       }
 
-      await this.prisma.$transaction([
-        this.prisma.generateQrCode.update({
-          where: { id: qrCode.id },
-          data: {
-            scanCount: { increment: 1 },
-            lastScannedAt: new Date(),
-          },
-        }),
-        this.prisma.generateQrCodeScanLog.create({
-          data: {
-            generateQrCodeId: qrCode.id,
-            tenantId: qrCode.tenantId,
-            qrToken: qrCode.qrToken,
-            tableNumber: qrCode.tableNumber,
-            section: qrCode.section,
-            ipAddress: query.ipAddress?.trim() || null,
-            userAgent: query.userAgent?.trim() || null,
-          },
-        }),
-      ]);
+      const tenantId = query.tenantId?.trim();
+      if (tenantId && tenantId !== qrCode.tenantId) {
+        return { tenantId: null, source: 'qrToken' };
+      }
 
       return {
         tenantId: qrCode.tenantId,
         source: 'qrToken',
         qrContext: {
-          generatedQrCodeId: qrCode.id,
-          tenantId: qrCode.tenantId,
           tableNumber: qrCode.tableNumber,
           section: qrCode.section,
           qrToken: qrCode.qrToken,
@@ -629,16 +595,7 @@ export class AddMenuItemsService {
     }
 
     if (trimmed.startsWith('data:')) {
-      if (
-        !/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(
-          trimmed,
-        )
-      ) {
-        throw new BadRequestException(
-          'Invalid image format. Only PNG, JPG, JPEG, and WEBP images are supported.',
-        );
-      }
-      return trimmed;
+      return saveMenuImageDataUrl(trimmed);
     }
 
     if (
@@ -684,6 +641,7 @@ export class AddMenuItemsService {
       updated_at: item.updatedAt,
       deleted_at: item.deletedAt,
       image_url: item.imageUrl,
+      imageUrl: item.imageUrl,
     };
   }
 
@@ -746,6 +704,7 @@ export class AddMenuItemsService {
         subCategoryName,
         description: item.description,
         image_url: item.imageUrl,
+        imageUrl: item.imageUrl,
         image: item.imageUrl,
         small_price: smallPrice,
         medium_price: mediumPrice,

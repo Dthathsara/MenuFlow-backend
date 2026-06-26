@@ -47,3 +47,13 @@ export class AssignStaffDto {
   @IsUUID('4', { each: true })
   staffIds!: string[];
 }
+
+export class CreateGenerateQrCodeDto {
+  @IsString()
+  @MinLength(1)
+  tableNumber!: string;
+
+  @IsString()
+  @MinLength(1)
+  section!: string;
+}

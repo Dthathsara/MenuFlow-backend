@@ -4,8 +4,8 @@ import { MenuModule } from '../menu/menu.module';
 import {
   PublicQrController,
   TableController,
-  QrCodeController,
   GenerateQrCodeController,
+  QrCodeController,
 } from './qrcode.controller';
 
 @Module({
@@ -13,10 +13,14 @@ import {
   controllers: [
     PublicQrController,
     TableController,
-    QrCodeController,
     GenerateQrCodeController,
+    QrCodeController,
   ],
   providers: [QrCodeService],
   exports: [QrCodeService],
 })
-export class QrCodeModule {}
+export class QrCodeModule {
+  constructor() {
+    console.log('QR module loaded');
+  }
+}

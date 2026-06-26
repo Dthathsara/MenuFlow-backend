@@ -85,18 +85,6 @@ export class CreateOrderDto {
   @IsString()
   qr_code_id?: string | null;
 
-  @IsOptional()
-  @IsString()
-  qr_token?: string | null;
-
-  @IsOptional()
-  @IsString()
-  table_number?: string | null;
-
-  @IsOptional()
-  @IsString()
-  section?: string | null;
-
   @IsString()
   @IsNotEmpty()
   customer_name!: string;

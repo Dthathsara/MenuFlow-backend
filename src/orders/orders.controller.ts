@@ -59,19 +59,11 @@ export class AdminOrdersController {
     @Query('search') search?: string,
     @Query('paymentStatus') paymentStatus?: string,
     @Query('orderStatus') orderStatus?: string,
-    @Query('qrCodeId') qrCodeId?: string,
-    @Query('qrToken') qrToken?: string,
-    @Query('tableNumber') tableNumber?: string,
-    @Query('section') section?: string,
   ) {
     return this.ordersService.findManagerOrders(currentUser, {
       search,
       paymentStatus,
       orderStatus,
-      qrCodeId,
-      qrToken,
-      tableNumber,
-      section,
     });
   }
 

@@ -67,18 +67,7 @@ export class CustomerMenuController {
       slug,
       qrToken,
       authorization: request?.headers?.authorization,
-      ipAddress: this.getRequestIpAddress(request),
-      userAgent: request?.headers?.['user-agent'],
     });
-  }
-
-  private getRequestIpAddress(request?: any) {
-    const forwardedFor = request?.headers?.['x-forwarded-for'];
-    if (typeof forwardedFor === 'string' && forwardedFor.trim()) {
-      return forwardedFor.split(',')[0].trim();
-    }
-
-    return request?.ip ?? request?.socket?.remoteAddress;
   }
 }
 
@@ -234,14 +223,14 @@ export class MenuItemAliasController {
   @Get('categories')
   @Roles(Role.STAFF)
   findManagerMenuItemCategories(@CurrentUser() currentUser: any) {
-    return this.addMenuItemsService.findCategoryNames(currentUser);
+    return this.addMenuItemsService.findCategories(currentUser);
   }
 
   @Get('sub-categories')
   @Roles(Role.STAFF)
   findManagerMenuItemSubCategories(
+    @Query('categoryName') categoryName: string | undefined,
     @CurrentUser() currentUser: any,
-    @Query('categoryName') categoryName?: string,
   ) {
     return this.addMenuItemsService.findSubCategories(
       currentUser,

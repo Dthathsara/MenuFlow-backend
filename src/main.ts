@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import {
   BadRequestException,
   ValidationError,
@@ -10,6 +10,7 @@ import { join } from 'path';
 import helmet from 'helmet';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { MENU_IMAGE_UPLOAD_DIR } from './menu/menu-image-upload.config';
 import { RESTAURANT_IMAGE_UPLOAD_ROOT } from './users/restaurant-image-upload.config';
 
 async function bootstrap() {
@@ -18,6 +19,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['error', 'warn', 'log'],
   });
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://192.168.11.1:3000',
+  ];
 
   // Security headers
   app.use(
@@ -29,38 +35,32 @@ async function bootstrap() {
   );
   app.use(express.json({ limit: '15mb' }));
   app.use(express.urlencoded({ limit: '15mb', extended: true }));
+  app.enableCors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
   mkdirSync(RESTAURANT_IMAGE_UPLOAD_ROOT, { recursive: true });
+  mkdirSync(MENU_IMAGE_UPLOAD_DIR, { recursive: true });
+  app.use('/uploads', (request, response, next) => {
+    const origin = request.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      response.setHeader('Access-Control-Allow-Origin', origin);
+      response.setHeader('Access-Control-Allow-Credentials', 'true');
+      response.setHeader('Vary', 'Origin');
+    }
+    next();
+  });
   app.use(
     '/uploads',
     express.static(join(process.cwd(), 'uploads'), {
       etag: true,
       lastModified: true,
-      setHeaders: (response) => {
-        response.setHeader(
-          'Cache-Control',
-          'public, max-age=2592000, immutable',
-        );
-      },
+      maxAge: '30d',
+      immutable: true,
     }),
   );
-  const frontendOrigins = (
-    process.env.FRONTEND_ORIGINS ||
-    'http://localhost:3000,http://127.0.0.1:3000,http://192.168.11.1:3000'
-  )
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('Allowed CORS origins:', frontendOrigins);
-  }
-
-  app.enableCors({
-    origin: frontendOrigins,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  });
 
   // Global validation — whitelist strips unknown fields
   app.useGlobalPipes(
@@ -80,7 +80,7 @@ async function bootstrap() {
   // API versioning prefix
   app.setGlobalPrefix('api/v1');
 
-  const port = Number(process.env.PORT) || 3001;
+  const port = Number(process.env.PORT || process.env.APP_PORT) || 3001;
 
   try {
     console.log('BEFORE LISTEN');
