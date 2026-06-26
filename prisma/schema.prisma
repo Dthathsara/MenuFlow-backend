@@ -9,122 +9,27 @@ datasource db {
 }
 
 model User {
-  id                        String         @id @default(uuid())
-  passwordHash              String         @map("password_hash")
-  hotelName                 String         @map("hotel_name")
-  businessType              String?        @map("business_type")
-  businessLocation          String?        @map("business_location")
-  businessAddress           String?        @map("business_address")
-  kitchenOpenTime           String?        @map("kitchen_open_time")
-  kitchenCloseTime          String?        @map("kitchen_close_time")
-  email                     String         @unique
-  businessEmail             String?        @map("business_email")
-  restaurantImageUrl        String?        @map("restaurant_image_url")
-  contactPersonName         String         @map("contact_person_name")
-  contactPersonMobileNumber String         @map("contact_person_mobile_number")
-  taxRate                   Decimal?       @default(5) @map("tax_rate") @db.Decimal(5, 2)
-  serviceChargeRate         Decimal?       @default(3) @map("service_charge_rate") @db.Decimal(5, 2)
-  discountRate              Decimal?       @map("discount_rate") @db.Decimal(5, 2)
-  role                      Role           @default(MANAGER)
-  isActive                  Boolean        @default(true) @map("is_active")
-  tenantId                  String?        @map("tenant_id")
-  createdAt                 DateTime       @default(now()) @map("created_at")
-  updatedAt                 DateTime       @updatedAt @map("updated_at")
-  deletedAt                 DateTime?      @map("deleted_at")
-  auditLogs                 AuditLog[]
-  priceChanges              PriceHistory[]
-  qrCodeLinks               QrCodeStaff[]
-  refreshTokens             RefreshToken[]
-  tenant                    Tenant?        @relation(fields: [tenantId], references: [id])
+  id                              String         @id @default(uuid())
+  passwordHash                    String         @map("password_hash")
+  hotelName                       String         @map("hotel_name")
+  businessEmail                   String         @unique @map("business_email")
+  contactPersonName               String         @map("contact_person_name")
+  contactPersonMobileNumber       String         @map("contact_person_mobile_number")
+  role                            Role           @default(STAFF)
+  isActive                        Boolean        @default(true) @map("is_active")
+  tenantId                        String?        @map("tenant_id")
+  createdAt                       DateTime       @default(now()) @map("created_at")
+  updatedAt                       DateTime       @updatedAt @map("updated_at")
+  deletedAt                       DateTime?      @map("deleted_at")
+  auditLogs                       AuditLog[]
+  priceChanges                    PriceHistory[]
+  qrCodeLinks                     QrCodeStaff[]
+  refreshTokens                   RefreshToken[]
+  tenant                          Tenant?        @relation(fields: [tenantId], references: [id])
 
-  @@index([email])
+  @@index([businessEmail])
   @@index([tenantId])
   @@map("users")
-}
-
-model Order {
-  id                  String               @id @default(uuid())
-  tenantId            String               @map("tenant_id")
-  orderNumber         String               @unique @map("order_number")
-  customerSessionId   String               @map("customer_session_id")
-  tableId             String?              @map("table_id")
-  qrCodeId            String?              @map("qr_code_id")
-  qrToken             String?              @map("qr_token")
-  tableNumber         String?              @map("table_number")
-  section             String?
-  customerName        String               @map("customer_name")
-  customerPhone       String               @map("customer_phone")
-  orderType           String               @default("dine_in") @map("order_type")
-  orderStatus         String               @default("accepted") @map("order_status")
-  paymentStatus       String               @default("unpaid") @map("payment_status")
-  subtotal            Decimal              @db.Decimal(10, 2)
-  taxRate             Decimal              @default(5) @map("tax_rate") @db.Decimal(5, 2)
-  taxAmount           Decimal              @default(0) @map("tax_amount") @db.Decimal(10, 2)
-  serviceChargeRate   Decimal              @default(3) @map("service_charge_rate") @db.Decimal(5, 2)
-  serviceChargeAmount Decimal              @default(0) @map("service_charge_amount") @db.Decimal(10, 2)
-  discountRate        Decimal?             @map("discount_rate") @db.Decimal(5, 2)
-  discountAmount      Decimal              @default(0) @map("discount_amount") @db.Decimal(10, 2)
-  totalAmount         Decimal              @map("total_amount") @db.Decimal(10, 2)
-  itemNote            String?              @map("item_note")
-  placedAt            DateTime             @default(now()) @map("placed_at")
-  acceptedAt          DateTime?            @map("accepted_at")
-  preparingAt         DateTime?            @map("preparing_at")
-  readyAt             DateTime?            @map("ready_at")
-  deliveredAt         DateTime?            @map("delivered_at")
-  cancelledAt         DateTime?            @map("cancelled_at")
-  createdAt           DateTime             @default(now()) @map("created_at")
-  updatedAt           DateTime             @updatedAt @map("updated_at")
-  deletedAt           DateTime?            @map("deleted_at")
-  items               OrderItem[]
-  statusHistory       OrderStatusHistory[]
-  tenant              Tenant               @relation(fields: [tenantId], references: [id])
-
-  @@index([tenantId], map: "orders_tenant_id_idx")
-  @@index([customerSessionId], map: "orders_customer_session_id_idx")
-  @@index([orderStatus], map: "orders_order_status_idx")
-  @@index([qrCodeId], map: "orders_qr_code_id_idx")
-  @@index([qrToken], map: "orders_qr_token_idx")
-  @@index([tableNumber], map: "orders_table_number_idx")
-  @@index([section], map: "orders_section_idx")
-  @@index([createdAt], map: "orders_created_at_idx")
-  @@index([deletedAt])
-  @@map("orders")
-}
-
-model OrderStatusHistory {
-  id        String   @id @default(uuid())
-  orderId   String
-  status    String
-  changedAt DateTime @default(now())
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@map("order_status_history")
-}
-
-model OrderItem {
-  id              String    @id @default(uuid())
-  orderId         String    @map("order_id")
-  menuItemId      String?   @map("menu_item_id")
-  foodName        String    @map("food_name")
-  categoryName    String?   @map("category_name")
-  subCategoryName String?   @map("sub_category_name")
-  servingSize     String?   @map("serving_size")
-  unitPrice       Decimal   @map("unit_price") @db.Decimal(10, 2)
-  quantity        Int
-  lineTotal       Decimal   @map("line_total") @db.Decimal(10, 2)
-  prepTimeMin     Int?      @map("prep_time_min")
-  imageUrl        String?   @map("image_url")
-  itemNote        String?   @map("item_note")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
-  order           Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@index([orderId], map: "order_items_order_id_idx")
-  @@index([menuItemId])
-  @@index([deletedAt])
-  @@map("order_items")
 }
 
 model Tenant {
@@ -137,57 +42,12 @@ model Tenant {
   categories    Category[]
   menuItems     MenuItem[]
   menus         Menu[]
-  orders        Order[]
   qrCodes       QrCode[]
   subCategories SubCategory[]
   tables        Table[]
   users         User[]
 
   @@map("tenants")
-}
-
-model GenerateQrCode {
-  id            String                  @id @default(uuid())
-  tenantId      String                  @map("tenant_id")
-  tableNumber   String                  @map("table_number")
-  section       String
-  qrToken       String                  @unique @map("qr_token")
-  customerUrl   String                  @map("customer_url")
-  qrImageUrl    String?                 @map("qr_image_url")
-  scanCount     Int                     @default(0) @map("scan_count")
-  lastScannedAt DateTime?               @map("last_scanned_at")
-  isActive      Boolean                 @default(true) @map("is_active")
-  createdById   String?                 @map("created_by_id")
-  createdAt     DateTime                @default(now()) @map("created_at")
-  updatedAt     DateTime                @updatedAt @map("updated_at")
-  deletedAt     DateTime?               @map("deleted_at")
-  scanLogs      GenerateQrCodeScanLog[]
-
-  @@index([tenantId])
-  @@index([qrToken])
-  @@index([deletedAt])
-  @@map("generate_qr_codes")
-}
-
-model GenerateQrCodeScanLog {
-  id               String         @id @default(uuid())
-  generateQrCodeId String         @map("generate_qr_code_id")
-  tenantId         String         @map("tenant_id")
-  qrToken          String         @map("qr_token")
-  tableNumber      String         @map("table_number")
-  section          String
-  ipAddress        String?        @map("ip_address")
-  userAgent        String?        @map("user_agent")
-  scannedAt        DateTime       @default(now()) @map("scanned_at")
-  generateQrCode   GenerateQrCode @relation(fields: [generateQrCodeId], references: [id], onDelete: Cascade)
-
-  @@index([generateQrCodeId])
-  @@index([tenantId])
-  @@index([qrToken])
-  @@index([tableNumber])
-  @@index([section])
-  @@index([scannedAt])
-  @@map("generate_qr_code_scan_logs")
 }
 
 model RefreshToken {
@@ -276,59 +136,28 @@ model SubCategory {
   @@map("sub_categories")
 }
 
-model AddMenuItem {
-  id              String    @id @default(uuid())
-  tenantId        String    @map("tenant_id")
-  name            String
-  categoryName    String    @map("category_name")
-  subCategoryName String?   @map("sub_category_name")
-  description     String?
-  smallPrice      Decimal   @default(0) @map("small_price") @db.Decimal(10, 2)
-  mediumPrice     Decimal   @default(0) @map("medium_price") @db.Decimal(10, 2)
-  largePrice      Decimal   @default(0) @map("large_price") @db.Decimal(10, 2)
-  prepTimeMin     Int       @default(12) @map("prep_time_min")
-  isAvailable     Boolean   @default(true) @map("is_available")
-  isActive        Boolean   @default(true) @map("is_active")
-  sortOrder       Int       @default(0) @map("sort_order")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
-  imageUrl        String?   @map("image_url")
-
-  @@index([tenantId])
-  @@index([categoryName])
-  @@index([isAvailable])
-  @@index([deletedAt])
-  @@map("add_menu_items")
-}
-
 model MenuItem {
-  id              String           @id @default(uuid())
-  menuId          String?          @map("menu_id")
-  tenantId        String           @map("tenant_id")
-  categoryId      String?          @map("category_id")
-  subCategoryId   String?          @map("sub_category_id")
-  name            String
-  categoryName    String?          @map("category_name")
-  subCategoryName String?          @map("sub_category_name")
-  description     String?
-  imageUrl        String?          @map("image_url")
-  smallPrice      Decimal?         @map("small_price") @db.Decimal(10, 2)
-  mediumPrice     Decimal?         @map("medium_price") @db.Decimal(10, 2)
-  largePrice      Decimal?         @map("large_price") @db.Decimal(10, 2)
-  prepTimeMin     Int?             @map("prep_time_min")
-  isAvailable     Boolean          @default(true) @map("is_available")
-  isActive        Boolean          @default(true) @map("is_active")
-  tags            String[]
-  sortOrder       Int              @default(0) @map("sort_order")
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
-  options         MenuItemOption[]
-  category        Category?        @relation(fields: [categoryId], references: [id])
-  menu            Menu?            @relation(fields: [menuId], references: [id], onDelete: Cascade)
-  subCategory     SubCategory?     @relation(fields: [subCategoryId], references: [id])
-  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String           @id @default(uuid())
+  menuId        String           @map("menu_id")
+  tenantId      String           @map("tenant_id")
+  categoryId    String?          @map("category_id")
+  subCategoryId String?          @map("sub_category_id")
+  name          String
+  description   String?
+  imageUrl      String?          @map("image_url")
+  prepTimeMin   Int?             @map("prep_time_min")
+  isAvailable   Boolean          @default(true) @map("is_available")
+  isActive      Boolean          @default(true) @map("is_active")
+  tags          String[]
+  sortOrder     Int              @default(0) @map("sort_order")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  deletedAt     DateTime?        @map("deleted_at")
+  options       MenuItemOption[]
+  category      Category?        @relation(fields: [categoryId], references: [id])
+  menu          Menu             @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  subCategory   SubCategory?     @relation(fields: [subCategoryId], references: [id])
+  tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([menuId])
   @@index([tenantId])

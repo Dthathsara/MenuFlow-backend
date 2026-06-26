@@ -1,9 +1,6 @@
 import {
-  IsString,
-  IsOptional,
-  IsBoolean,
-  IsUUID,
-  MinLength,
+  IsString, IsOptional, IsBoolean,
+  IsUUID, MinLength,
 } from 'class-validator';
 
 export class CreateTableDto {

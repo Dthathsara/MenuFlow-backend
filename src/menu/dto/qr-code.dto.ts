@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsUUID,
-  IsBoolean,
-  MinLength,
-} from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsBoolean, MinLength } from 'class-validator';
 
 export class CreateQrCodeDto {
   @IsUUID()

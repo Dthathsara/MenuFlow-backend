@@ -385,18 +385,12 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Order: 'Order',
-  OrderStatusHistory: 'OrderStatusHistory',
-  OrderItem: 'OrderItem',
   Tenant: 'Tenant',
-  GenerateQrCode: 'GenerateQrCode',
-  GenerateQrCodeScanLog: 'GenerateQrCodeScanLog',
   RefreshToken: 'RefreshToken',
   AuditLog: 'AuditLog',
   Menu: 'Menu',
   Category: 'Category',
   SubCategory: 'SubCategory',
-  AddMenuItem: 'AddMenuItem',
   MenuItem: 'MenuItem',
   MenuItemOption: 'MenuItemOption',
   PriceHistory: 'PriceHistory',
@@ -418,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "order" | "orderStatusHistory" | "orderItem" | "tenant" | "generateQrCode" | "generateQrCodeScanLog" | "refreshToken" | "auditLog" | "menu" | "category" | "subCategory" | "addMenuItem" | "menuItem" | "menuItemOption" | "priceHistory" | "table" | "qrCode" | "qrCodeStaff"
+    modelProps: "user" | "tenant" | "refreshToken" | "auditLog" | "menu" | "category" | "subCategory" | "menuItem" | "menuItemOption" | "priceHistory" | "table" | "qrCode" | "qrCodeStaff"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -496,228 +490,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Order: {
-      payload: Prisma.$OrderPayload<ExtArgs>
-      fields: Prisma.OrderFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OrderFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OrderFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        findFirst: {
-          args: Prisma.OrderFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OrderFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        findMany: {
-          args: Prisma.OrderFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
-        }
-        create: {
-          args: Prisma.OrderCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        createMany: {
-          args: Prisma.OrderCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OrderCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
-        }
-        delete: {
-          args: Prisma.OrderDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        update: {
-          args: Prisma.OrderUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        deleteMany: {
-          args: Prisma.OrderDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OrderUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OrderUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>[]
-        }
-        upsert: {
-          args: Prisma.OrderUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderPayload>
-        }
-        aggregate: {
-          args: Prisma.OrderAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOrder>
-        }
-        groupBy: {
-          args: Prisma.OrderGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OrderCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderCountAggregateOutputType> | number
-        }
-      }
-    }
-    OrderStatusHistory: {
-      payload: Prisma.$OrderStatusHistoryPayload<ExtArgs>
-      fields: Prisma.OrderStatusHistoryFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OrderStatusHistoryFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OrderStatusHistoryFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        findFirst: {
-          args: Prisma.OrderStatusHistoryFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OrderStatusHistoryFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        findMany: {
-          args: Prisma.OrderStatusHistoryFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>[]
-        }
-        create: {
-          args: Prisma.OrderStatusHistoryCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        createMany: {
-          args: Prisma.OrderStatusHistoryCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OrderStatusHistoryCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>[]
-        }
-        delete: {
-          args: Prisma.OrderStatusHistoryDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        update: {
-          args: Prisma.OrderStatusHistoryUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        deleteMany: {
-          args: Prisma.OrderStatusHistoryDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OrderStatusHistoryUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OrderStatusHistoryUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>[]
-        }
-        upsert: {
-          args: Prisma.OrderStatusHistoryUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderStatusHistoryPayload>
-        }
-        aggregate: {
-          args: Prisma.OrderStatusHistoryAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOrderStatusHistory>
-        }
-        groupBy: {
-          args: Prisma.OrderStatusHistoryGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderStatusHistoryGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OrderStatusHistoryCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderStatusHistoryCountAggregateOutputType> | number
-        }
-      }
-    }
-    OrderItem: {
-      payload: Prisma.$OrderItemPayload<ExtArgs>
-      fields: Prisma.OrderItemFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OrderItemFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OrderItemFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        findFirst: {
-          args: Prisma.OrderItemFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OrderItemFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        findMany: {
-          args: Prisma.OrderItemFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>[]
-        }
-        create: {
-          args: Prisma.OrderItemCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        createMany: {
-          args: Prisma.OrderItemCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OrderItemCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>[]
-        }
-        delete: {
-          args: Prisma.OrderItemDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        update: {
-          args: Prisma.OrderItemUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        deleteMany: {
-          args: Prisma.OrderItemDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OrderItemUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OrderItemUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>[]
-        }
-        upsert: {
-          args: Prisma.OrderItemUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrderItemPayload>
-        }
-        aggregate: {
-          args: Prisma.OrderItemAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOrderItem>
-        }
-        groupBy: {
-          args: Prisma.OrderItemGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderItemGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OrderItemCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrderItemCountAggregateOutputType> | number
-        }
-      }
-    }
     Tenant: {
       payload: Prisma.$TenantPayload<ExtArgs>
       fields: Prisma.TenantFieldRefs
@@ -789,154 +561,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantCountAggregateOutputType> | number
-        }
-      }
-    }
-    GenerateQrCode: {
-      payload: Prisma.$GenerateQrCodePayload<ExtArgs>
-      fields: Prisma.GenerateQrCodeFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.GenerateQrCodeFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.GenerateQrCodeFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        findFirst: {
-          args: Prisma.GenerateQrCodeFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.GenerateQrCodeFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        findMany: {
-          args: Prisma.GenerateQrCodeFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
-        }
-        create: {
-          args: Prisma.GenerateQrCodeCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        createMany: {
-          args: Prisma.GenerateQrCodeCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.GenerateQrCodeCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
-        }
-        delete: {
-          args: Prisma.GenerateQrCodeDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        update: {
-          args: Prisma.GenerateQrCodeUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        deleteMany: {
-          args: Prisma.GenerateQrCodeDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.GenerateQrCodeUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.GenerateQrCodeUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>[]
-        }
-        upsert: {
-          args: Prisma.GenerateQrCodeUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodePayload>
-        }
-        aggregate: {
-          args: Prisma.GenerateQrCodeAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateGenerateQrCode>
-        }
-        groupBy: {
-          args: Prisma.GenerateQrCodeGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.GenerateQrCodeCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeCountAggregateOutputType> | number
-        }
-      }
-    }
-    GenerateQrCodeScanLog: {
-      payload: Prisma.$GenerateQrCodeScanLogPayload<ExtArgs>
-      fields: Prisma.GenerateQrCodeScanLogFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.GenerateQrCodeScanLogFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.GenerateQrCodeScanLogFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        findFirst: {
-          args: Prisma.GenerateQrCodeScanLogFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.GenerateQrCodeScanLogFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        findMany: {
-          args: Prisma.GenerateQrCodeScanLogFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
-        }
-        create: {
-          args: Prisma.GenerateQrCodeScanLogCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        createMany: {
-          args: Prisma.GenerateQrCodeScanLogCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.GenerateQrCodeScanLogCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
-        }
-        delete: {
-          args: Prisma.GenerateQrCodeScanLogDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        update: {
-          args: Prisma.GenerateQrCodeScanLogUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        deleteMany: {
-          args: Prisma.GenerateQrCodeScanLogDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.GenerateQrCodeScanLogUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.GenerateQrCodeScanLogUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>[]
-        }
-        upsert: {
-          args: Prisma.GenerateQrCodeScanLogUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GenerateQrCodeScanLogPayload>
-        }
-        aggregate: {
-          args: Prisma.GenerateQrCodeScanLogAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateGenerateQrCodeScanLog>
-        }
-        groupBy: {
-          args: Prisma.GenerateQrCodeScanLogGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeScanLogGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.GenerateQrCodeScanLogCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GenerateQrCodeScanLogCountAggregateOutputType> | number
         }
       }
     }
@@ -1307,80 +931,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SubCategoryCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SubCategoryCountAggregateOutputType> | number
-        }
-      }
-    }
-    AddMenuItem: {
-      payload: Prisma.$AddMenuItemPayload<ExtArgs>
-      fields: Prisma.AddMenuItemFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.AddMenuItemFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.AddMenuItemFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        findFirst: {
-          args: Prisma.AddMenuItemFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.AddMenuItemFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        findMany: {
-          args: Prisma.AddMenuItemFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>[]
-        }
-        create: {
-          args: Prisma.AddMenuItemCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        createMany: {
-          args: Prisma.AddMenuItemCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.AddMenuItemCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>[]
-        }
-        delete: {
-          args: Prisma.AddMenuItemDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        update: {
-          args: Prisma.AddMenuItemUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        deleteMany: {
-          args: Prisma.AddMenuItemDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.AddMenuItemUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.AddMenuItemUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>[]
-        }
-        upsert: {
-          args: Prisma.AddMenuItemUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddMenuItemPayload>
-        }
-        aggregate: {
-          args: Prisma.AddMenuItemAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAddMenuItem>
-        }
-        groupBy: {
-          args: Prisma.AddMenuItemGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AddMenuItemGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.AddMenuItemCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AddMenuItemCountAggregateOutputType> | number
         }
       }
     }
@@ -1871,19 +1421,9 @@ export const UserScalarFieldEnum = {
   id: 'id',
   passwordHash: 'passwordHash',
   hotelName: 'hotelName',
-  businessType: 'businessType',
-  businessLocation: 'businessLocation',
-  businessAddress: 'businessAddress',
-  kitchenOpenTime: 'kitchenOpenTime',
-  kitchenCloseTime: 'kitchenCloseTime',
-  email: 'email',
   businessEmail: 'businessEmail',
-  restaurantImageUrl: 'restaurantImageUrl',
   contactPersonName: 'contactPersonName',
   contactPersonMobileNumber: 'contactPersonMobileNumber',
-  taxRate: 'taxRate',
-  serviceChargeRate: 'serviceChargeRate',
-  discountRate: 'discountRate',
   role: 'role',
   isActive: 'isActive',
   tenantId: 'tenantId',
@@ -1893,76 +1433,6 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const OrderScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  orderNumber: 'orderNumber',
-  customerSessionId: 'customerSessionId',
-  tableId: 'tableId',
-  qrCodeId: 'qrCodeId',
-  qrToken: 'qrToken',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  customerName: 'customerName',
-  customerPhone: 'customerPhone',
-  orderType: 'orderType',
-  orderStatus: 'orderStatus',
-  paymentStatus: 'paymentStatus',
-  subtotal: 'subtotal',
-  taxRate: 'taxRate',
-  taxAmount: 'taxAmount',
-  serviceChargeRate: 'serviceChargeRate',
-  serviceChargeAmount: 'serviceChargeAmount',
-  discountRate: 'discountRate',
-  discountAmount: 'discountAmount',
-  totalAmount: 'totalAmount',
-  itemNote: 'itemNote',
-  placedAt: 'placedAt',
-  acceptedAt: 'acceptedAt',
-  preparingAt: 'preparingAt',
-  readyAt: 'readyAt',
-  deliveredAt: 'deliveredAt',
-  cancelledAt: 'cancelledAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
-
-
-export const OrderStatusHistoryScalarFieldEnum = {
-  id: 'id',
-  orderId: 'orderId',
-  status: 'status',
-  changedAt: 'changedAt'
-} as const
-
-export type OrderStatusHistoryScalarFieldEnum = (typeof OrderStatusHistoryScalarFieldEnum)[keyof typeof OrderStatusHistoryScalarFieldEnum]
-
-
-export const OrderItemScalarFieldEnum = {
-  id: 'id',
-  orderId: 'orderId',
-  menuItemId: 'menuItemId',
-  foodName: 'foodName',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
-  servingSize: 'servingSize',
-  unitPrice: 'unitPrice',
-  quantity: 'quantity',
-  lineTotal: 'lineTotal',
-  prepTimeMin: 'prepTimeMin',
-  imageUrl: 'imageUrl',
-  itemNote: 'itemNote',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -1975,41 +1445,6 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
-
-
-export const GenerateQrCodeScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  qrToken: 'qrToken',
-  customerUrl: 'customerUrl',
-  qrImageUrl: 'qrImageUrl',
-  scanCount: 'scanCount',
-  lastScannedAt: 'lastScannedAt',
-  isActive: 'isActive',
-  createdById: 'createdById',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type GenerateQrCodeScalarFieldEnum = (typeof GenerateQrCodeScalarFieldEnum)[keyof typeof GenerateQrCodeScalarFieldEnum]
-
-
-export const GenerateQrCodeScanLogScalarFieldEnum = {
-  id: 'id',
-  generateQrCodeId: 'generateQrCodeId',
-  tenantId: 'tenantId',
-  qrToken: 'qrToken',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
-  scannedAt: 'scannedAt'
-} as const
-
-export type GenerateQrCodeScanLogScalarFieldEnum = (typeof GenerateQrCodeScanLogScalarFieldEnum)[keyof typeof GenerateQrCodeScanLogScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -2083,29 +1518,6 @@ export const SubCategoryScalarFieldEnum = {
 export type SubCategoryScalarFieldEnum = (typeof SubCategoryScalarFieldEnum)[keyof typeof SubCategoryScalarFieldEnum]
 
 
-export const AddMenuItemScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  name: 'name',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
-  description: 'description',
-  smallPrice: 'smallPrice',
-  mediumPrice: 'mediumPrice',
-  largePrice: 'largePrice',
-  prepTimeMin: 'prepTimeMin',
-  isAvailable: 'isAvailable',
-  isActive: 'isActive',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  imageUrl: 'imageUrl'
-} as const
-
-export type AddMenuItemScalarFieldEnum = (typeof AddMenuItemScalarFieldEnum)[keyof typeof AddMenuItemScalarFieldEnum]
-
-
 export const MenuItemScalarFieldEnum = {
   id: 'id',
   menuId: 'menuId',
@@ -2113,13 +1525,8 @@ export const MenuItemScalarFieldEnum = {
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
   name: 'name',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
   description: 'description',
   imageUrl: 'imageUrl',
-  smallPrice: 'smallPrice',
-  mediumPrice: 'mediumPrice',
-  largePrice: 'largePrice',
   prepTimeMin: 'prepTimeMin',
   isAvailable: 'isAvailable',
   isActive: 'isActive',
@@ -2260,20 +1667,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -2309,6 +1702,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2323,16 +1730,16 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'Decimal'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
 /**
- * Reference to a field of type 'QueryMode'
+ * Reference to a field of type 'Decimal[]'
  */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -2445,18 +1852,12 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
-  order?: Prisma.OrderOmit
-  orderStatusHistory?: Prisma.OrderStatusHistoryOmit
-  orderItem?: Prisma.OrderItemOmit
   tenant?: Prisma.TenantOmit
-  generateQrCode?: Prisma.GenerateQrCodeOmit
-  generateQrCodeScanLog?: Prisma.GenerateQrCodeScanLogOmit
   refreshToken?: Prisma.RefreshTokenOmit
   auditLog?: Prisma.AuditLogOmit
   menu?: Prisma.MenuOmit
   category?: Prisma.CategoryOmit
   subCategory?: Prisma.SubCategoryOmit
-  addMenuItem?: Prisma.AddMenuItemOmit
   menuItem?: Prisma.MenuItemOmit
   menuItemOption?: Prisma.MenuItemOptionOmit
   priceHistory?: Prisma.PriceHistoryOmit

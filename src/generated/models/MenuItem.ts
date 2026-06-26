@@ -27,17 +27,11 @@ export type AggregateMenuItem = {
 }
 
 export type MenuItemAvgAggregateOutputType = {
-  smallPrice: runtime.Decimal | null
-  mediumPrice: runtime.Decimal | null
-  largePrice: runtime.Decimal | null
   prepTimeMin: number | null
   sortOrder: number | null
 }
 
 export type MenuItemSumAggregateOutputType = {
-  smallPrice: runtime.Decimal | null
-  mediumPrice: runtime.Decimal | null
-  largePrice: runtime.Decimal | null
   prepTimeMin: number | null
   sortOrder: number | null
 }
@@ -49,13 +43,8 @@ export type MenuItemMinAggregateOutputType = {
   categoryId: string | null
   subCategoryId: string | null
   name: string | null
-  categoryName: string | null
-  subCategoryName: string | null
   description: string | null
   imageUrl: string | null
-  smallPrice: runtime.Decimal | null
-  mediumPrice: runtime.Decimal | null
-  largePrice: runtime.Decimal | null
   prepTimeMin: number | null
   isAvailable: boolean | null
   isActive: boolean | null
@@ -72,13 +61,8 @@ export type MenuItemMaxAggregateOutputType = {
   categoryId: string | null
   subCategoryId: string | null
   name: string | null
-  categoryName: string | null
-  subCategoryName: string | null
   description: string | null
   imageUrl: string | null
-  smallPrice: runtime.Decimal | null
-  mediumPrice: runtime.Decimal | null
-  largePrice: runtime.Decimal | null
   prepTimeMin: number | null
   isAvailable: boolean | null
   isActive: boolean | null
@@ -95,13 +79,8 @@ export type MenuItemCountAggregateOutputType = {
   categoryId: number
   subCategoryId: number
   name: number
-  categoryName: number
-  subCategoryName: number
   description: number
   imageUrl: number
-  smallPrice: number
-  mediumPrice: number
-  largePrice: number
   prepTimeMin: number
   isAvailable: number
   isActive: number
@@ -115,17 +94,11 @@ export type MenuItemCountAggregateOutputType = {
 
 
 export type MenuItemAvgAggregateInputType = {
-  smallPrice?: true
-  mediumPrice?: true
-  largePrice?: true
   prepTimeMin?: true
   sortOrder?: true
 }
 
 export type MenuItemSumAggregateInputType = {
-  smallPrice?: true
-  mediumPrice?: true
-  largePrice?: true
   prepTimeMin?: true
   sortOrder?: true
 }
@@ -137,13 +110,8 @@ export type MenuItemMinAggregateInputType = {
   categoryId?: true
   subCategoryId?: true
   name?: true
-  categoryName?: true
-  subCategoryName?: true
   description?: true
   imageUrl?: true
-  smallPrice?: true
-  mediumPrice?: true
-  largePrice?: true
   prepTimeMin?: true
   isAvailable?: true
   isActive?: true
@@ -160,13 +128,8 @@ export type MenuItemMaxAggregateInputType = {
   categoryId?: true
   subCategoryId?: true
   name?: true
-  categoryName?: true
-  subCategoryName?: true
   description?: true
   imageUrl?: true
-  smallPrice?: true
-  mediumPrice?: true
-  largePrice?: true
   prepTimeMin?: true
   isAvailable?: true
   isActive?: true
@@ -183,13 +146,8 @@ export type MenuItemCountAggregateInputType = {
   categoryId?: true
   subCategoryId?: true
   name?: true
-  categoryName?: true
-  subCategoryName?: true
   description?: true
   imageUrl?: true
-  smallPrice?: true
-  mediumPrice?: true
-  largePrice?: true
   prepTimeMin?: true
   isAvailable?: true
   isActive?: true
@@ -289,18 +247,13 @@ export type MenuItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type MenuItemGroupByOutputType = {
   id: string
-  menuId: string | null
+  menuId: string
   tenantId: string
   categoryId: string | null
   subCategoryId: string | null
   name: string
-  categoryName: string | null
-  subCategoryName: string | null
   description: string | null
   imageUrl: string | null
-  smallPrice: runtime.Decimal | null
-  mediumPrice: runtime.Decimal | null
-  largePrice: runtime.Decimal | null
   prepTimeMin: number | null
   isAvailable: boolean
   isActive: boolean
@@ -336,18 +289,13 @@ export type MenuItemWhereInput = {
   OR?: Prisma.MenuItemWhereInput[]
   NOT?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
   id?: Prisma.StringFilter<"MenuItem"> | string
-  menuId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
+  menuId?: Prisma.StringFilter<"MenuItem"> | string
   tenantId?: Prisma.StringFilter<"MenuItem"> | string
   categoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   subCategoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   name?: Prisma.StringFilter<"MenuItem"> | string
-  categoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  subCategoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   description?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  smallPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.IntNullableFilter<"MenuItem"> | number | null
   isAvailable?: Prisma.BoolFilter<"MenuItem"> | boolean
   isActive?: Prisma.BoolFilter<"MenuItem"> | boolean
@@ -358,25 +306,20 @@ export type MenuItemWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"MenuItem"> | Date | string | null
   options?: Prisma.MenuItemOptionListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
-  menu?: Prisma.XOR<Prisma.MenuNullableScalarRelationFilter, Prisma.MenuWhereInput> | null
+  menu?: Prisma.XOR<Prisma.MenuScalarRelationFilter, Prisma.MenuWhereInput>
   subCategory?: Prisma.XOR<Prisma.SubCategoryNullableScalarRelationFilter, Prisma.SubCategoryWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type MenuItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  menuId?: Prisma.SortOrderInput | Prisma.SortOrder
+  menuId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   subCategoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
-  categoryName?: Prisma.SortOrderInput | Prisma.SortOrder
-  subCategoryName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  smallPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  largePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrderInput | Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -397,18 +340,13 @@ export type MenuItemWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
   OR?: Prisma.MenuItemWhereInput[]
   NOT?: Prisma.MenuItemWhereInput | Prisma.MenuItemWhereInput[]
-  menuId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
+  menuId?: Prisma.StringFilter<"MenuItem"> | string
   tenantId?: Prisma.StringFilter<"MenuItem"> | string
   categoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   subCategoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   name?: Prisma.StringFilter<"MenuItem"> | string
-  categoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  subCategoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   description?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  smallPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.IntNullableFilter<"MenuItem"> | number | null
   isAvailable?: Prisma.BoolFilter<"MenuItem"> | boolean
   isActive?: Prisma.BoolFilter<"MenuItem"> | boolean
@@ -419,25 +357,20 @@ export type MenuItemWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"MenuItem"> | Date | string | null
   options?: Prisma.MenuItemOptionListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
-  menu?: Prisma.XOR<Prisma.MenuNullableScalarRelationFilter, Prisma.MenuWhereInput> | null
+  menu?: Prisma.XOR<Prisma.MenuScalarRelationFilter, Prisma.MenuWhereInput>
   subCategory?: Prisma.XOR<Prisma.SubCategoryNullableScalarRelationFilter, Prisma.SubCategoryWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id">
 
 export type MenuItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  menuId?: Prisma.SortOrderInput | Prisma.SortOrder
+  menuId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   subCategoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
-  categoryName?: Prisma.SortOrderInput | Prisma.SortOrder
-  subCategoryName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  smallPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  largePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrderInput | Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -458,18 +391,13 @@ export type MenuItemScalarWhereWithAggregatesInput = {
   OR?: Prisma.MenuItemScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MenuItemScalarWhereWithAggregatesInput | Prisma.MenuItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
-  menuId?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
+  menuId?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
   categoryId?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
   subCategoryId?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"MenuItem"> | string
-  categoryName?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
-  subCategoryName?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"MenuItem"> | string | null
-  smallPrice?: Prisma.DecimalNullableWithAggregatesFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.DecimalNullableWithAggregatesFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.DecimalNullableWithAggregatesFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.IntNullableWithAggregatesFilter<"MenuItem"> | number | null
   isAvailable?: Prisma.BoolWithAggregatesFilter<"MenuItem"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"MenuItem"> | boolean
@@ -483,13 +411,8 @@ export type MenuItemScalarWhereWithAggregatesInput = {
 export type MenuItemCreateInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -500,25 +423,20 @@ export type MenuItemCreateInput = {
   deletedAt?: Date | string | null
   options?: Prisma.MenuItemOptionCreateNestedManyWithoutMenuItemInput
   category?: Prisma.CategoryCreateNestedOneWithoutMenuItemsInput
-  menu?: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
+  menu: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
   subCategory?: Prisma.SubCategoryCreateNestedOneWithoutMenuItemsInput
   tenant: Prisma.TenantCreateNestedOneWithoutMenuItemsInput
 }
 
 export type MenuItemUncheckedCreateInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -533,13 +451,8 @@ export type MenuItemUncheckedCreateInput = {
 export type MenuItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -550,25 +463,20 @@ export type MenuItemUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   options?: Prisma.MenuItemOptionUpdateManyWithoutMenuItemNestedInput
   category?: Prisma.CategoryUpdateOneWithoutMenuItemsNestedInput
-  menu?: Prisma.MenuUpdateOneWithoutMenuItemsNestedInput
+  menu?: Prisma.MenuUpdateOneRequiredWithoutMenuItemsNestedInput
   subCategory?: Prisma.SubCategoryUpdateOneWithoutMenuItemsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutMenuItemsNestedInput
 }
 
 export type MenuItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -582,18 +490,13 @@ export type MenuItemUncheckedUpdateInput = {
 
 export type MenuItemCreateManyInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -607,13 +510,8 @@ export type MenuItemCreateManyInput = {
 export type MenuItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -626,18 +524,13 @@ export type MenuItemUpdateManyMutationInput = {
 
 export type MenuItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -673,13 +566,8 @@ export type MenuItemCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   subCategoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  categoryName?: Prisma.SortOrder
-  subCategoryName?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  smallPrice?: Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrder
-  largePrice?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -691,9 +579,6 @@ export type MenuItemCountOrderByAggregateInput = {
 }
 
 export type MenuItemAvgOrderByAggregateInput = {
-  smallPrice?: Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrder
-  largePrice?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
@@ -705,13 +590,8 @@ export type MenuItemMaxOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   subCategoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  categoryName?: Prisma.SortOrder
-  subCategoryName?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  smallPrice?: Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrder
-  largePrice?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -728,13 +608,8 @@ export type MenuItemMinOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   subCategoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  categoryName?: Prisma.SortOrder
-  subCategoryName?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  smallPrice?: Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrder
-  largePrice?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -745,9 +620,6 @@ export type MenuItemMinOrderByAggregateInput = {
 }
 
 export type MenuItemSumOrderByAggregateInput = {
-  smallPrice?: Prisma.SortOrder
-  mediumPrice?: Prisma.SortOrder
-  largePrice?: Prisma.SortOrder
   prepTimeMin?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
@@ -929,6 +801,14 @@ export type MenuItemCreatetagsInput = {
   set: string[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type MenuItemUpdatetagsInput = {
   set?: string[]
   push?: string | string[]
@@ -951,13 +831,8 @@ export type MenuItemUpdateOneRequiredWithoutOptionsNestedInput = {
 export type MenuItemCreateWithoutTenantInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -968,23 +843,18 @@ export type MenuItemCreateWithoutTenantInput = {
   deletedAt?: Date | string | null
   options?: Prisma.MenuItemOptionCreateNestedManyWithoutMenuItemInput
   category?: Prisma.CategoryCreateNestedOneWithoutMenuItemsInput
-  menu?: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
+  menu: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
   subCategory?: Prisma.SubCategoryCreateNestedOneWithoutMenuItemsInput
 }
 
 export type MenuItemUncheckedCreateWithoutTenantInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1027,18 +897,13 @@ export type MenuItemScalarWhereInput = {
   OR?: Prisma.MenuItemScalarWhereInput[]
   NOT?: Prisma.MenuItemScalarWhereInput | Prisma.MenuItemScalarWhereInput[]
   id?: Prisma.StringFilter<"MenuItem"> | string
-  menuId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
+  menuId?: Prisma.StringFilter<"MenuItem"> | string
   tenantId?: Prisma.StringFilter<"MenuItem"> | string
   categoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   subCategoryId?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   name?: Prisma.StringFilter<"MenuItem"> | string
-  categoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  subCategoryName?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   description?: Prisma.StringNullableFilter<"MenuItem"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"MenuItem"> | string | null
-  smallPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.DecimalNullableFilter<"MenuItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.IntNullableFilter<"MenuItem"> | number | null
   isAvailable?: Prisma.BoolFilter<"MenuItem"> | boolean
   isActive?: Prisma.BoolFilter<"MenuItem"> | boolean
@@ -1052,13 +917,8 @@ export type MenuItemScalarWhereInput = {
 export type MenuItemCreateWithoutMenuInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1079,13 +939,8 @@ export type MenuItemUncheckedCreateWithoutMenuInput = {
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1126,13 +981,8 @@ export type MenuItemUpdateManyWithWhereWithoutMenuInput = {
 export type MenuItemCreateWithoutCategoryInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1142,24 +992,19 @@ export type MenuItemCreateWithoutCategoryInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   options?: Prisma.MenuItemOptionCreateNestedManyWithoutMenuItemInput
-  menu?: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
+  menu: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
   subCategory?: Prisma.SubCategoryCreateNestedOneWithoutMenuItemsInput
   tenant: Prisma.TenantCreateNestedOneWithoutMenuItemsInput
 }
 
 export type MenuItemUncheckedCreateWithoutCategoryInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1200,13 +1045,8 @@ export type MenuItemUpdateManyWithWhereWithoutCategoryInput = {
 export type MenuItemCreateWithoutSubCategoryInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1217,23 +1057,18 @@ export type MenuItemCreateWithoutSubCategoryInput = {
   deletedAt?: Date | string | null
   options?: Prisma.MenuItemOptionCreateNestedManyWithoutMenuItemInput
   category?: Prisma.CategoryCreateNestedOneWithoutMenuItemsInput
-  menu?: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
+  menu: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
   tenant: Prisma.TenantCreateNestedOneWithoutMenuItemsInput
 }
 
 export type MenuItemUncheckedCreateWithoutSubCategoryInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   categoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1274,13 +1109,8 @@ export type MenuItemUpdateManyWithWhereWithoutSubCategoryInput = {
 export type MenuItemCreateWithoutOptionsInput = {
   id?: string
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1290,25 +1120,20 @@ export type MenuItemCreateWithoutOptionsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   category?: Prisma.CategoryCreateNestedOneWithoutMenuItemsInput
-  menu?: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
+  menu: Prisma.MenuCreateNestedOneWithoutMenuItemsInput
   subCategory?: Prisma.SubCategoryCreateNestedOneWithoutMenuItemsInput
   tenant: Prisma.TenantCreateNestedOneWithoutMenuItemsInput
 }
 
 export type MenuItemUncheckedCreateWithoutOptionsInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1338,13 +1163,8 @@ export type MenuItemUpdateToOneWithWhereWithoutOptionsInput = {
 export type MenuItemUpdateWithoutOptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1354,25 +1174,20 @@ export type MenuItemUpdateWithoutOptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneWithoutMenuItemsNestedInput
-  menu?: Prisma.MenuUpdateOneWithoutMenuItemsNestedInput
+  menu?: Prisma.MenuUpdateOneRequiredWithoutMenuItemsNestedInput
   subCategory?: Prisma.SubCategoryUpdateOneWithoutMenuItemsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutMenuItemsNestedInput
 }
 
 export type MenuItemUncheckedUpdateWithoutOptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1385,17 +1200,12 @@ export type MenuItemUncheckedUpdateWithoutOptionsInput = {
 
 export type MenuItemCreateManyTenantInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1409,13 +1219,8 @@ export type MenuItemCreateManyTenantInput = {
 export type MenuItemUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1426,23 +1231,18 @@ export type MenuItemUpdateWithoutTenantInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   options?: Prisma.MenuItemOptionUpdateManyWithoutMenuItemNestedInput
   category?: Prisma.CategoryUpdateOneWithoutMenuItemsNestedInput
-  menu?: Prisma.MenuUpdateOneWithoutMenuItemsNestedInput
+  menu?: Prisma.MenuUpdateOneRequiredWithoutMenuItemsNestedInput
   subCategory?: Prisma.SubCategoryUpdateOneWithoutMenuItemsNestedInput
 }
 
 export type MenuItemUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1456,17 +1256,12 @@ export type MenuItemUncheckedUpdateWithoutTenantInput = {
 
 export type MenuItemUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1483,13 +1278,8 @@ export type MenuItemCreateManyMenuInput = {
   categoryId?: string | null
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1503,13 +1293,8 @@ export type MenuItemCreateManyMenuInput = {
 export type MenuItemUpdateWithoutMenuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1530,13 +1315,8 @@ export type MenuItemUncheckedUpdateWithoutMenuInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1554,13 +1334,8 @@ export type MenuItemUncheckedUpdateManyWithoutMenuInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1573,17 +1348,12 @@ export type MenuItemUncheckedUpdateManyWithoutMenuInput = {
 
 export type MenuItemCreateManyCategoryInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   subCategoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1597,13 +1367,8 @@ export type MenuItemCreateManyCategoryInput = {
 export type MenuItemUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1613,24 +1378,19 @@ export type MenuItemUpdateWithoutCategoryInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   options?: Prisma.MenuItemOptionUpdateManyWithoutMenuItemNestedInput
-  menu?: Prisma.MenuUpdateOneWithoutMenuItemsNestedInput
+  menu?: Prisma.MenuUpdateOneRequiredWithoutMenuItemsNestedInput
   subCategory?: Prisma.SubCategoryUpdateOneWithoutMenuItemsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutMenuItemsNestedInput
 }
 
 export type MenuItemUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1644,17 +1404,12 @@ export type MenuItemUncheckedUpdateWithoutCategoryInput = {
 
 export type MenuItemUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   subCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1667,17 +1422,12 @@ export type MenuItemUncheckedUpdateManyWithoutCategoryInput = {
 
 export type MenuItemCreateManySubCategoryInput = {
   id?: string
-  menuId?: string | null
+  menuId: string
   tenantId: string
   categoryId?: string | null
   name: string
-  categoryName?: string | null
-  subCategoryName?: string | null
   description?: string | null
   imageUrl?: string | null
-  smallPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: number | null
   isAvailable?: boolean
   isActive?: boolean
@@ -1691,13 +1441,8 @@ export type MenuItemCreateManySubCategoryInput = {
 export type MenuItemUpdateWithoutSubCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1708,23 +1453,18 @@ export type MenuItemUpdateWithoutSubCategoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   options?: Prisma.MenuItemOptionUpdateManyWithoutMenuItemNestedInput
   category?: Prisma.CategoryUpdateOneWithoutMenuItemsNestedInput
-  menu?: Prisma.MenuUpdateOneWithoutMenuItemsNestedInput
+  menu?: Prisma.MenuUpdateOneRequiredWithoutMenuItemsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutMenuItemsNestedInput
 }
 
 export type MenuItemUncheckedUpdateWithoutSubCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1738,17 +1478,12 @@ export type MenuItemUncheckedUpdateWithoutSubCategoryInput = {
 
 export type MenuItemUncheckedUpdateManyWithoutSubCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  menuId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subCategoryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  smallPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  mediumPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  largePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   prepTimeMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1797,13 +1532,8 @@ export type MenuItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   categoryId?: boolean
   subCategoryId?: boolean
   name?: boolean
-  categoryName?: boolean
-  subCategoryName?: boolean
   description?: boolean
   imageUrl?: boolean
-  smallPrice?: boolean
-  mediumPrice?: boolean
-  largePrice?: boolean
   prepTimeMin?: boolean
   isAvailable?: boolean
   isActive?: boolean
@@ -1814,7 +1544,7 @@ export type MenuItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   deletedAt?: boolean
   options?: boolean | Prisma.MenuItem$optionsArgs<ExtArgs>
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.MenuItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -1827,13 +1557,8 @@ export type MenuItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   categoryId?: boolean
   subCategoryId?: boolean
   name?: boolean
-  categoryName?: boolean
-  subCategoryName?: boolean
   description?: boolean
   imageUrl?: boolean
-  smallPrice?: boolean
-  mediumPrice?: boolean
-  largePrice?: boolean
   prepTimeMin?: boolean
   isAvailable?: boolean
   isActive?: boolean
@@ -1843,7 +1568,7 @@ export type MenuItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   deletedAt?: boolean
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["menuItem"]>
@@ -1855,13 +1580,8 @@ export type MenuItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   categoryId?: boolean
   subCategoryId?: boolean
   name?: boolean
-  categoryName?: boolean
-  subCategoryName?: boolean
   description?: boolean
   imageUrl?: boolean
-  smallPrice?: boolean
-  mediumPrice?: boolean
-  largePrice?: boolean
   prepTimeMin?: boolean
   isAvailable?: boolean
   isActive?: boolean
@@ -1871,7 +1591,7 @@ export type MenuItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   deletedAt?: boolean
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["menuItem"]>
@@ -1883,13 +1603,8 @@ export type MenuItemSelectScalar = {
   categoryId?: boolean
   subCategoryId?: boolean
   name?: boolean
-  categoryName?: boolean
-  subCategoryName?: boolean
   description?: boolean
   imageUrl?: boolean
-  smallPrice?: boolean
-  mediumPrice?: boolean
-  largePrice?: boolean
   prepTimeMin?: boolean
   isAvailable?: boolean
   isActive?: boolean
@@ -1900,24 +1615,24 @@ export type MenuItemSelectScalar = {
   deletedAt?: boolean
 }
 
-export type MenuItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "menuId" | "tenantId" | "categoryId" | "subCategoryId" | "name" | "categoryName" | "subCategoryName" | "description" | "imageUrl" | "smallPrice" | "mediumPrice" | "largePrice" | "prepTimeMin" | "isAvailable" | "isActive" | "tags" | "sortOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["menuItem"]>
+export type MenuItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "menuId" | "tenantId" | "categoryId" | "subCategoryId" | "name" | "description" | "imageUrl" | "prepTimeMin" | "isAvailable" | "isActive" | "tags" | "sortOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["menuItem"]>
 export type MenuItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   options?: boolean | Prisma.MenuItem$optionsArgs<ExtArgs>
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.MenuItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MenuItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type MenuItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.MenuItem$categoryArgs<ExtArgs>
-  menu?: boolean | Prisma.MenuItem$menuArgs<ExtArgs>
+  menu?: boolean | Prisma.MenuDefaultArgs<ExtArgs>
   subCategory?: boolean | Prisma.MenuItem$subCategoryArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
@@ -1927,24 +1642,19 @@ export type $MenuItemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     options: Prisma.$MenuItemOptionPayload<ExtArgs>[]
     category: Prisma.$CategoryPayload<ExtArgs> | null
-    menu: Prisma.$MenuPayload<ExtArgs> | null
+    menu: Prisma.$MenuPayload<ExtArgs>
     subCategory: Prisma.$SubCategoryPayload<ExtArgs> | null
     tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    menuId: string | null
+    menuId: string
     tenantId: string
     categoryId: string | null
     subCategoryId: string | null
     name: string
-    categoryName: string | null
-    subCategoryName: string | null
     description: string | null
     imageUrl: string | null
-    smallPrice: runtime.Decimal | null
-    mediumPrice: runtime.Decimal | null
-    largePrice: runtime.Decimal | null
     prepTimeMin: number | null
     isAvailable: boolean
     isActive: boolean
@@ -2349,7 +2059,7 @@ export interface Prisma__MenuItemClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   options<T extends Prisma.MenuItem$optionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MenuItem$optionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuItemOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   category<T extends Prisma.MenuItem$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MenuItem$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  menu<T extends Prisma.MenuItem$menuArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MenuItem$menuArgs<ExtArgs>>): Prisma.Prisma__MenuClient<runtime.Types.Result.GetResult<Prisma.$MenuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  menu<T extends Prisma.MenuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MenuDefaultArgs<ExtArgs>>): Prisma.Prisma__MenuClient<runtime.Types.Result.GetResult<Prisma.$MenuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   subCategory<T extends Prisma.MenuItem$subCategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MenuItem$subCategoryArgs<ExtArgs>>): Prisma.Prisma__SubCategoryClient<runtime.Types.Result.GetResult<Prisma.$SubCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2387,13 +2097,8 @@ export interface MenuItemFieldRefs {
   readonly categoryId: Prisma.FieldRef<"MenuItem", 'String'>
   readonly subCategoryId: Prisma.FieldRef<"MenuItem", 'String'>
   readonly name: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly categoryName: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly subCategoryName: Prisma.FieldRef<"MenuItem", 'String'>
   readonly description: Prisma.FieldRef<"MenuItem", 'String'>
   readonly imageUrl: Prisma.FieldRef<"MenuItem", 'String'>
-  readonly smallPrice: Prisma.FieldRef<"MenuItem", 'Decimal'>
-  readonly mediumPrice: Prisma.FieldRef<"MenuItem", 'Decimal'>
-  readonly largePrice: Prisma.FieldRef<"MenuItem", 'Decimal'>
   readonly prepTimeMin: Prisma.FieldRef<"MenuItem", 'Int'>
   readonly isAvailable: Prisma.FieldRef<"MenuItem", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"MenuItem", 'Boolean'>
@@ -2843,25 +2548,6 @@ export type MenuItem$categoryArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.CategoryInclude<ExtArgs> | null
   where?: Prisma.CategoryWhereInput
-}
-
-/**
- * MenuItem.menu
- */
-export type MenuItem$menuArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Menu
-   */
-  select?: Prisma.MenuSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Menu
-   */
-  omit?: Prisma.MenuOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MenuInclude<ExtArgs> | null
-  where?: Prisma.MenuWhereInput
 }
 
 /**

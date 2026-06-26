@@ -193,7 +193,6 @@ export type TenantWhereInput = {
   categories?: Prisma.CategoryListRelationFilter
   menuItems?: Prisma.MenuItemListRelationFilter
   menus?: Prisma.MenuListRelationFilter
-  orders?: Prisma.OrderListRelationFilter
   qrCodes?: Prisma.QrCodeListRelationFilter
   subCategories?: Prisma.SubCategoryListRelationFilter
   tables?: Prisma.TableListRelationFilter
@@ -210,7 +209,6 @@ export type TenantOrderByWithRelationInput = {
   categories?: Prisma.CategoryOrderByRelationAggregateInput
   menuItems?: Prisma.MenuItemOrderByRelationAggregateInput
   menus?: Prisma.MenuOrderByRelationAggregateInput
-  orders?: Prisma.OrderOrderByRelationAggregateInput
   qrCodes?: Prisma.QrCodeOrderByRelationAggregateInput
   subCategories?: Prisma.SubCategoryOrderByRelationAggregateInput
   tables?: Prisma.TableOrderByRelationAggregateInput
@@ -230,7 +228,6 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   categories?: Prisma.CategoryListRelationFilter
   menuItems?: Prisma.MenuItemListRelationFilter
   menus?: Prisma.MenuListRelationFilter
-  orders?: Prisma.OrderListRelationFilter
   qrCodes?: Prisma.QrCodeListRelationFilter
   subCategories?: Prisma.SubCategoryListRelationFilter
   tables?: Prisma.TableListRelationFilter
@@ -271,7 +268,6 @@ export type TenantCreateInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
@@ -288,7 +284,6 @@ export type TenantUncheckedCreateInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
@@ -305,7 +300,6 @@ export type TenantUpdateInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
@@ -322,7 +316,6 @@ export type TenantUncheckedUpdateInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
@@ -361,11 +354,6 @@ export type TenantNullableScalarRelationFilter = {
   isNot?: Prisma.TenantWhereInput | null
 }
 
-export type TenantScalarRelationFilter = {
-  is?: Prisma.TenantWhereInput
-  isNot?: Prisma.TenantWhereInput
-}
-
 export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -393,6 +381,11 @@ export type TenantMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type TenantScalarRelationFilter = {
+  is?: Prisma.TenantWhereInput
+  isNot?: Prisma.TenantWhereInput
+}
+
 export type TenantCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsersInput
@@ -407,20 +400,6 @@ export type TenantUpdateOneWithoutUsersNestedInput = {
   delete?: Prisma.TenantWhereInput | boolean
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsersInput, Prisma.TenantUpdateWithoutUsersInput>, Prisma.TenantUncheckedUpdateWithoutUsersInput>
-}
-
-export type TenantCreateNestedOneWithoutOrdersInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrdersInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutOrdersNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrdersInput
-  upsert?: Prisma.TenantUpsertWithoutOrdersInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrdersInput, Prisma.TenantUpdateWithoutOrdersInput>, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
 }
 
 export type TenantCreateNestedOneWithoutMenusInput = {
@@ -517,7 +496,6 @@ export type TenantCreateWithoutUsersInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
@@ -533,7 +511,6 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
@@ -565,7 +542,6 @@ export type TenantUpdateWithoutUsersInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
@@ -581,90 +557,9 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutOrdersInput = {
-  id?: string
-  name: string
-  slug: string
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
-  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
-  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
-  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
-  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
-  users?: Prisma.UserCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutOrdersInput = {
-  id?: string
-  name: string
-  slug: string
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
-  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
-  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
-  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
-  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutOrdersInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
-}
-
-export type TenantUpsertWithoutOrdersInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrdersInput, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutOrdersInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrdersInput, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
-}
-
-export type TenantUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
-  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
-  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
-  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
-  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
-  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutOrdersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
-  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
-  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
-  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
-  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutMenusInput = {
@@ -676,7 +571,6 @@ export type TenantCreateWithoutMenusInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
@@ -692,7 +586,6 @@ export type TenantUncheckedCreateWithoutMenusInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
@@ -724,7 +617,6 @@ export type TenantUpdateWithoutMenusInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
@@ -740,7 +632,6 @@ export type TenantUncheckedUpdateWithoutMenusInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
@@ -756,7 +647,6 @@ export type TenantCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
@@ -772,7 +662,6 @@ export type TenantUncheckedCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
@@ -804,7 +693,6 @@ export type TenantUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
@@ -820,7 +708,6 @@ export type TenantUncheckedUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
@@ -837,7 +724,6 @@ export type TenantCreateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
@@ -853,7 +739,6 @@ export type TenantUncheckedCreateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
@@ -885,7 +770,6 @@ export type TenantUpdateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
@@ -901,7 +785,6 @@ export type TenantUncheckedUpdateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
@@ -916,7 +799,6 @@ export type TenantCreateWithoutMenuItemsInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
@@ -932,7 +814,6 @@ export type TenantUncheckedCreateWithoutMenuItemsInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
@@ -964,7 +845,6 @@ export type TenantUpdateWithoutMenuItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
@@ -980,7 +860,6 @@ export type TenantUncheckedUpdateWithoutMenuItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
@@ -997,7 +876,6 @@ export type TenantCreateWithoutTablesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
@@ -1013,7 +891,6 @@ export type TenantUncheckedCreateWithoutTablesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
@@ -1045,7 +922,6 @@ export type TenantUpdateWithoutTablesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
@@ -1061,7 +937,6 @@ export type TenantUncheckedUpdateWithoutTablesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
@@ -1077,7 +952,6 @@ export type TenantCreateWithoutQrCodesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
@@ -1093,7 +967,6 @@ export type TenantUncheckedCreateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
@@ -1125,7 +998,6 @@ export type TenantUpdateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
@@ -1141,7 +1013,6 @@ export type TenantUncheckedUpdateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
@@ -1156,7 +1027,6 @@ export type TenantCountOutputType = {
   categories: number
   menuItems: number
   menus: number
-  orders: number
   qrCodes: number
   subCategories: number
   tables: number
@@ -1167,7 +1037,6 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   categories?: boolean | TenantCountOutputTypeCountCategoriesArgs
   menuItems?: boolean | TenantCountOutputTypeCountMenuItemsArgs
   menus?: boolean | TenantCountOutputTypeCountMenusArgs
-  orders?: boolean | TenantCountOutputTypeCountOrdersArgs
   qrCodes?: boolean | TenantCountOutputTypeCountQrCodesArgs
   subCategories?: boolean | TenantCountOutputTypeCountSubCategoriesArgs
   tables?: boolean | TenantCountOutputTypeCountTablesArgs
@@ -1203,13 +1072,6 @@ export type TenantCountOutputTypeCountMenuItemsArgs<ExtArgs extends runtime.Type
  */
 export type TenantCountOutputTypeCountMenusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MenuWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrderWhereInput
 }
 
 /**
@@ -1251,7 +1113,6 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   categories?: boolean | Prisma.Tenant$categoriesArgs<ExtArgs>
   menuItems?: boolean | Prisma.Tenant$menuItemsArgs<ExtArgs>
   menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>
-  orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>
   qrCodes?: boolean | Prisma.Tenant$qrCodesArgs<ExtArgs>
   subCategories?: boolean | Prisma.Tenant$subCategoriesArgs<ExtArgs>
   tables?: boolean | Prisma.Tenant$tablesArgs<ExtArgs>
@@ -1291,7 +1152,6 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categories?: boolean | Prisma.Tenant$categoriesArgs<ExtArgs>
   menuItems?: boolean | Prisma.Tenant$menuItemsArgs<ExtArgs>
   menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>
-  orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>
   qrCodes?: boolean | Prisma.Tenant$qrCodesArgs<ExtArgs>
   subCategories?: boolean | Prisma.Tenant$subCategoriesArgs<ExtArgs>
   tables?: boolean | Prisma.Tenant$tablesArgs<ExtArgs>
@@ -1307,7 +1167,6 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     categories: Prisma.$CategoryPayload<ExtArgs>[]
     menuItems: Prisma.$MenuItemPayload<ExtArgs>[]
     menus: Prisma.$MenuPayload<ExtArgs>[]
-    orders: Prisma.$OrderPayload<ExtArgs>[]
     qrCodes: Prisma.$QrCodePayload<ExtArgs>[]
     subCategories: Prisma.$SubCategoryPayload<ExtArgs>[]
     tables: Prisma.$TablePayload<ExtArgs>[]
@@ -1717,7 +1576,6 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   categories<T extends Prisma.Tenant$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   menuItems<T extends Prisma.Tenant$menuItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$menuItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   menus<T extends Prisma.Tenant$menusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$menusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  orders<T extends Prisma.Tenant$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrCodes<T extends Prisma.Tenant$qrCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qrCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subCategories<T extends Prisma.Tenant$subCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$subCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tables<T extends Prisma.Tenant$tablesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tablesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2219,30 +2077,6 @@ export type Tenant$menusArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.MenuScalarFieldEnum | Prisma.MenuScalarFieldEnum[]
-}
-
-/**
- * Tenant.orders
- */
-export type Tenant$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Order
-   */
-  select?: Prisma.OrderSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Order
-   */
-  omit?: Prisma.OrderOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OrderInclude<ExtArgs> | null
-  where?: Prisma.OrderWhereInput
-  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
-  cursor?: Prisma.OrderWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**

@@ -23,35 +23,10 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Order
- * 
- */
-export type Order = Prisma.OrderModel
-/**
- * Model OrderStatusHistory
- * 
- */
-export type OrderStatusHistory = Prisma.OrderStatusHistoryModel
-/**
- * Model OrderItem
- * 
- */
-export type OrderItem = Prisma.OrderItemModel
-/**
  * Model Tenant
  * 
  */
 export type Tenant = Prisma.TenantModel
-/**
- * Model GenerateQrCode
- * 
- */
-export type GenerateQrCode = Prisma.GenerateQrCodeModel
-/**
- * Model GenerateQrCodeScanLog
- * 
- */
-export type GenerateQrCodeScanLog = Prisma.GenerateQrCodeScanLogModel
 /**
  * Model RefreshToken
  * 
@@ -77,11 +52,6 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type SubCategory = Prisma.SubCategoryModel
-/**
- * Model AddMenuItem
- * 
- */
-export type AddMenuItem = Prisma.AddMenuItemModel
 /**
  * Model MenuItem
  * 

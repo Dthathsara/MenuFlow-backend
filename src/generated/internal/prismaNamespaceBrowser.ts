@@ -52,18 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Order: 'Order',
-  OrderStatusHistory: 'OrderStatusHistory',
-  OrderItem: 'OrderItem',
   Tenant: 'Tenant',
-  GenerateQrCode: 'GenerateQrCode',
-  GenerateQrCodeScanLog: 'GenerateQrCodeScanLog',
   RefreshToken: 'RefreshToken',
   AuditLog: 'AuditLog',
   Menu: 'Menu',
   Category: 'Category',
   SubCategory: 'SubCategory',
-  AddMenuItem: 'AddMenuItem',
   MenuItem: 'MenuItem',
   MenuItemOption: 'MenuItemOption',
   PriceHistory: 'PriceHistory',
@@ -92,19 +86,9 @@ export const UserScalarFieldEnum = {
   id: 'id',
   passwordHash: 'passwordHash',
   hotelName: 'hotelName',
-  businessType: 'businessType',
-  businessLocation: 'businessLocation',
-  businessAddress: 'businessAddress',
-  kitchenOpenTime: 'kitchenOpenTime',
-  kitchenCloseTime: 'kitchenCloseTime',
-  email: 'email',
   businessEmail: 'businessEmail',
-  restaurantImageUrl: 'restaurantImageUrl',
   contactPersonName: 'contactPersonName',
   contactPersonMobileNumber: 'contactPersonMobileNumber',
-  taxRate: 'taxRate',
-  serviceChargeRate: 'serviceChargeRate',
-  discountRate: 'discountRate',
   role: 'role',
   isActive: 'isActive',
   tenantId: 'tenantId',
@@ -114,76 +98,6 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const OrderScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  orderNumber: 'orderNumber',
-  customerSessionId: 'customerSessionId',
-  tableId: 'tableId',
-  qrCodeId: 'qrCodeId',
-  qrToken: 'qrToken',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  customerName: 'customerName',
-  customerPhone: 'customerPhone',
-  orderType: 'orderType',
-  orderStatus: 'orderStatus',
-  paymentStatus: 'paymentStatus',
-  subtotal: 'subtotal',
-  taxRate: 'taxRate',
-  taxAmount: 'taxAmount',
-  serviceChargeRate: 'serviceChargeRate',
-  serviceChargeAmount: 'serviceChargeAmount',
-  discountRate: 'discountRate',
-  discountAmount: 'discountAmount',
-  totalAmount: 'totalAmount',
-  itemNote: 'itemNote',
-  placedAt: 'placedAt',
-  acceptedAt: 'acceptedAt',
-  preparingAt: 'preparingAt',
-  readyAt: 'readyAt',
-  deliveredAt: 'deliveredAt',
-  cancelledAt: 'cancelledAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
-
-
-export const OrderStatusHistoryScalarFieldEnum = {
-  id: 'id',
-  orderId: 'orderId',
-  status: 'status',
-  changedAt: 'changedAt'
-} as const
-
-export type OrderStatusHistoryScalarFieldEnum = (typeof OrderStatusHistoryScalarFieldEnum)[keyof typeof OrderStatusHistoryScalarFieldEnum]
-
-
-export const OrderItemScalarFieldEnum = {
-  id: 'id',
-  orderId: 'orderId',
-  menuItemId: 'menuItemId',
-  foodName: 'foodName',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
-  servingSize: 'servingSize',
-  unitPrice: 'unitPrice',
-  quantity: 'quantity',
-  lineTotal: 'lineTotal',
-  prepTimeMin: 'prepTimeMin',
-  imageUrl: 'imageUrl',
-  itemNote: 'itemNote',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -196,41 +110,6 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
-
-
-export const GenerateQrCodeScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  qrToken: 'qrToken',
-  customerUrl: 'customerUrl',
-  qrImageUrl: 'qrImageUrl',
-  scanCount: 'scanCount',
-  lastScannedAt: 'lastScannedAt',
-  isActive: 'isActive',
-  createdById: 'createdById',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-} as const
-
-export type GenerateQrCodeScalarFieldEnum = (typeof GenerateQrCodeScalarFieldEnum)[keyof typeof GenerateQrCodeScalarFieldEnum]
-
-
-export const GenerateQrCodeScanLogScalarFieldEnum = {
-  id: 'id',
-  generateQrCodeId: 'generateQrCodeId',
-  tenantId: 'tenantId',
-  qrToken: 'qrToken',
-  tableNumber: 'tableNumber',
-  section: 'section',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
-  scannedAt: 'scannedAt'
-} as const
-
-export type GenerateQrCodeScanLogScalarFieldEnum = (typeof GenerateQrCodeScanLogScalarFieldEnum)[keyof typeof GenerateQrCodeScanLogScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -304,29 +183,6 @@ export const SubCategoryScalarFieldEnum = {
 export type SubCategoryScalarFieldEnum = (typeof SubCategoryScalarFieldEnum)[keyof typeof SubCategoryScalarFieldEnum]
 
 
-export const AddMenuItemScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  name: 'name',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
-  description: 'description',
-  smallPrice: 'smallPrice',
-  mediumPrice: 'mediumPrice',
-  largePrice: 'largePrice',
-  prepTimeMin: 'prepTimeMin',
-  isAvailable: 'isAvailable',
-  isActive: 'isActive',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  imageUrl: 'imageUrl'
-} as const
-
-export type AddMenuItemScalarFieldEnum = (typeof AddMenuItemScalarFieldEnum)[keyof typeof AddMenuItemScalarFieldEnum]
-
-
 export const MenuItemScalarFieldEnum = {
   id: 'id',
   menuId: 'menuId',
@@ -334,13 +190,8 @@ export const MenuItemScalarFieldEnum = {
   categoryId: 'categoryId',
   subCategoryId: 'subCategoryId',
   name: 'name',
-  categoryName: 'categoryName',
-  subCategoryName: 'subCategoryName',
   description: 'description',
   imageUrl: 'imageUrl',
-  smallPrice: 'smallPrice',
-  mediumPrice: 'mediumPrice',
-  largePrice: 'largePrice',
   prepTimeMin: 'prepTimeMin',
   isAvailable: 'isAvailable',
   isActive: 'isActive',

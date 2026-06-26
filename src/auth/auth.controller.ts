@@ -43,15 +43,14 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
-    console.log('LOGIN HIT', dto.email);
     return this.authService.login(dto);
   }
 
   @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  refresh(@Body() dto: RefreshTokenDto) {
-    return this.authService.refreshTokens(dto.refreshToken);
+  refresh(@Body() dto: RefreshTokenDto, @CurrentUser('sub') userId: string) {
+    return this.authService.refreshTokens(userId, dto.refreshToken);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -62,7 +61,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  updateMe(@CurrentUser() currentUser: any, @Body() dto: UpdateProfileDto) {
+  updateMe(
+    @CurrentUser() currentUser: any,
+    @Body() dto: UpdateProfileDto,
+  ) {
     return this.authService.updateMe(this.getCurrentUserId(currentUser), dto);
   }
 
@@ -72,10 +74,7 @@ export class AuthController {
     @CurrentUser() currentUser: any,
     @Body() dto: ChangePasswordDto,
   ) {
-    return this.authService.changePassword(
-      this.getCurrentUserId(currentUser),
-      dto,
-    );
+    return this.authService.changePassword(this.getCurrentUserId(currentUser), dto);
   }
 
   @UseGuards(JwtAuthGuard)
