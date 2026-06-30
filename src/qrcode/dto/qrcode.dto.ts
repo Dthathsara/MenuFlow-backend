@@ -1,6 +1,10 @@
 import {
-  IsString, IsOptional, IsBoolean,
-  IsUUID, IsArray, MinLength,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsUUID,
+  IsArray,
+  MinLength,
 } from 'class-validator';
 
 export class CreateQrCodeDto {
@@ -42,4 +46,14 @@ export class AssignStaffDto {
   @IsArray()
   @IsUUID('4', { each: true })
   staffIds!: string[];
+}
+
+export class CreateGenerateQrCodeDto {
+  @IsString()
+  @MinLength(1)
+  tableNumber!: string;
+
+  @IsString()
+  @MinLength(1)
+  section!: string;
 }

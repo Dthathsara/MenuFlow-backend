@@ -193,10 +193,15 @@ export type TenantWhereInput = {
   categories?: Prisma.CategoryListRelationFilter
   menuItems?: Prisma.MenuItemListRelationFilter
   menus?: Prisma.MenuListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
+  orderReports?: Prisma.OrderReportListRelationFilter
   qrCodes?: Prisma.QrCodeListRelationFilter
+  staffMembers?: Prisma.StaffMemberListRelationFilter
   subCategories?: Prisma.SubCategoryListRelationFilter
   tables?: Prisma.TableListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
   users?: Prisma.UserListRelationFilter
+  billings?: Prisma.BillingListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -209,10 +214,15 @@ export type TenantOrderByWithRelationInput = {
   categories?: Prisma.CategoryOrderByRelationAggregateInput
   menuItems?: Prisma.MenuItemOrderByRelationAggregateInput
   menus?: Prisma.MenuOrderByRelationAggregateInput
+  orders?: Prisma.OrderOrderByRelationAggregateInput
+  orderReports?: Prisma.OrderReportOrderByRelationAggregateInput
   qrCodes?: Prisma.QrCodeOrderByRelationAggregateInput
+  staffMembers?: Prisma.StaffMemberOrderByRelationAggregateInput
   subCategories?: Prisma.SubCategoryOrderByRelationAggregateInput
   tables?: Prisma.TableOrderByRelationAggregateInput
+  userReports?: Prisma.UserReportOrderByRelationAggregateInput
   users?: Prisma.UserOrderByRelationAggregateInput
+  billings?: Prisma.BillingOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -228,10 +238,15 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   categories?: Prisma.CategoryListRelationFilter
   menuItems?: Prisma.MenuItemListRelationFilter
   menus?: Prisma.MenuListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
+  orderReports?: Prisma.OrderReportListRelationFilter
   qrCodes?: Prisma.QrCodeListRelationFilter
+  staffMembers?: Prisma.StaffMemberListRelationFilter
   subCategories?: Prisma.SubCategoryListRelationFilter
   tables?: Prisma.TableListRelationFilter
+  userReports?: Prisma.UserReportListRelationFilter
   users?: Prisma.UserListRelationFilter
+  billings?: Prisma.BillingListRelationFilter
 }, "id" | "slug">
 
 export type TenantOrderByWithAggregationInput = {
@@ -268,10 +283,15 @@ export type TenantCreateInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -284,10 +304,15 @@ export type TenantUncheckedCreateInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -300,10 +325,15 @@ export type TenantUpdateInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -316,10 +346,15 @@ export type TenantUncheckedUpdateInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -354,6 +389,11 @@ export type TenantNullableScalarRelationFilter = {
   isNot?: Prisma.TenantWhereInput | null
 }
 
+export type TenantScalarRelationFilter = {
+  is?: Prisma.TenantWhereInput
+  isNot?: Prisma.TenantWhereInput
+}
+
 export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -381,11 +421,6 @@ export type TenantMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type TenantScalarRelationFilter = {
-  is?: Prisma.TenantWhereInput
-  isNot?: Prisma.TenantWhereInput
-}
-
 export type TenantCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsersInput
@@ -400,6 +435,20 @@ export type TenantUpdateOneWithoutUsersNestedInput = {
   delete?: Prisma.TenantWhereInput | boolean
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsersInput, Prisma.TenantUpdateWithoutUsersInput>, Prisma.TenantUncheckedUpdateWithoutUsersInput>
+}
+
+export type TenantCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.TenantUpsertWithoutOrdersInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrdersInput, Prisma.TenantUpdateWithoutOrdersInput>, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
 }
 
 export type TenantCreateNestedOneWithoutMenusInput = {
@@ -442,6 +491,62 @@ export type TenantUpdateOneRequiredWithoutSubCategoriesNestedInput = {
   upsert?: Prisma.TenantUpsertWithoutSubCategoriesInput
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutSubCategoriesInput, Prisma.TenantUpdateWithoutSubCategoriesInput>, Prisma.TenantUncheckedUpdateWithoutSubCategoriesInput>
+}
+
+export type TenantCreateNestedOneWithoutStaffMembersInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffMembersInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutStaffMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffMembersInput
+  upsert?: Prisma.TenantUpsertWithoutStaffMembersInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStaffMembersInput, Prisma.TenantUpdateWithoutStaffMembersInput>, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
+}
+
+export type TenantCreateNestedOneWithoutUserReportsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUserReportsInput, Prisma.TenantUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUserReportsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUserReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUserReportsInput, Prisma.TenantUncheckedCreateWithoutUserReportsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUserReportsInput
+  upsert?: Prisma.TenantUpsertWithoutUserReportsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUserReportsInput, Prisma.TenantUpdateWithoutUserReportsInput>, Prisma.TenantUncheckedUpdateWithoutUserReportsInput>
+}
+
+export type TenantCreateNestedOneWithoutOrderReportsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrderReportsInput, Prisma.TenantUncheckedCreateWithoutOrderReportsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrderReportsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutOrderReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrderReportsInput, Prisma.TenantUncheckedCreateWithoutOrderReportsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrderReportsInput
+  upsert?: Prisma.TenantUpsertWithoutOrderReportsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrderReportsInput, Prisma.TenantUpdateWithoutOrderReportsInput>, Prisma.TenantUncheckedUpdateWithoutOrderReportsInput>
+}
+
+export type TenantCreateNestedOneWithoutBillingsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutBillingsInput, Prisma.TenantUncheckedCreateWithoutBillingsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutBillingsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutBillingsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutBillingsInput, Prisma.TenantUncheckedCreateWithoutBillingsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutBillingsInput
+  upsert?: Prisma.TenantUpsertWithoutBillingsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutBillingsInput, Prisma.TenantUpdateWithoutBillingsInput>, Prisma.TenantUncheckedUpdateWithoutBillingsInput>
 }
 
 export type TenantCreateNestedOneWithoutMenuItemsInput = {
@@ -496,9 +601,14 @@ export type TenantCreateWithoutUsersInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -511,9 +621,14 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -542,9 +657,14 @@ export type TenantUpdateWithoutUsersInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -557,9 +677,110 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutOrdersInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutOrdersInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
+}
+
+export type TenantUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrdersInput, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrdersInput, Prisma.TenantUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrdersInput, Prisma.TenantUncheckedUpdateWithoutOrdersInput>
+}
+
+export type TenantUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutMenusInput = {
@@ -571,10 +792,15 @@ export type TenantCreateWithoutMenusInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMenusInput = {
@@ -586,10 +812,15 @@ export type TenantUncheckedCreateWithoutMenusInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMenusInput = {
@@ -617,10 +848,15 @@ export type TenantUpdateWithoutMenusInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMenusInput = {
@@ -632,10 +868,15 @@ export type TenantUncheckedUpdateWithoutMenusInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutCategoriesInput = {
@@ -647,10 +888,15 @@ export type TenantCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutCategoriesInput = {
@@ -662,10 +908,15 @@ export type TenantUncheckedCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutCategoriesInput = {
@@ -693,10 +944,15 @@ export type TenantUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutCategoriesInput = {
@@ -708,10 +964,15 @@ export type TenantUncheckedUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSubCategoriesInput = {
@@ -724,9 +985,14 @@ export type TenantCreateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSubCategoriesInput = {
@@ -739,9 +1005,14 @@ export type TenantUncheckedCreateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSubCategoriesInput = {
@@ -770,9 +1041,14 @@ export type TenantUpdateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSubCategoriesInput = {
@@ -785,8 +1061,397 @@ export type TenantUncheckedUpdateWithoutSubCategoriesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutStaffMembersInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutStaffMembersInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutStaffMembersInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
+}
+
+export type TenantUpsertWithoutStaffMembersInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutStaffMembersInput, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutStaffMembersInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutStaffMembersInput, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
+}
+
+export type TenantUpdateWithoutStaffMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutStaffMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUserReportsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUserReportsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUserReportsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUserReportsInput, Prisma.TenantUncheckedCreateWithoutUserReportsInput>
+}
+
+export type TenantUpsertWithoutUserReportsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUserReportsInput, Prisma.TenantUncheckedUpdateWithoutUserReportsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUserReportsInput, Prisma.TenantUncheckedCreateWithoutUserReportsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUserReportsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUserReportsInput, Prisma.TenantUncheckedUpdateWithoutUserReportsInput>
+}
+
+export type TenantUpdateWithoutUserReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUserReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutOrderReportsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutOrderReportsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutOrderReportsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrderReportsInput, Prisma.TenantUncheckedCreateWithoutOrderReportsInput>
+}
+
+export type TenantUpsertWithoutOrderReportsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrderReportsInput, Prisma.TenantUncheckedUpdateWithoutOrderReportsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrderReportsInput, Prisma.TenantUncheckedCreateWithoutOrderReportsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutOrderReportsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrderReportsInput, Prisma.TenantUncheckedUpdateWithoutOrderReportsInput>
+}
+
+export type TenantUpdateWithoutOrderReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutOrderReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutBillingsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutBillingsInput = {
+  id?: string
+  name: string
+  slug: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
+  menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
+  qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
+  subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutBillingsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutBillingsInput, Prisma.TenantUncheckedCreateWithoutBillingsInput>
+}
+
+export type TenantUpsertWithoutBillingsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutBillingsInput, Prisma.TenantUncheckedUpdateWithoutBillingsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutBillingsInput, Prisma.TenantUncheckedCreateWithoutBillingsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutBillingsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutBillingsInput, Prisma.TenantUncheckedUpdateWithoutBillingsInput>
+}
+
+export type TenantUpdateWithoutBillingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutBillingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
+  menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
+  qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
+  subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
 }
 
@@ -799,10 +1464,15 @@ export type TenantCreateWithoutMenuItemsInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMenuItemsInput = {
@@ -814,10 +1484,15 @@ export type TenantUncheckedCreateWithoutMenuItemsInput = {
   updatedAt?: Date | string
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMenuItemsInput = {
@@ -845,10 +1520,15 @@ export type TenantUpdateWithoutMenuItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMenuItemsInput = {
@@ -860,10 +1540,15 @@ export type TenantUncheckedUpdateWithoutMenuItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTablesInput = {
@@ -876,9 +1561,14 @@ export type TenantCreateWithoutTablesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTablesInput = {
@@ -891,9 +1581,14 @@ export type TenantUncheckedCreateWithoutTablesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
   qrCodes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTablesInput = {
@@ -922,9 +1617,14 @@ export type TenantUpdateWithoutTablesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTablesInput = {
@@ -937,9 +1637,14 @@ export type TenantUncheckedUpdateWithoutTablesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
   qrCodes?: Prisma.QrCodeUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQrCodesInput = {
@@ -952,9 +1657,14 @@ export type TenantCreateWithoutQrCodesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportCreateNestedManyWithoutTenantInput
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQrCodesInput = {
@@ -967,9 +1677,14 @@ export type TenantUncheckedCreateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutTenantInput
   menuItems?: Prisma.MenuItemUncheckedCreateNestedManyWithoutTenantInput
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput
+  orderReports?: Prisma.OrderReportUncheckedCreateNestedManyWithoutTenantInput
+  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
   subCategories?: Prisma.SubCategoryUncheckedCreateNestedManyWithoutTenantInput
   tables?: Prisma.TableUncheckedCreateNestedManyWithoutTenantInput
+  userReports?: Prisma.UserReportUncheckedCreateNestedManyWithoutTenantInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  billings?: Prisma.BillingUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQrCodesInput = {
@@ -998,9 +1713,14 @@ export type TenantUpdateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQrCodesInput = {
@@ -1013,9 +1733,14 @@ export type TenantUncheckedUpdateWithoutQrCodesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutTenantNestedInput
   menuItems?: Prisma.MenuItemUncheckedUpdateManyWithoutTenantNestedInput
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput
+  orderReports?: Prisma.OrderReportUncheckedUpdateManyWithoutTenantNestedInput
+  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
   subCategories?: Prisma.SubCategoryUncheckedUpdateManyWithoutTenantNestedInput
   tables?: Prisma.TableUncheckedUpdateManyWithoutTenantNestedInput
+  userReports?: Prisma.UserReportUncheckedUpdateManyWithoutTenantNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  billings?: Prisma.BillingUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -1027,20 +1752,30 @@ export type TenantCountOutputType = {
   categories: number
   menuItems: number
   menus: number
+  orders: number
+  orderReports: number
   qrCodes: number
+  staffMembers: number
   subCategories: number
   tables: number
+  userReports: number
   users: number
+  billings: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categories?: boolean | TenantCountOutputTypeCountCategoriesArgs
   menuItems?: boolean | TenantCountOutputTypeCountMenuItemsArgs
   menus?: boolean | TenantCountOutputTypeCountMenusArgs
+  orders?: boolean | TenantCountOutputTypeCountOrdersArgs
+  orderReports?: boolean | TenantCountOutputTypeCountOrderReportsArgs
   qrCodes?: boolean | TenantCountOutputTypeCountQrCodesArgs
+  staffMembers?: boolean | TenantCountOutputTypeCountStaffMembersArgs
   subCategories?: boolean | TenantCountOutputTypeCountSubCategoriesArgs
   tables?: boolean | TenantCountOutputTypeCountTablesArgs
+  userReports?: boolean | TenantCountOutputTypeCountUserReportsArgs
   users?: boolean | TenantCountOutputTypeCountUsersArgs
+  billings?: boolean | TenantCountOutputTypeCountBillingsArgs
 }
 
 /**
@@ -1077,8 +1812,29 @@ export type TenantCountOutputTypeCountMenusArgs<ExtArgs extends runtime.Types.Ex
 /**
  * TenantCountOutputType without action
  */
+export type TenantCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountOrderReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderReportWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
 export type TenantCountOutputTypeCountQrCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.QrCodeWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountStaffMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StaffMemberWhereInput
 }
 
 /**
@@ -1098,8 +1854,22 @@ export type TenantCountOutputTypeCountTablesArgs<ExtArgs extends runtime.Types.E
 /**
  * TenantCountOutputType without action
  */
+export type TenantCountOutputTypeCountUserReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
 export type TenantCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountBillingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BillingWhereInput
 }
 
 
@@ -1113,10 +1883,15 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   categories?: boolean | Prisma.Tenant$categoriesArgs<ExtArgs>
   menuItems?: boolean | Prisma.Tenant$menuItemsArgs<ExtArgs>
   menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>
+  orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>
+  orderReports?: boolean | Prisma.Tenant$orderReportsArgs<ExtArgs>
   qrCodes?: boolean | Prisma.Tenant$qrCodesArgs<ExtArgs>
+  staffMembers?: boolean | Prisma.Tenant$staffMembersArgs<ExtArgs>
   subCategories?: boolean | Prisma.Tenant$subCategoriesArgs<ExtArgs>
   tables?: boolean | Prisma.Tenant$tablesArgs<ExtArgs>
+  userReports?: boolean | Prisma.Tenant$userReportsArgs<ExtArgs>
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
+  billings?: boolean | Prisma.Tenant$billingsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -1152,10 +1927,15 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categories?: boolean | Prisma.Tenant$categoriesArgs<ExtArgs>
   menuItems?: boolean | Prisma.Tenant$menuItemsArgs<ExtArgs>
   menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>
+  orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>
+  orderReports?: boolean | Prisma.Tenant$orderReportsArgs<ExtArgs>
   qrCodes?: boolean | Prisma.Tenant$qrCodesArgs<ExtArgs>
+  staffMembers?: boolean | Prisma.Tenant$staffMembersArgs<ExtArgs>
   subCategories?: boolean | Prisma.Tenant$subCategoriesArgs<ExtArgs>
   tables?: boolean | Prisma.Tenant$tablesArgs<ExtArgs>
+  userReports?: boolean | Prisma.Tenant$userReportsArgs<ExtArgs>
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
+  billings?: boolean | Prisma.Tenant$billingsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1167,10 +1947,15 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     categories: Prisma.$CategoryPayload<ExtArgs>[]
     menuItems: Prisma.$MenuItemPayload<ExtArgs>[]
     menus: Prisma.$MenuPayload<ExtArgs>[]
+    orders: Prisma.$OrderPayload<ExtArgs>[]
+    orderReports: Prisma.$OrderReportPayload<ExtArgs>[]
     qrCodes: Prisma.$QrCodePayload<ExtArgs>[]
+    staffMembers: Prisma.$StaffMemberPayload<ExtArgs>[]
     subCategories: Prisma.$SubCategoryPayload<ExtArgs>[]
     tables: Prisma.$TablePayload<ExtArgs>[]
+    userReports: Prisma.$UserReportPayload<ExtArgs>[]
     users: Prisma.$UserPayload<ExtArgs>[]
+    billings: Prisma.$BillingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1576,10 +2361,15 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   categories<T extends Prisma.Tenant$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   menuItems<T extends Prisma.Tenant$menuItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$menuItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   menus<T extends Prisma.Tenant$menusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$menusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MenuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orders<T extends Prisma.Tenant$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orderReports<T extends Prisma.Tenant$orderReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$orderReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrCodes<T extends Prisma.Tenant$qrCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$qrCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  staffMembers<T extends Prisma.Tenant$staffMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$staffMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subCategories<T extends Prisma.Tenant$subCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$subCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tables<T extends Prisma.Tenant$tablesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tablesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userReports<T extends Prisma.Tenant$userReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$userReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   users<T extends Prisma.Tenant$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  billings<T extends Prisma.Tenant$billingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$billingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BillingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2080,6 +2870,54 @@ export type Tenant$menusArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
+ * Tenant.orders
+ */
+export type Tenant$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Tenant.orderReports
+ */
+export type Tenant$orderReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderReport
+   */
+  select?: Prisma.OrderReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderReport
+   */
+  omit?: Prisma.OrderReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderReportInclude<ExtArgs> | null
+  where?: Prisma.OrderReportWhereInput
+  orderBy?: Prisma.OrderReportOrderByWithRelationInput | Prisma.OrderReportOrderByWithRelationInput[]
+  cursor?: Prisma.OrderReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderReportScalarFieldEnum | Prisma.OrderReportScalarFieldEnum[]
+}
+
+/**
  * Tenant.qrCodes
  */
 export type Tenant$qrCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2101,6 +2939,30 @@ export type Tenant$qrCodesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.QrCodeScalarFieldEnum | Prisma.QrCodeScalarFieldEnum[]
+}
+
+/**
+ * Tenant.staffMembers
+ */
+export type Tenant$staffMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StaffMember
+   */
+  select?: Prisma.StaffMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StaffMember
+   */
+  omit?: Prisma.StaffMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffMemberInclude<ExtArgs> | null
+  where?: Prisma.StaffMemberWhereInput
+  orderBy?: Prisma.StaffMemberOrderByWithRelationInput | Prisma.StaffMemberOrderByWithRelationInput[]
+  cursor?: Prisma.StaffMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StaffMemberScalarFieldEnum | Prisma.StaffMemberScalarFieldEnum[]
 }
 
 /**
@@ -2152,6 +3014,30 @@ export type Tenant$tablesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
+ * Tenant.userReports
+ */
+export type Tenant$userReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
+}
+
+/**
  * Tenant.users
  */
 export type Tenant$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2173,6 +3059,30 @@ export type Tenant$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * Tenant.billings
+ */
+export type Tenant$billingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Billing
+   */
+  select?: Prisma.BillingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Billing
+   */
+  omit?: Prisma.BillingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BillingInclude<ExtArgs> | null
+  where?: Prisma.BillingWhereInput
+  orderBy?: Prisma.BillingOrderByWithRelationInput | Prisma.BillingOrderByWithRelationInput[]
+  cursor?: Prisma.BillingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BillingScalarFieldEnum | Prisma.BillingScalarFieldEnum[]
 }
 
 /**
