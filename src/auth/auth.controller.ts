@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  MethodNotAllowedException,
   Patch,
   Post,
   UnauthorizedException,
@@ -37,6 +38,12 @@ export class AuthController {
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  @Public()
+  @Get('login')
+  loginMethodInfo() {
+    throw new MethodNotAllowedException('Use POST /api/v1/auth/login');
   }
 
   @Public()
