@@ -110,6 +110,12 @@ export class UsersController {
     return this.usersService.updateRestaurantImage(userId, file);
   }
 
+  @Delete('me/restaurant-image')
+  @HttpCode(HttpStatus.OK)
+  deleteRestaurantImage(@CurrentUser('id') userId: string) {
+    return this.usersService.deleteRestaurantImage(userId);
+  }
+
   // Client Admin and above — update another user's role
   @Patch(':id/role')
   @Roles(Role.CLIENT_ADMIN)

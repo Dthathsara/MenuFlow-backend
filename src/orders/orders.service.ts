@@ -72,6 +72,52 @@ export class OrdersService {
       throw new BadRequestException('Invalid tenant_id');
     }
 
+    const qrToken = dto.qr_token?.trim();
+    let generatedQrCode: {
+      id: string;
+      tenantId: string;
+      tableNumber: string;
+    } | null = null;
+
+    if (qrToken) {
+      generatedQrCode = await this.prisma.generateQrCode.findFirst({
+        where: {
+          qrToken,
+          isActive: true,
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          tenantId: true,
+          tableNumber: true,
+        },
+      });
+
+      if (!generatedQrCode) {
+        throw new BadRequestException('Invalid QR code token');
+      }
+
+      if (generatedQrCode.tenantId !== tenantId) {
+        throw new BadRequestException(
+          'QR code does not match this restaurant',
+        );
+      }
+
+      const requestedTableId = dto.table_id?.trim();
+      if (
+        requestedTableId &&
+        requestedTableId.toLowerCase() !==
+          generatedQrCode.tableNumber.toLowerCase()
+      ) {
+        throw new BadRequestException('QR code does not match this table');
+      }
+    }
+
+    const resolvedTableId =
+      dto.table_id?.trim() || generatedQrCode?.tableNumber || null;
+    const resolvedQrCodeId =
+      dto.qr_code_id?.trim() || generatedQrCode?.id || null;
+
     const settings = await this.prisma.user.findFirst({
       where: { tenantId, deletedAt: null },
       select: { taxRate: true, serviceChargeRate: true, discountRate: true },
@@ -104,8 +150,8 @@ export class OrdersService {
         tenantId,
         orderNumber: this.generateOrderNumber(),
         customerSessionId,
-        tableId: dto.table_id?.trim() || null,
-        qrCodeId: dto.qr_code_id?.trim() || null,
+        tableId: resolvedTableId,
+        qrCodeId: resolvedQrCodeId,
         customerName,
         customerPhone,
         orderType: dto.order_type,
@@ -236,7 +282,7 @@ export class OrdersService {
     currentUser: any,
   ) {
     const tenantId = this.requireTenantId(currentUser);
-    const orderStatus = dto.order_status ?? dto.orderStatus;
+    const orderStatus = this.normalizeOrderStatus(dto.order_status ?? dto.orderStatus);
     if (!ORDER_STATUSES.includes(orderStatus as OrderStatus)) {
       throw new BadRequestException('Invalid order_status.');
     }
@@ -342,7 +388,7 @@ export class OrdersService {
 
     const orderStatus = query.orderStatus?.trim();
     if (orderStatus) {
-      where.orderStatus = orderStatus;
+      where.orderStatus = this.normalizeOrderStatus(orderStatus);
     }
 
     return where;
@@ -431,6 +477,14 @@ export class OrdersService {
       cancelled: 'cancelledAt',
     };
     return fields[status];
+  }
+
+  private normalizeOrderStatus(status?: string) {
+    const normalized = status?.trim().toLowerCase();
+    if (normalized === 'canceled') {
+      return 'cancelled';
+    }
+    return normalized ?? '';
   }
 
   private generateOrderNumber() {

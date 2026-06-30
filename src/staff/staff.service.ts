@@ -107,6 +107,32 @@ export class StaffService {
     return { roles: roles.length ? roles : [...STAFF_MEMBER_ROLES] };
   }
 
+  async getWaiters(currentUser: CurrentStaffUser) {
+    const tenantId = this.requireTenantId(currentUser);
+    const staffMembers = await this.prisma.staffMember.findMany({
+      where: {
+        tenantId,
+        deletedAt: null,
+        status: { equals: 'Active', mode: 'insensitive' },
+        role: { contains: 'waiter', mode: 'insensitive' },
+      },
+      select: {
+        id: true,
+        fullName: true,
+        role: true,
+      },
+      orderBy: { fullName: 'asc' },
+    });
+
+    return {
+      waiters: staffMembers.map((staffMember) => ({
+        id: staffMember.id,
+        fullName: staffMember.fullName,
+        role: staffMember.role,
+      })),
+    };
+  }
+
   async findOne(id: string, currentUser: CurrentStaffUser) {
     const tenantId = this.requireTenantId(currentUser);
     const staffMember = await this.findTenantStaffMember(id, tenantId);
@@ -280,7 +306,7 @@ export class StaffService {
 
     const role = query.role?.trim();
     if (role && role !== 'All Roles') {
-      where.role = this.validateRole(role);
+      where.role = { equals: this.validateRole(role), mode: 'insensitive' };
     }
 
     const status = query.status?.trim();

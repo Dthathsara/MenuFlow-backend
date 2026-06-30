@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "buildCommand": "npm run vercel-build",
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "/api/[...path]"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "/api/[...path]"
+    }
+  ]
+}

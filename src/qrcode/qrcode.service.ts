@@ -294,7 +294,7 @@ export class QrCodeService {
     }
 
     const qrToken = await this.generateUniqueQrToken();
-    const customerUrl = this.buildCustomerUrl(tenantId, qrToken);
+    const customerUrl = this.buildCustomerUrl(tenantId, tableNumber, qrToken);
 
     const qrCode = await this.prisma.generateQrCode.create({
       data: {
@@ -457,7 +457,7 @@ export class QrCodeService {
     return {
       ...qrCode,
       assignedStaff,
-      publicUrl: `${process.env.PUBLIC_URL}/menu/${qrCode.slug}`,
+      publicUrl: `${this.getBackendPublicOrigin()}/api/v1/menu/${qrCode.slug}`,
     };
   }
 
@@ -494,17 +494,44 @@ export class QrCodeService {
     );
   }
 
-  private buildCustomerUrl(tenantId: string, qrToken: string) {
-    const frontendUrl = (
-      process.env.FRONTEND_PUBLIC_URL || 'http://localhost:3000'
-    ).replace(/\/+$/, '');
+  private buildCustomerUrl(
+    tenantId: string,
+    tableNumber: string,
+    qrToken: string,
+  ) {
+    const frontendUrl = this.getFrontendPublicOrigin();
     const params = new URLSearchParams({
       tenantId,
+      tableId: tableNumber,
       qrToken,
       tab: 'menu',
     });
 
     return `${frontendUrl}/customer?${params.toString()}`;
+  }
+
+  private getFrontendPublicOrigin() {
+    const origin = process.env.FRONTEND_PUBLIC_URL?.trim().replace(/\/+$/, '');
+    if (origin) {
+      return origin;
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      throw new BadRequestException(
+        'FRONTEND_PUBLIC_URL must be configured to generate hosted QR codes.',
+      );
+    }
+
+    return 'http://localhost:3000';
+  }
+
+  private getBackendPublicOrigin() {
+    const origin = process.env.PUBLIC_URL?.trim().replace(/\/+$/, '');
+    if (origin) {
+      return origin;
+    }
+
+    return 'http://localhost:3001';
   }
 
   normalizeTableNumber(input: string) {

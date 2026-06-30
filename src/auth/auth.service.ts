@@ -72,6 +72,7 @@ export class AuthService {
         return tx.user.create({
           data: {
             ...data,
+            businessEmail: data.email,
             tenantId: tenant.id,
             role: Role.MANAGER,
           },

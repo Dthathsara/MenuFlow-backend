@@ -59,6 +59,26 @@ $ npm run test:cov
 
 ## Deployment
 
+### MenuFlow Vercel Backend
+
+Vercel builds the backend with:
+
+```bash
+npm run vercel-build
+```
+
+Production database migrations are intentionally not run inside the Vercel build step. Run them explicitly before or during deployment:
+
+```bash
+npx prisma migrate deploy
+# or
+npm run migrate:deploy
+```
+
+Set the production environment variables from `.env.production.example`. `PUBLIC_URL` must be the backend origin only, without `/api/v1`. `FRONTEND_PUBLIC_URL` must be the frontend origin only.
+
+Local file uploads under `/uploads` are supported for development. Vercel serverless filesystem uploads are not permanent storage; production restaurant/menu images should move to Cloudinary, S3, Vercel Blob, or Supabase Storage.
+
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:

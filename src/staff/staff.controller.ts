@@ -48,6 +48,12 @@ export class StaffController {
     return this.staffService.getRoles(currentUser);
   }
 
+  @Get('waiters')
+  @Roles(Role.STAFF)
+  getWaiters(@CurrentUser() currentUser: CurrentStaffUser) {
+    return this.staffService.getWaiters(currentUser);
+  }
+
   @Get(':id')
   @Roles(Role.STAFF)
   findOne(

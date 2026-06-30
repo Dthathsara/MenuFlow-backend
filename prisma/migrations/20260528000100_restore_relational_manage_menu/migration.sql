@@ -1,0 +1,4 @@
+-- Historical migration placeholder restored for databases that already applied
+-- 20260528000100_restore_relational_manage_menu before this backend zip was assembled.
+-- The original SQL was not present in the current or old local project copies.
+-- Do not add schema changes here; current forward migrations preserve data.

@@ -7,7 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export const STAFF_MEMBER_ROLES = ['Chef', 'Waiter', 'Counter'] as const;
+export const STAFF_MEMBER_ROLES = ['Waiter', 'Counter', 'Chef'] as const;
 export const STAFF_MEMBER_STATUSES = [
   'Active',
   'Inactive',

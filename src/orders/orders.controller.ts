@@ -58,12 +58,14 @@ export class AdminOrdersController {
     @CurrentUser() currentUser: any,
     @Query('search') search?: string,
     @Query('paymentStatus') paymentStatus?: string,
+    @Query('payment_status') payment_status?: string,
     @Query('orderStatus') orderStatus?: string,
+    @Query('order_status') order_status?: string,
   ) {
     return this.ordersService.findManagerOrders(currentUser, {
       search,
-      paymentStatus,
-      orderStatus,
+      paymentStatus: paymentStatus ?? payment_status,
+      orderStatus: orderStatus ?? order_status,
     });
   }
 

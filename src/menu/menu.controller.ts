@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Header,
   Post,
   Patch,
   Delete,
@@ -45,6 +46,7 @@ export class PublicMenuController {
 
   @Public()
   @Get(':slug')
+  @Header('Cache-Control', 'no-store')
   getPublicMenu(@Param('slug') slug: string) {
     return this.addMenuItemsService.getCustomerMenu({ slug });
   }
@@ -56,16 +58,19 @@ export class CustomerMenuController {
 
   @Public()
   @Get()
+  @Header('Cache-Control', 'no-store')
   getCustomerMenu(
     @Query('tenantId') tenantId?: string,
     @Query('slug') slug?: string,
     @Query('qrToken') qrToken?: string,
+    @Query('tableId') tableId?: string,
     @Req() request?: any,
   ) {
     return this.addMenuItemsService.getCustomerMenu({
       tenantId,
       slug,
       qrToken,
+      tableId,
       authorization: request?.headers?.authorization,
     });
   }

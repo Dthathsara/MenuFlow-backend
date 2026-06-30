@@ -362,6 +362,43 @@ export class UsersService {
     }
   }
 
+  async deleteRestaurantImage(id: string) {
+    const existing = await this.prisma.user.findFirst({
+      where: { id, deletedAt: null },
+      select: {
+        id: true,
+        tenantId: true,
+        restaurantImageUrl: true,
+      },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`User ${id} not found`);
+    }
+
+    const updated = await this.prisma.user.update({
+      where: { id },
+      data: { restaurantImageUrl: null },
+      select: this.safeSelect,
+    });
+
+    if (existing.tenantId) {
+      await this.prisma.user.updateMany({
+        where: {
+          tenantId: existing.tenantId,
+          deletedAt: null,
+        },
+        data: {
+          restaurantImageUrl: null,
+        },
+      });
+    }
+
+    await this.safeDeletePreviousRestaurantImage(existing.restaurantImageUrl);
+
+    return this.toUserResponse(updated);
+  }
+
   async deactivate(id: string, currentUser: { id: string; role: string }) {
     if (id === currentUser.id) {
       throw new ForbiddenException('You cannot deactivate your own account');
@@ -476,7 +513,7 @@ export class UsersService {
       businessAddress: user.businessAddress,
       kitchenOpenTime: user.kitchenOpenTime,
       kitchenCloseTime: user.kitchenCloseTime,
-      restaurantImageUrl: user.restaurantImageUrl,
+      restaurantImageUrl: this.toPublicAssetUrl(user.restaurantImageUrl),
       contactPersonName: user.contactPersonName,
       contactPersonMobileNumber: user.contactPersonMobileNumber,
       taxRate: Number(user.taxRate ?? 5),
@@ -514,7 +551,7 @@ export class UsersService {
       taxRate: Number(user.taxRate ?? 5),
       serviceChargeRate: Number(user.serviceChargeRate ?? 3),
       discountRate: Number(user.discountRate ?? 0),
-      restaurantImageUrl: user.restaurantImageUrl,
+      restaurantImageUrl: this.toPublicAssetUrl(user.restaurantImageUrl),
     };
   }
 
@@ -541,5 +578,19 @@ export class UsersService {
     }
 
     await this.safeDeleteFile(filePath);
+  }
+
+  private toPublicAssetUrl(value?: string | null) {
+    const imageUrl = value?.trim();
+    if (!imageUrl) {
+      return '';
+    }
+
+    if (!imageUrl.startsWith('/')) {
+      return imageUrl;
+    }
+
+    const publicUrl = process.env.PUBLIC_URL?.trim().replace(/\/+$/, '');
+    return publicUrl ? `${publicUrl}${imageUrl}` : imageUrl;
   }
 }

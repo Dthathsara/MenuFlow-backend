@@ -26,6 +26,7 @@ export class AddMenuItemsService {
     tenantId?: string;
     slug?: string;
     qrToken?: string;
+    tableId?: string;
     authorization?: string;
   }) {
     try {
@@ -50,32 +51,35 @@ export class AddMenuItemsService {
         };
       }
 
-      const user = await this.prisma.user.findFirst({
-      where: {
-        tenantId: resolved.tenantId,
-        deletedAt: null,
-        isActive: true,
-      },
-      select: {
-        hotelName: true,
-        businessType: true,
-        businessLocation: true,
-        businessAddress: true,
-        businessEmail: true,
-        restaurantImageUrl: true,
-        kitchenOpenTime: true,
-        kitchenCloseTime: true,
-        contactPersonMobileNumber: true,
-        taxRate: true,
-        serviceChargeRate: true,
-        discountRate: true,
-        updatedAt: true,
-      },
-      orderBy: [
-        { updatedAt: 'desc' },
-        { createdAt: 'desc' },
-      ],
-    });
+      const users = await this.prisma.user.findMany({
+        where: {
+          tenantId: resolved.tenantId,
+          deletedAt: null,
+          isActive: true,
+        },
+        select: {
+          hotelName: true,
+          businessType: true,
+          businessLocation: true,
+          businessAddress: true,
+          businessEmail: true,
+          restaurantImageUrl: true,
+          role: true,
+          kitchenOpenTime: true,
+          kitchenCloseTime: true,
+          contactPersonMobileNumber: true,
+          taxRate: true,
+          serviceChargeRate: true,
+          discountRate: true,
+          updatedAt: true,
+          createdAt: true,
+        },
+        orderBy: [
+          { updatedAt: 'desc' },
+          { createdAt: 'desc' },
+        ],
+      });
+      const user = this.pickRestaurantProfile(users);
 
       const items = await this.prisma.addMenuItem.findMany({
         where: {
@@ -333,11 +337,13 @@ export class AddMenuItemsService {
     slug?: string;
     authorization?: string;
     qrToken?: string;
+    tableId?: string;
   }): Promise<{
     tenantId: string | null;
     source: 'query' | 'auth' | 'slug' | 'qrToken' | 'none';
     qrContext?: {
       tableNumber: string;
+      tableId: string;
       section: string;
       qrToken: string;
     };
@@ -367,11 +373,20 @@ export class AddMenuItemsService {
         return { tenantId: null, source: 'qrToken' };
       }
 
+      const tableId = query.tableId?.trim();
+      if (
+        tableId &&
+        tableId.toLowerCase() !== qrCode.tableNumber.toLowerCase()
+      ) {
+        return { tenantId: null, source: 'qrToken' };
+      }
+
       return {
         tenantId: qrCode.tenantId,
         source: 'qrToken',
         qrContext: {
           tableNumber: qrCode.tableNumber,
+          tableId: qrCode.tableNumber,
           section: qrCode.section,
           qrToken: qrCode.qrToken,
         },
@@ -463,6 +478,7 @@ export class AddMenuItemsService {
       serviceChargeRate: 3,
       discountRate: 0,
       status: 'Kitchen open',
+      restaurantImageUrl: '',
     };
   }
 
@@ -475,6 +491,7 @@ export class AddMenuItemsService {
       businessAddress: string | null;
       businessEmail: string | null;
       restaurantImageUrl: string | null;
+      role?: string;
       kitchenOpenTime: string | null;
       kitchenCloseTime: string | null;
       contactPersonMobileNumber: string | null;
@@ -507,7 +524,7 @@ export class AddMenuItemsService {
       kitchenOpenTime,
       kitchenCloseTime,
       openingHours,
-      restaurantImageUrl: user?.restaurantImageUrl?.trim() || '',
+      restaurantImageUrl: this.toPublicAssetUrl(user?.restaurantImageUrl),
       taxRate: Number(user?.taxRate ?? 5),
       serviceChargeRate: Number(user?.serviceChargeRate ?? 3),
       discountRate: Number(user?.discountRate ?? 0),
@@ -515,6 +532,30 @@ export class AddMenuItemsService {
         ? `Kitchen open until ${kitchenCloseTime}`
         : 'Kitchen open',
     };
+  }
+
+  private pickRestaurantProfile<
+    T extends {
+      restaurantImageUrl: string | null;
+      role?: string;
+    },
+  >(users: T[]) {
+    return (
+      users.find(
+        (user) =>
+          user.restaurantImageUrl?.trim() &&
+          this.isManagerProfile(user.role),
+      ) ??
+      users.find((user) => user.restaurantImageUrl?.trim()) ??
+      users.find((user) => this.isManagerProfile(user.role)) ??
+      users[0] ??
+      null
+    );
+  }
+
+  private isManagerProfile(role?: string) {
+    const normalized = role?.trim().toUpperCase();
+    return normalized === 'MANAGER' || normalized === 'CLIENT_ADMIN';
   }
 
   private formatKitchenCloseTime(value?: string | null) {
@@ -703,9 +744,9 @@ export class AddMenuItemsService {
         sub_category_name: subCategoryName,
         subCategoryName,
         description: item.description,
-        image_url: item.imageUrl,
-        imageUrl: item.imageUrl,
-        image: item.imageUrl,
+        image_url: this.toPublicAssetUrl(item.imageUrl),
+        imageUrl: this.toPublicAssetUrl(item.imageUrl),
+        image: this.toPublicAssetUrl(item.imageUrl),
         small_price: smallPrice,
         medium_price: mediumPrice,
         large_price: largePrice,
@@ -737,5 +778,19 @@ export class AddMenuItemsService {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '') || 'uncategorized'
     );
+  }
+
+  private toPublicAssetUrl(value?: string | null) {
+    const imageUrl = value?.trim();
+    if (!imageUrl) {
+      return '';
+    }
+
+    if (!imageUrl.startsWith('/')) {
+      return imageUrl;
+    }
+
+    const publicUrl = process.env.PUBLIC_URL?.trim().replace(/\/+$/, '');
+    return publicUrl ? `${publicUrl}${imageUrl}` : imageUrl;
   }
 }
