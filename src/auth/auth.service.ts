@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
+import type { StringValue } from 'ms';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ChangePasswordDto,
@@ -71,7 +72,12 @@ export class AuthService {
 
         return tx.user.create({
           data: {
-            ...data,
+            passwordHash: data.passwordHash,
+            hotelName: data.hotelName,
+            email: data.email,
+            businessEmail: data.email,
+            contactPersonName: data.contactPersonName,
+            contactPersonMobileNumber: data.contactPersonMobileNumber,
             tenantId: tenant.id,
             role: Role.MANAGER,
           },
@@ -107,16 +113,22 @@ export class AuthService {
     const email = dto.email.trim().toLowerCase();
 
     try {
-      const user = await this.prisma.user.findFirst({
-        where: {
-          email: {
-            equals: email,
-            mode: 'insensitive',
+      let user: any;
+      try {
+        user = await this.prisma.user.findFirst({
+          where: {
+            email: {
+              equals: email,
+              mode: 'insensitive',
+            },
+            deletedAt: null,
+            isActive: true,
           },
-          deletedAt: null,
-          isActive: true,
-        },
-      });
+        });
+      } catch (error) {
+        this.logger.error('Login database lookup failed', error);
+        throw error;
+      }
 
       const isValid = user
         ? await bcrypt.compare(dto.password, user.passwordHash)
@@ -139,7 +151,7 @@ export class AuthService {
           activeUser.tenantId,
         );
       } catch (error) {
-        console.error('LOGIN TOKEN ERROR:', error);
+        this.logger.error('Login token generation failed', error);
         throw error;
       }
       this.logger.log(`User logged in: ${activeUser.id}`);
@@ -166,7 +178,7 @@ export class AuthService {
         },
       };
     } catch (error) {
-      console.error('LOGIN ERROR:', error);
+      this.logger.error('Login failed', error);
       throw error;
     }
   }
@@ -424,6 +436,19 @@ export class AuthService {
     role: string,
     tenantId?: string | null,
   ) {
+    const jwtSecret = this.requireConfigValue('jwt.secret', 'JWT_SECRET');
+    const jwtExpiresIn = this.requireConfigValue(
+      'jwt.expiresIn',
+      'JWT_EXPIRES_IN',
+    );
+    const jwtRefreshSecret = this.requireConfigValue(
+      'jwt.refreshSecret',
+      'JWT_REFRESH_SECRET',
+    );
+    const jwtRefreshExpiresIn = this.requireConfigValue(
+      'jwt.refreshExpiresIn',
+      'JWT_REFRESH_EXPIRES_IN',
+    );
     const payload = {
       sub: userId,
       userId,
@@ -434,22 +459,38 @@ export class AuthService {
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwt.signAsync(payload, {
-        secret: this.config.get('jwt.secret'),
-        expiresIn: '30m',
+        secret: jwtSecret,
+        expiresIn: jwtExpiresIn as StringValue,
       }),
       this.jwt.signAsync(payload, {
-        secret: this.config.get('jwt.refreshSecret'),
-        expiresIn: this.config.get('jwt.refreshExpiresIn') ?? '7d',
+        secret: jwtRefreshSecret,
+        expiresIn: jwtRefreshExpiresIn as StringValue,
       }),
     ]);
 
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 
-    await this.prisma.refreshToken.create({
-      data: { token: refreshToken, userId, expiresAt },
-    });
+    try {
+      await this.prisma.refreshToken.create({
+        data: { token: refreshToken, userId, expiresAt },
+      });
+    } catch (error) {
+      this.logger.error('Refresh token creation failed', error);
+      throw error;
+    }
 
     return { accessToken, refreshToken };
+  }
+
+  private requireConfigValue(key: string, envName: string) {
+    const value = this.config.get<string>(key);
+    if (!value) {
+      const message = `${envName} is not defined`;
+      this.logger.error(message);
+      throw new Error(message);
+    }
+
+    return value;
   }
 }
